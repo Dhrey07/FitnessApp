@@ -30,7 +30,7 @@ export function Sidebar({ activeEmail, onPersonaChange, onClose }: SidebarProps)
   };
 
   return (
-    <aside className="flex flex-col h-full bg-[#131924] border-r border-white/10 w-[248px] shrink-0">
+    <aside className="flex flex-col h-full bg-[#131924] border-r border-white/10 w-[min(248px,85vw)] shrink-0">
       {/* Fitness Police Logo Header */}
       <div className="flex items-center justify-between px-5 py-4 border-b border-white/10">
         <Link href="/" className="flex items-center gap-2.5 min-w-0">

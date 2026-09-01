@@ -32,7 +32,7 @@ export function WorkoutCompletionModal({ summary, onClose }: WorkoutCompletionMo
         </div>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-3 gap-3 text-center">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-center">
           <div className="p-3.5 bg-slate-900 rounded-xl border border-white/5 space-y-0.5">
             <span className="label-xs text-slate-400">Duration</span>
             <p className="text-xl font-extrabold text-white">{summary.durationMinutes} <span className="text-xs font-normal text-slate-400">min</span></p>

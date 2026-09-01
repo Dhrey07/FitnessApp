@@ -161,7 +161,7 @@ export default function ClientProfilePage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-3 gap-3 text-center">
+            <div className="grid grid-cols-3 gap-2 sm:gap-3 text-center">
               <div className="p-3 bg-slate-950/40 rounded-xl border border-[var(--border-subtle)] space-y-0.5">
                 <span className="label-xs text-[var(--text-muted)]">Height</span>
                 <p className="text-base font-bold text-[var(--text-heading)]">{p.heightCm} cm</p>

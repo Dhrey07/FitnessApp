@@ -66,7 +66,7 @@ export default function AdminClientDetailPage({ params }: { params: Promise<{ id
 
         <a
           href={`https://wa.me/2348012345678?text=${encodeURIComponent(
-            `Hello ${client?.firstName}, Coach Lekan here reviewing your Fitness Police file.`
+            `Hello ${client?.firstName}, Oga Eric here reviewing your Fitness Police file.`
           )}`}
           target="_blank"
           rel="noopener noreferrer"
@@ -261,7 +261,7 @@ export default function AdminClientDetailPage({ params }: { params: Promise<{ id
                 <p className="text-[var(--text-secondary)] italic">&quot;{ci.challenges || 'No challenges reported'}&quot;</p>
                 {ci.coachFeedback && (
                   <p className="text-sky-400 pt-1 border-t border-[var(--border-subtle)] font-medium">
-                    Coach Lekan: &quot;{ci.coachFeedback}&quot;
+                    Oga Eric: &quot;{ci.coachFeedback}&quot;
                   </p>
                 )}
               </div>

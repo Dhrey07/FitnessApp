@@ -668,7 +668,7 @@ export default function OnboardingPage() {
                 <Utensils size={15} className="text-sky-400" /> Daily Macronutrient Target Allocation
               </h3>
 
-              <div className="grid grid-cols-3 gap-3 text-center">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-center">
                 <div className="p-3 bg-slate-950/40 rounded-xl border border-sky-400/30">
                   <span className="label-xs text-sky-400">PROTEIN</span>
                   <p className="text-xl font-black text-[var(--text-heading)] mt-0.5">{nutritionResults.targetProteinG}g</p>

@@ -21,7 +21,7 @@ export function PublicFooter() {
               Human-in-the-Loop fitness transformation platform combining Mifflin-St Jeor metabolic engines, cultural nutrition logging, and personalized coaching.
             </p>
             <div className="flex items-center gap-2 text-[11px] text-sky-400 font-semibold pt-1">
-              <ShieldCheck size={14} /> Head Coach: Lekan Adeyemi (Lagos, Nigeria)
+              <ShieldCheck size={14} /> Head Coach: Oga Eric
             </div>
           </div>
 

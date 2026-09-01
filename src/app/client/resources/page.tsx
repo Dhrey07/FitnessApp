@@ -44,7 +44,7 @@ export default function ResourcesClientPage() {
   return (
     <ClientAppShell
       title="Educational Resources & Science Guides"
-      subtitle="Evidence-based guides written by Coach Lekan to help you master your training, nutrition, and recovery."
+      subtitle="Evidence-based guides written by Oga Eric to help you master your training, nutrition, and recovery."
     >
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
         {articles.map((art) => (
@@ -68,7 +68,7 @@ export default function ResourcesClientPage() {
 
             <div className="pt-3 border-t border-[var(--border-subtle)] flex items-center justify-between">
               <span className="text-[11px] text-sky-400 font-bold flex items-center gap-1">
-                <ShieldCheck size={13} /> Written by Head Coach Lekan
+                <ShieldCheck size={13} /> Written by Oga Eric
               </span>
               <button
                 type="button"

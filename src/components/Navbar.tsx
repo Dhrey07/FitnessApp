@@ -10,7 +10,7 @@ export const DEMO_PERSONAS = [
   { email: 'chidi@example.com', name: 'Chidi Okonkwo', role: 'CLIENT', tier: 'GOLD', label: 'Gold Subscriber (Fat Loss)' },
   { email: 'aminat@example.com', name: 'Aminat Bello', role: 'CLIENT', tier: 'DIAMOND', label: 'Diamond VIP (Muscle Gain)' },
   { email: 'tunde@example.com', name: 'Tunde Johnson', role: 'CLIENT', tier: 'FREE', label: 'Free User (Food Police)' },
-  { email: 'coach@fitnesspolice.com', name: 'Coach Lekan', role: 'COACH', tier: 'ADMIN', label: 'Admin / Head Coach' },
+  { email: 'coach@fitnesspolice.com', name: 'Oga Eric', role: 'COACH', tier: 'ADMIN', label: 'Admin / Head Coach' },
 ];
 
 export function Navbar({ activeEmail, onPersonaChange }: { activeEmail?: string; onPersonaChange?: (email: string) => void }) {
@@ -163,7 +163,7 @@ export function Navbar({ activeEmail, onPersonaChange }: { activeEmail?: string;
             </button>
 
             {dropdownOpen && (
-              <div className="absolute right-0 mt-2 w-72 bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl p-2 z-50 animate-fade-in">
+              <div className="absolute right-0 mt-2 w-[min(288px,calc(100vw-2rem))] bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl p-2 z-50 animate-fade-in">
                 <div className="px-3 py-2 border-b border-slate-800 text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
                   <Sparkles className="w-3.5 h-3.5 text-sky-400" /> Switch Interactive Demo Role
                 </div>

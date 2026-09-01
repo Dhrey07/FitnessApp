@@ -94,7 +94,7 @@ export default function AdminTestimonialsPage() {
               <h3 className="section-title text-base mt-0.5">Add Verified Client Story</h3>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
               <div>
                 <label className="field-label">Client Name</label>
                 <input
@@ -118,7 +118,7 @@ export default function AdminTestimonialsPage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3">
               <div>
                 <label className="field-label">Start Wt (kg)</label>
                 <input

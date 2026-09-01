@@ -39,7 +39,7 @@ export function CoachingSection() {
                 <MessageCircle size={16} className="text-emerald-400" /> Direct WhatsApp Accountability
               </h3>
               <p className="text-xs text-slate-300">
-                Gold and Diamond members get direct messaging and voice-note check-ins with Coach Lekan for immediate feedback on food choices and form checks.
+                Gold and Diamond members get direct messaging and voice-note check-ins with Oga Eric for immediate feedback on food choices and form checks.
               </p>
             </div>
 
@@ -62,12 +62,12 @@ export function CoachingSection() {
               <div className="flex items-center gap-4 pb-4 border-b border-white/10">
                 <img
                   src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80"
-                  alt="Coach Lekan Adeyemi"
+                  alt="Oga Eric"
                   className="w-14 h-14 rounded-2xl object-cover border border-sky-400/40"
                 />
                 <div>
                   <div className="flex items-center gap-2">
-                    <h3 className="font-extrabold text-white text-base">Coach Lekan Adeyemi</h3>
+                    <h3 className="font-extrabold text-white text-base">Oga Eric</h3>
                     <span className="badge badge-approved text-[10px]">Head Coach</span>
                   </div>
                   <p className="text-xs text-slate-400">Certified Strength & Nutrition Specialist • 8+ Yrs Coaching</p>

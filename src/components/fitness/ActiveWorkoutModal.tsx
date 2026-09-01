@@ -106,8 +106,8 @@ export function ActiveWorkoutModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
-      <div className="surface max-w-2xl w-full p-6 space-y-6 border border-sky-400/30 shadow-2xl relative animate-fade-in my-auto">
+    <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-start justify-center p-4 sm:p-6 overflow-y-auto">
+      <div className="surface max-w-2xl w-full p-5 sm:p-6 space-y-5 border border-sky-400/30 shadow-2xl relative animate-fade-in my-4 sm:my-auto">
         
         {/* Header Bar */}
         <div className="flex items-center justify-between border-b border-white/10 pb-4">

@@ -25,19 +25,19 @@ export function FinalCtaSection() {
         </p>
 
         {/* Action CTAs */}
-        <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
-          <Link href="/onboarding" className="btn-brand text-sm px-8 py-4 font-black shadow-xl shadow-sky-500/25">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 pt-2">
+          <Link href="/onboarding" className="btn-brand text-sm px-8 py-4 font-black shadow-xl shadow-sky-500/25 w-full sm:w-auto text-center">
             Start Your 14-Day Free Trial <ArrowRight size={16} />
           </Link>
-          <a href="#nutrition" className="btn-secondary text-sm px-7 py-4 font-bold flex items-center gap-2">
+          <a href="#nutrition" className="btn-secondary text-sm px-7 py-4 font-bold flex items-center justify-center gap-2 w-full sm:w-auto text-center">
             <Utensils size={16} /> Explore Food Police (Free)
           </a>
         </div>
 
-        <div className="pt-8 flex flex-wrap items-center justify-center gap-6 text-xs text-slate-400">
-          <span className="flex items-center gap-1.5"><CheckCircle2 size={14} className="text-sky-400" /> No immediate billing</span>
-          <span className="flex items-center gap-1.5"><CheckCircle2 size={14} className="text-sky-400" /> Food Police is 100% Free forever</span>
-          <span className="flex items-center gap-1.5"><CheckCircle2 size={14} className="text-sky-400" /> Cancel anytime with zero penalty</span>
+        <div className="pt-6 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6 text-xs text-slate-400 text-center">
+          <span className="flex items-center gap-1.5"><CheckCircle2 size={14} className="text-sky-400 shrink-0" /> No immediate billing</span>
+          <span className="flex items-center gap-1.5"><CheckCircle2 size={14} className="text-sky-400 shrink-0" /> Food Police is 100% Free forever</span>
+          <span className="flex items-center gap-1.5"><CheckCircle2 size={14} className="text-sky-400 shrink-0" /> Cancel anytime with zero penalty</span>
         </div>
 
       </div>

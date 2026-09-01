@@ -18,7 +18,7 @@ export function NotificationCenter() {
   const [notifications, setNotifications] = useState<NotificationItem[]>([
     {
       id: '1',
-      title: 'Coach Lekan Reviewed Your Log',
+      title: 'Oga Eric Reviewed Your Log',
       message: 'Great pacing on your push workout! Keep plantain to 4 slices maximum post-workout.',
       category: 'COACH',
       timestamp: '2 hours ago',
@@ -46,7 +46,7 @@ export function NotificationCenter() {
     {
       id: '4',
       title: 'Meal Log Approved',
-      message: 'Your Jollof Rice & Grilled Chicken Lunch has been verified by Coach Lekan.',
+      message: 'Your Jollof Rice & Grilled Chicken Lunch has been verified by Oga Eric.',
       category: 'NUTRITION',
       timestamp: '2 days ago',
       read: true,
@@ -109,7 +109,7 @@ export function NotificationCenter() {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-slate-900 dark:bg-slate-900 light:bg-white rounded-2xl border border-white/10 dark:border-white/10 light:border-slate-200 shadow-2xl z-50 overflow-hidden text-xs">
+        <div className="absolute right-0 mt-2 w-[calc(100vw-2rem)] max-w-sm sm:w-96 bg-slate-900 dark:bg-slate-900 light:bg-white rounded-2xl border border-white/10 dark:border-white/10 light:border-slate-200 shadow-2xl z-50 overflow-hidden text-xs">
           
           {/* Panel Header */}
           <div className="p-3.5 border-b border-white/10 dark:border-white/10 light:border-slate-200 flex items-center justify-between">

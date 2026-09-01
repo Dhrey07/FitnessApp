@@ -50,7 +50,7 @@ export function TrialBanner({ trialInfo }: TrialBannerProps) {
             <span className="text-[11px] text-slate-400">• {trialInfo.daysRemaining} days remaining</span>
           </div>
 
-          <div className="w-48 sm:w-72 bg-slate-950 h-1.5 rounded-full overflow-hidden border border-white/5">
+          <div className="w-full max-w-[200px] sm:max-w-xs bg-slate-950 h-1.5 rounded-full overflow-hidden border border-white/5">
             <div
               className="h-full bg-gradient-to-r from-sky-400 to-blue-500 transition-all duration-300"
               style={{ width: `${trialInfo.progressPercent}%` }}

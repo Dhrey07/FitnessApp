@@ -129,7 +129,7 @@ export default function AdminFoodPoliceQueuePage() {
                     &quot;{sub.rawInput}&quot;
                   </p>
 
-                  <div className="grid grid-cols-4 gap-1 text-center text-[10px] text-[var(--text-muted)] pt-2 border-t border-[var(--border-subtle)]">
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-1 text-center text-[10px] text-[var(--text-muted)] pt-2 border-t border-[var(--border-subtle)]">
                     <span>{ai?.estimatedCalories || 500} kcal</span>
                     <span>{ai?.estimatedProtein || 35}g Pro</span>
                     <span>{ai?.estimatedCarbs || 50}g Carb</span>
@@ -160,7 +160,7 @@ export default function AdminFoodPoliceQueuePage() {
                   &quot;{selectedMeal.rawInput}&quot;
                 </div>
 
-                <div className="grid grid-cols-4 gap-2">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                   <div>
                     <label className="field-label">Calories</label>
                     <input

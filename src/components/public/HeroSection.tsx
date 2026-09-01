@@ -32,17 +32,17 @@ export function HeroSection() {
             </p>
 
             {/* CTAs */}
-            <div className="flex flex-wrap items-center gap-4 pt-2">
-              <Link href="/onboarding" className="btn-brand text-sm px-7 py-3.5 font-extrabold shadow-lg shadow-sky-500/25">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-3.5 pt-2">
+              <Link href="/onboarding" className="btn-brand text-sm px-7 py-3.5 font-extrabold shadow-lg shadow-sky-500/25 w-full sm:w-auto text-center">
                 Start Your Transformation <ArrowRight size={16} />
               </Link>
-              <a href="#fitness" className="btn-secondary text-sm px-6 py-3.5 font-bold">
+              <a href="#fitness" className="btn-secondary text-sm px-6 py-3.5 font-bold w-full sm:w-auto text-center">
                 Explore Fitness
               </a>
             </div>
 
             {/* Trust Proof Points */}
-            <div className="pt-6 border-t border-white/10 grid grid-cols-3 gap-4 text-left">
+            <div className="pt-6 border-t border-white/10 grid grid-cols-1 sm:grid-cols-3 gap-3.5 text-left">
               <div>
                 <p className="text-xs font-bold text-white flex items-center gap-1.5">
                   <CheckCircle2 size={15} className="text-sky-400 shrink-0" /> 14-Day Free Trial

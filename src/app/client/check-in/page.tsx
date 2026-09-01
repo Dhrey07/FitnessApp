@@ -78,7 +78,7 @@ export default function CheckInClientPage() {
       const json = await res.json();
       if (!res.ok) throw new Error(json.error || 'Failed to submit check-in');
 
-      setSuccessMsg('Weekly check-in submitted successfully! Head Coach Lekan has been notified.');
+      setSuccessMsg('Weekly check-in submitted successfully! Oga Eric has been notified.');
       setAiResult(json.aiResult);
     } catch (err: any) {
       setErrorMsg(err.message || 'Something went wrong');
@@ -98,7 +98,7 @@ export default function CheckInClientPage() {
   };
 
   const whatsappUrl = `https://wa.me/2348012345678?text=${encodeURIComponent(
-    `Hello Coach Lekan, I just submitted my weekly check-in from the Fitness Police app!`
+    `Hello Oga Eric, I just submitted my weekly check-in from the Fitness Police app!`
   )}`;
 
   return (
@@ -115,7 +115,7 @@ export default function CheckInClientPage() {
           <div>
             <p className="text-xs font-bold text-[var(--text-heading)]">Direct WhatsApp Coach Accountability</p>
             <p className="text-[11px] text-[var(--text-secondary)]">
-              Gold & Diamond members can message Coach Lekan directly for quick meal and form questions.
+              Gold & Diamond members can message Oga Eric directly for quick meal and form questions.
             </p>
           </div>
         </div>
@@ -288,7 +288,7 @@ export default function CheckInClientPage() {
             </div>
 
             <div>
-              <label className="field-label">What do you need help with from Coach Lekan?</label>
+              <label className="field-label">What do you need help with from Oga Eric?</label>
               <textarea
                 rows={2}
                 value={generalFeedback}
@@ -328,7 +328,7 @@ export default function CheckInClientPage() {
 
             <div className="p-4 bg-slate-950/60 rounded-xl border border-sky-400/30 space-y-2">
               <p className="text-[10px] font-bold text-sky-400 uppercase tracking-wider flex items-center gap-1.5">
-                <ShieldCheck size={13} /> Coach Lekan Written Review:
+                <ShieldCheck size={13} /> Oga Eric Written Review:
               </p>
               <p className="text-xs text-[var(--text-primary)] leading-relaxed italic">
                 &quot;{samplePastReview.coachFeedback}&quot;

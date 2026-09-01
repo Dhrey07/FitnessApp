@@ -128,7 +128,7 @@ export default function ProgressClientPage() {
           </div>
         </div>
 
-        <div className="h-72 w-full pt-4">
+        <div className="h-60 sm:h-72 w-full pt-4 overflow-hidden">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={chartData}>
               <CartesianGrid strokeDasharray="3 3" stroke="rgba(148,163,184,0.15)" />

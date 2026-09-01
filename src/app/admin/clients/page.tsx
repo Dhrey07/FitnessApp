@@ -136,7 +136,7 @@ export default function AdminClientsPage() {
                     <div className="flex items-center justify-end gap-2">
                       <a
                         href={`https://wa.me/2348012345678?text=${encodeURIComponent(
-                          `Hello ${client.firstName}, Coach Lekan here checking in on your Fitness Police progress.`
+                          `Hello ${client.firstName}, Oga Eric here checking in on your Fitness Police progress.`
                         )}`}
                         target="_blank"
                         rel="noopener noreferrer"

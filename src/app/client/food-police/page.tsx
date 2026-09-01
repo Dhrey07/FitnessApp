@@ -194,7 +194,7 @@ export default function FoodPoliceClientPage() {
               {/* Meal Category Picker */}
               <div>
                 <label className="field-label">Meal Category</label>
-                <div className="grid grid-cols-4 gap-2">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                   {['BREAKFAST', 'LUNCH', 'DINNER', 'SNACK'].map((m) => (
                     <button
                       key={m}
@@ -365,7 +365,7 @@ export default function FoodPoliceClientPage() {
                   {coach && (
                     <div className="p-3 bg-slate-950/60 rounded-xl border border-sky-400/30 text-xs space-y-1">
                       <p className="text-[10px] font-bold text-sky-400 flex items-center gap-1">
-                        <ShieldCheck size={12} /> Coach Lekan Advice:
+                        <ShieldCheck size={12} /> Oga Eric Advice:
                       </p>
                       <p className="text-[var(--text-secondary)] text-[11px] leading-relaxed italic">
                         &quot;{coach.coachFeedback}&quot;

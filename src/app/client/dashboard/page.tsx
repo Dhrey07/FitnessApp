@@ -204,7 +204,7 @@ export default function ClientDashboardPage() {
             {/* Latest Coach Feedback Note */}
             <div className="p-3.5 bg-slate-900/60 dark:bg-slate-900/90 light:bg-slate-50 rounded-xl border border-[var(--border-subtle)] space-y-1.5 pt-2">
               <div className="flex items-center justify-between text-[10px] font-bold text-[var(--text-muted)] uppercase">
-                <span className="text-sky-400 flex items-center gap-1"><ShieldCheck size={12} /> Coach Lekan Feedback</span>
+                <span className="text-sky-400 flex items-center gap-1"><ShieldCheck size={12} /> Oga Eric Feedback</span>
                 <span>2d ago</span>
               </div>
               <p className="text-xs text-[var(--text-primary)] italic leading-relaxed">

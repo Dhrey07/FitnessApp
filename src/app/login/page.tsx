@@ -139,7 +139,7 @@ function LoginFormContent() {
           <p className="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wider">
             Quick Fill (Development / Testing Accounts):
           </p>
-          <div className="grid grid-cols-2 gap-2 text-[11px]">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px]">
             <button
               type="button"
               onClick={() => setDemoCredentials('chidi@example.com')}
@@ -169,7 +169,7 @@ function LoginFormContent() {
               onClick={() => setDemoCredentials('coach@fitnesspolice.com')}
               className="p-2 rounded-lg surface hover:border-purple-400 text-left transition-colors"
             >
-              <p className="font-bold text-purple-400">Coach Lekan</p>
+              <p className="font-bold text-purple-400">Oga Eric</p>
               <p className="text-[10px] text-purple-400 font-semibold">Head Coach Admin</p>
             </button>
           </div>

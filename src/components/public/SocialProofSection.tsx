@@ -46,7 +46,7 @@ export function SocialProofSection() {
       startingWeightKg: 94.0,
       endingWeightKg: 81.6,
       durationWeeks: 16,
-      quote: 'Food Police changed the game for me. I didn’t have to give up Nigerian food like Jollof or Moi Moi — Coach Lekan taught me exact portion management and cultural swaps. The accountability is 100% real.',
+      quote: 'Food Police changed the game for me. I didn’t have to give up Nigerian food like Jollof or Moi Moi — Oga Eric taught me exact portion management and cultural swaps. The accountability is 100% real.',
       verifiedClient: true,
     },
     {
@@ -70,7 +70,7 @@ export function SocialProofSection() {
       startingWeightKg: 82.0,
       endingWeightKg: 83.5,
       durationWeeks: 20,
-      quote: 'The VIP Diamond coaching was worth every single naira. Coach Lekan adjusted my training volume every single week based on my check-ins. My energy levels and physique are the best they’ve ever been.',
+      quote: 'The VIP Diamond coaching was worth every single naira. Oga Eric adjusted my training volume every single week based on my check-ins. My energy levels and physique are the best they\'ve ever been.',
       verifiedClient: true,
     },
   ];
@@ -142,7 +142,7 @@ export function SocialProofSection() {
                 </div>
 
                 <div className="pt-3 border-t border-white/10 text-[11px] text-slate-400 flex items-center gap-1.5 font-medium">
-                  <Award size={13} className="text-sky-400" /> Milestone Verified by Head Coach Lekan
+                  <Award size={13} className="text-sky-400" /> Milestone Verified by Oga Eric
                 </div>
               </div>
             );

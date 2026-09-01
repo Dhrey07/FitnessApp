@@ -9,19 +9,19 @@ export function PublicHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 glass-panel px-4 sm:px-8 py-3.5 border-b border-[var(--border-subtle)] backdrop-blur-md">
-      <div className="max-w-7xl mx-auto flex items-center justify-between">
+    <header className="sticky top-0 z-50 glass-panel px-3 sm:px-6 lg:px-8 py-3 border-b border-[var(--border-subtle)] backdrop-blur-md">
+      <div className="max-w-7xl mx-auto flex items-center justify-between gap-2">
         
         {/* Brand Logo */}
-        <Link href="/" className="flex items-center gap-3 group">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-sky-400 to-blue-600 flex items-center justify-center text-slate-950 font-black shadow-md shadow-sky-400/20 group-hover:scale-105 transition-transform">
-            <Flame className="w-5 h-5 fill-slate-950 stroke-none" />
+        <Link href="/" className="flex items-center gap-2.5 group shrink-0">
+          <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-br from-sky-400 to-blue-600 flex items-center justify-center text-slate-950 font-black shadow-md shadow-sky-400/20 group-hover:scale-105 transition-transform shrink-0">
+            <Flame className="w-4 h-4 sm:w-5 sm:h-5 fill-slate-950 stroke-none" />
           </div>
-          <div>
-            <span className="font-extrabold text-[var(--text-heading)] text-base tracking-tight block leading-tight">
+          <div className="hidden sm:block">
+            <span className="font-extrabold text-[var(--text-heading)] text-sm tracking-tight block leading-tight">
               FITNESS POLICE
             </span>
-            <span className="text-[10px] text-sky-400 font-bold uppercase tracking-wider block">
+            <span className="text-[10px] text-sky-400 font-bold uppercase tracking-wider block hidden sm:block">
               Coaching & Nutrition
             </span>
           </div>
