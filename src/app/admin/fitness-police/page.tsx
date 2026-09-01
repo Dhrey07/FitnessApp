@@ -1,0 +1,265 @@
+'use client';
+
+import React, { useState, useEffect } from 'react';
+import { AdminAppShell } from '@/components/admin/AdminAppShell';
+import {
+  Plus,
+  Trash2,
+  CheckCircle2,
+  ArrowRight,
+} from 'lucide-react';
+
+export default function AdminFitnessPoliceBuilderPage() {
+  const [clients, setClients] = useState<any[]>([]);
+  const [plans, setPlans] = useState<any[]>([]);
+  const [selectedClientId, setSelectedClientId] = useState('');
+  const [planTitle, setPlanTitle] = useState('4-Week Metabolic Hypertrophy');
+  const [planGoal, setPlanGoal] = useState('FAT_LOSS');
+  const [durationWeeks, setDurationWeeks] = useState('4');
+
+  const [workouts, setWorkouts] = useState([
+    {
+      dayName: 'Day 1',
+      title: 'Upper Body Push & Core',
+      exercises: [
+        { name: 'Incline Dumbbell Bench Press', sets: 4, reps: '8-10', restSeconds: 75, notes: 'Control the descent' },
+        { name: 'Seated Dumbbell Shoulder Press', sets: 3, reps: '10-12', restSeconds: 60, notes: 'Full lockout' },
+        { name: 'Push-ups', sets: 3, reps: '15', restSeconds: 45, notes: 'Chest to floor' },
+      ],
+    },
+    {
+      dayName: 'Day 2',
+      title: 'Lower Body & Conditioning',
+      exercises: [
+        { name: 'Barbell Back Squats', sets: 4, reps: '8-10', restSeconds: 90, notes: 'Below parallel' },
+        { name: 'Romanian Deadlifts', sets: 3, reps: '10-12', restSeconds: 75, notes: 'Feel the hamstring stretch' },
+        { name: 'Walking Lunges', sets: 3, reps: '12 per leg', restSeconds: 60, notes: 'Upright torso' },
+      ],
+    },
+  ]);
+
+  const [submitting, setSubmitting] = useState(false);
+  const [successMsg, setSuccessMsg] = useState('');
+
+  useEffect(() => {
+    fetchClientsAndPlans();
+  }, []);
+
+  const fetchClientsAndPlans = async () => {
+    try {
+      const cRes = await fetch('/api/admin/clients');
+      const cData = await cRes.json();
+      setClients(cData.clients || []);
+      if (cData.clients?.length > 0) {
+        setSelectedClientId(cData.clients[0].id);
+      }
+
+      const pRes = await fetch('/api/admin/workout-plans');
+      const pData = await pRes.json();
+      setPlans(pData.workoutPlans || []);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const handleAddExercise = (workoutIdx: number) => {
+    const updated = [...workouts];
+    updated[workoutIdx].exercises.push({
+      name: 'New Exercise',
+      sets: 3,
+      reps: '10-12',
+      restSeconds: 60,
+      notes: '',
+    });
+    setWorkouts(updated);
+  };
+
+  const handleRemoveExercise = (workoutIdx: number, exerciseIdx: number) => {
+    const updated = [...workouts];
+    updated[workoutIdx].exercises.splice(exerciseIdx, 1);
+    setWorkouts(updated);
+  };
+
+  const handleCreatePlan = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedClientId) return;
+
+    setSubmitting(true);
+    setSuccessMsg('');
+
+    try {
+      const res = await fetch('/api/admin/workout-plans', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userId: selectedClientId,
+          title: planTitle,
+          goal: planGoal,
+          durationWeeks,
+          workouts,
+        }),
+      });
+
+      if (res.ok) {
+        setSuccessMsg('Workout plan created and assigned to client successfully!');
+        fetchClientsAndPlans();
+        setTimeout(() => setSuccessMsg(''), 4000);
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  return (
+    <AdminAppShell
+      title="Fitness Police Workout Builder"
+      subtitle="Design structured periodized routines and assign custom training programs to athletes."
+    >
+      {successMsg && (
+        <div className="p-4 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-xs flex items-center gap-2 animate-fade-in">
+          <CheckCircle2 size={16} className="shrink-0" />
+          <span>{successMsg}</span>
+        </div>
+      )}
+
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        {/* Left Column: Plan Builder Form */}
+        <div className="lg:col-span-8 space-y-6">
+          <form onSubmit={handleCreatePlan} className="surface p-6 sm:p-7 space-y-6 border border-[var(--border-subtle)]">
+            <div>
+              <span className="label-xs text-purple-400">Routine Architect</span>
+              <h3 className="section-title text-base mt-0.5">Build New Workout Plan</h3>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div>
+                <label className="field-label">Target Client</label>
+                <select
+                  value={selectedClientId}
+                  onChange={(e) => setSelectedClientId(e.target.value)}
+                  className="field-input"
+                >
+                  {clients.map((c) => (
+                    <option key={c.id} value={c.id}>
+                      {c.firstName} {c.lastName} ({c.subscriptions?.[0]?.planTier || 'FREE'})
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="field-label">Plan Title</label>
+                <input
+                  type="text"
+                  required
+                  value={planTitle}
+                  onChange={(e) => setPlanTitle(e.target.value)}
+                  className="field-input"
+                />
+              </div>
+
+              <div>
+                <label className="field-label">Primary Goal</label>
+                <select
+                  value={planGoal}
+                  onChange={(e) => setPlanGoal(e.target.value)}
+                  className="field-input"
+                >
+                  <option value="FAT_LOSS">Fat Loss</option>
+                  <option value="BODY_RECOMPOSITION">Body Recomposition</option>
+                  <option value="MUSCLE_GAIN">Muscle Gain</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Workouts Splits */}
+            <div className="space-y-5">
+              {workouts.map((w, wIdx) => (
+                <div key={wIdx} className="p-5 surface rounded-xl border border-[var(--border-subtle)] space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <span className="badge badge-trial text-[10px]">{w.dayName}</span>
+                      <h4 className="font-bold text-[var(--text-heading)] text-sm">{w.title}</h4>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => handleAddExercise(wIdx)}
+                      className="btn-secondary text-[11px] py-1 px-2.5 flex items-center gap-1"
+                    >
+                      <Plus size={12} /> Add Exercise
+                    </button>
+                  </div>
+
+                  <div className="space-y-2">
+                    {w.exercises.map((ex, exIdx) => (
+                      <div key={exIdx} className="p-3 bg-slate-950/40 rounded-lg flex items-center justify-between gap-3 text-xs">
+                        <div className="flex-1 space-y-1">
+                          <input
+                            type="text"
+                            value={ex.name}
+                            onChange={(e) => {
+                              const updated = [...workouts];
+                              updated[wIdx].exercises[exIdx].name = e.target.value;
+                              setWorkouts(updated);
+                            }}
+                            className="bg-transparent border-b border-[var(--border-subtle)] text-[var(--text-heading)] font-semibold text-xs focus:outline-none w-full"
+                          />
+                          <div className="flex items-center gap-3 text-[10px] text-[var(--text-muted)]">
+                            <span>{ex.sets} Sets × {ex.reps} Reps</span>
+                            <span>Rest: {ex.restSeconds}s</span>
+                          </div>
+                        </div>
+
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveExercise(wIdx, exIdx)}
+                          className="p-1 text-slate-500 hover:text-rose-400"
+                        >
+                          <Trash2 size={13} />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <button
+              type="submit"
+              disabled={submitting}
+              className="btn-brand text-xs w-full justify-center py-3 font-extrabold shadow-md shadow-sky-500/20"
+            >
+              {submitting ? 'Assigning Plan...' : 'Assign Program to Client'} <ArrowRight size={14} />
+            </button>
+          </form>
+        </div>
+
+        {/* Right Column: Existing Plans Library */}
+        <div className="lg:col-span-4 space-y-4">
+          <h3 className="section-title text-sm">Active Assigned Plans</h3>
+
+          <div className="space-y-3">
+            {plans.map((p) => (
+              <div key={p.id} className="surface p-5 space-y-3 border border-[var(--border-subtle)] text-xs">
+                <div className="flex items-center justify-between">
+                  <h4 className="font-bold text-[var(--text-heading)] text-sm">{p.title}</h4>
+                  <span className="badge badge-trial text-[9px]">{p.durationWeeks} Weeks</span>
+                </div>
+                <p className="text-[var(--text-muted)]">
+                  Client: <strong className="text-[var(--text-heading)]">{p.user?.firstName} {p.user?.lastName}</strong>
+                </p>
+                <div className="text-[11px] text-[var(--text-muted)] pt-2 border-t border-[var(--border-subtle)]">
+                  {p.workouts?.length || 0} Training Days Included
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+      </div>
+    </AdminAppShell>
+  );
+}
