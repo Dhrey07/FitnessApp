@@ -2,6 +2,24 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
 import { ProgressAnalysisService } from '@/lib/services/aiService';
 import { FitnessGoal } from '@/lib/services/nutritionEngine';
+import { getSessionUser } from '@/lib/auth';
+
+/** A client's recent check-ins (own only); coaches may read any client's. */
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const userId = searchParams.get('userId');
+  if (!userId) return NextResponse.json({ error: 'Missing userId' }, { status: 400 });
+  const me = await getSessionUser();
+  if (!me) return NextResponse.json({ error: 'Not signed in' }, { status: 401 });
+  if (me.id !== userId && me.role === 'CLIENT') return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+
+  const checkIns = await prisma.weeklyCheckIn.findMany({
+    where: { userId },
+    orderBy: { checkInDate: 'desc' },
+    take: 8,
+  });
+  return NextResponse.json({ checkIns });
+}
 
 export async function POST(request: Request) {
   try {

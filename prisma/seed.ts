@@ -275,6 +275,7 @@ async function main() {
         create: [
           {
             dayNumber: 1,
+            orderIndex: 1,
             mealType: 'BREAKFAST',
             mealLabel: 'Meal 1',
             foodName: 'Oatmeal with Boiled Eggs & Banana',
@@ -288,6 +289,7 @@ async function main() {
           },
           {
             dayNumber: 1,
+            orderIndex: 2,
             mealType: 'LUNCH',
             mealLabel: 'Meal 2',
             foodName: 'Jollof Rice with Grilled Chicken Breast & Dodo',
@@ -301,6 +303,7 @@ async function main() {
           },
           {
             dayNumber: 1,
+            orderIndex: 3,
             mealType: 'DINNER',
             mealLabel: 'Meal 3',
             foodName: 'Efo Riro (Spinach Stew) with Tilapia & Small Oat Swallow',
@@ -314,6 +317,7 @@ async function main() {
           },
           {
             dayNumber: 1,
+            orderIndex: 4,
             mealType: 'SNACK',
             mealLabel: 'Snack',
             foodName: 'Greek Yogurt with Crushed Almonds',

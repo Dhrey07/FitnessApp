@@ -95,6 +95,10 @@ export default function AdminClientDetailPage({ params }: { params: Promise<{ id
           <ArrowLeft size={14} /> Back to Clients Roster
         </Link>
 
+        <div className="flex items-center gap-2 self-start sm:self-auto">
+        <Link href={`/admin/clients/${clientId}/meal-plan`} className="btn-secondary text-xs py-2 px-4">
+          Meal plan builder
+        </Link>
         <a
           href={`https://wa.me/2348012345678?text=${encodeURIComponent(
             `Hello ${client?.firstName}, Coach Eric here, reviewing your ERICONET profile.`
@@ -105,6 +109,7 @@ export default function AdminClientDetailPage({ params }: { params: Promise<{ id
         >
           <MessageCircle size={15} /> Message on WhatsApp
         </a>
+        </div>
       </div>
 
       {/* Client summary */}

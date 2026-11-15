@@ -38,8 +38,9 @@ export async function GET(request: Request) {
     const mealPlan = await prisma.mealPlan.findFirst({
       where: { userId, active: true },
       include: {
-        items: true,
+        items: { orderBy: [{ dayNumber: 'asc' }, { orderIndex: 'asc' }] },
       },
+      orderBy: { createdAt: 'desc' },
     });
 
     return NextResponse.json({ mealPlan });

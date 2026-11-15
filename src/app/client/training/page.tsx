@@ -294,15 +294,24 @@ export default function TrainingClientPage() {
                       <span className="text-brand font-bold text-xs">{ex.sets} Sets × {ex.reps}</span>
                     </div>
 
-                    <div className="grid grid-cols-3 gap-2 text-xs text-[var(--text-muted)] pt-2 border-t border-[var(--border-subtle)]">
-                      <span>Rest: <strong className="text-[var(--text-heading)]">{ex.restSeconds || 60}s</strong></span>
-                      <span>Tempo: <strong className="text-[var(--text-heading)]">{ex.tempo || '2-0-1'}</strong></span>
-                      <span className="text-right text-brand font-semibold">Log Set →</span>
-                    </div>
-
-                    {ex.notes && (
-                      <p className="text-xs text-[var(--text-muted)] italic">Cue: &quot;{ex.notes}&quot;</p>
+                    {/* Brief columns: rest, tempo, RPE/RIR, progression, coach notes */}
+                    <dl className="grid grid-cols-3 gap-2 text-xs pt-2 border-t border-line">
+                      <div><dt className="text-ink-muted">Rest</dt><dd className="font-semibold text-ink">{ex.restSeconds || 60} s</dd></div>
+                      <div><dt className="text-ink-muted">Tempo</dt><dd className="font-semibold text-ink">{ex.tempo || '2-0-1'}</dd></div>
+                      <div>
+                        <dt className="text-ink-muted">Effort</dt>
+                        <dd className="font-semibold text-ink">
+                          {ex.rpe != null ? `RPE ${ex.rpe}` : ''}{ex.rpe != null && ex.rir != null ? ' · ' : ''}{ex.rir != null ? `${ex.rir} RIR` : ''}{ex.rpe == null && ex.rir == null ? '—' : ''}
+                        </dd>
+                      </div>
+                    </dl>
+                    {(ex.progressionGuidance || ex.coachNotes || ex.notes) && (
+                      <div className="text-xs space-y-1 text-ink-secondary">
+                        {ex.progressionGuidance && <p><span className="font-semibold text-ink">Progression:</span> {ex.progressionGuidance}</p>}
+                        {(ex.coachNotes || ex.notes) && <p><span className="font-semibold text-ink">Coach notes:</span> {ex.coachNotes || ex.notes}</p>}
+                      </div>
                     )}
+                    <p className="text-xs text-right text-brand font-semibold">Log a set →</p>
                   </div>
                 ))}
               </div>

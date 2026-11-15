@@ -193,6 +193,7 @@ model MealPlanItem {
   foodName            String
   portion             String
   quantity            String?  // exact quantity, e.g. "150 g cooked rice"
+  orderIndex          Int      @default(0) // order within the day
   calories            Float
   proteinG            Float
   carbsG              Float

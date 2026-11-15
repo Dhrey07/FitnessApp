@@ -15,11 +15,13 @@ import {
   ChevronRight,
 } from 'lucide-react';
 import { PhotoPlaceholder } from '@/components/brand/PhotoPlaceholder';
+import { MealPlanView } from '@/components/nutrition/MealPlanView';
 import { BRAND } from '@/lib/brand';
 
 export default function NutritionClientPage() {
   const [user, setUser] = useState<any>(null);
   const [tab, setTab] = useState<'NATURAL_LANGUAGE' | 'PHOTO' | 'SEARCH'>('NATURAL_LANGUAGE');
+  const [view, setView] = useState<'LOG' | 'PLAN'>('LOG');
   const [rawInput, setRawInput] = useState('');
   const [mealType, setMealType] = useState('LUNCH');
   const [photoUrl, setPhotoUrl] = useState('');
@@ -129,7 +131,18 @@ export default function NutritionClientPage() {
         </span>
       </div>
 
-      {successMsg && (
+      <div className="flex gap-1.5 w-full" role="tablist" aria-label="Nutrition views">
+        {([['LOG', 'Log a meal'], ['PLAN', 'My meal plan']] as const).map(([k, l]) => (
+          <button key={k} role="tab" aria-selected={view === k} onClick={() => setView(k)}
+            className={`px-4 py-2 rounded-xl text-sm font-semibold border ${view === k ? 'bg-brand-strong text-brand-on-strong border-transparent' : 'bg-surface text-ink-secondary border-line hover:border-line-active'}`}>
+            {l}
+          </button>
+        ))}
+      </div>
+
+      {view === 'PLAN' && user?.id && <MealPlanView userId={user.id} />}
+
+      {view === 'LOG' && successMsg && (
         <div className="p-4 rounded-xl bg-status-approved/15 border border-status-approved/40 text-status-approved text-xs flex items-center gap-2 animate-fade-in w-full">
           <CheckCircle2 size={16} className="shrink-0" />
           <span>{successMsg}</span>
@@ -143,6 +156,7 @@ export default function NutritionClientPage() {
         </div>
       )}
 
+      {view === 'LOG' && (
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 w-full">
         
         {/* Left Column: Meal submission */}
@@ -393,6 +407,7 @@ export default function NutritionClientPage() {
         </div>
 
       </div>
+      )}
     </ClientAppShell>
   );
 }

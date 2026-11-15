@@ -11,7 +11,7 @@ import {
 export default function AdminCheckInsPage() {
   const [checkIns, setCheckIns] = useState<any[]>([]);
   const [selectedCheckIn, setSelectedCheckIn] = useState<any>(null);
-  const [coachFeedback, setCoachFeedback] = useState('Great pacing this week! Keep hydration up.');
+  const [coachFeedback, setCoachFeedback] = useState('');
   const [adjustedCalories, setAdjustedCalories] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [successMsg, setSuccessMsg] = useState('');
@@ -39,7 +39,7 @@ export default function AdminCheckInsPage() {
     setAdjustedCalories(String(ci.user?.profile?.dailyCalories || 2200));
     setCoachFeedback(
       ci.coachFeedback ||
-        `Strong consistency, ${ci.user?.firstName}! Your metrics are trending on point with our fat loss model. Let's keep intensity high on your compound lifts.`
+        `Good week, ${ci.user?.firstName}. Weight and waist are moving in the right direction and training was consistent. No change to targets this week.`
     );
   };
 
@@ -62,7 +62,7 @@ export default function AdminCheckInsPage() {
       });
 
       if (res.ok) {
-        setSuccessMsg('Check-In reviewed successfully and sent to athlete!');
+        setSuccessMsg('Review sent to the client.');
         setSelectedCheckIn(null);
         fetchCheckIns();
         setTimeout(() => setSuccessMsg(''), 4000);
@@ -76,8 +76,8 @@ export default function AdminCheckInsPage() {
 
   return (
     <AdminAppShell
-      title="Weekly Check-In Review Queue"
-      subtitle="Analyze athlete Sunday assessments, evaluate adherence scores, and issue targeted coaching directives."
+      title="Check-in reviews"
+      subtitle="Read each week's numbers and notes, write feedback, and adjust calories only when the trend calls for it."
     >
       {successMsg && (
         <div className="p-4 rounded-xl bg-status-approved/15 border border-status-approved/40 text-status-approved text-xs flex items-center gap-2 animate-fade-in">
@@ -91,8 +91,8 @@ export default function AdminCheckInsPage() {
         {/* Left Column: Check-Ins Queue */}
         <div className="lg:col-span-6 space-y-4">
           <div className="flex items-center justify-between">
-            <h3 className="section-title text-sm">Sunday Check-Ins ({checkIns.length})</h3>
-            <span className="text-xs text-[var(--text-muted)]">Weekly Trajectory</span>
+            <h3 className="section-title text-sm">Check-ins ({checkIns.length})</h3>
+            <span className="text-xs text-[var(--text-muted)]">Newest first</span>
           </div>
 
           <div className="space-y-3">
@@ -132,8 +132,10 @@ export default function AdminCheckInsPage() {
                       <strong className="text-brand">{ci.waistCm} cm</strong>
                     </div>
                     <div className="p-2 bg-paper rounded-lg">
-                      <span className="text-xs text-[var(--text-muted)] block">Adherence</span>
-                      <strong className="text-status-approved">{ci.workoutAdherence || 85}%</strong>
+                      <span className="text-xs text-[var(--text-muted)] block">Training</span>
+                      <strong className="text-status-approved">
+                        {ci.trainingSessionsCompleted != null && ci.trainingSessionsPlanned ? `${ci.trainingSessionsCompleted}/${ci.trainingSessionsPlanned}` : `${ci.workoutAdherence}%`}
+                      </strong>
                     </div>
                   </div>
 
@@ -157,19 +159,48 @@ export default function AdminCheckInsPage() {
                   : 'Select an Assessment from the Queue'}
               </h3>
               <p className="text-xs text-[var(--text-muted)] mt-0.5">
-                Issue authoritative coach feedback and optionally calibrate daily calories.
+                Write the week's feedback. Change the calorie target only if the trend needs it.
               </p>
             </div>
 
             {selectedCheckIn ? (
               <form onSubmit={handleSubmitReview} className="space-y-4 animate-fade-in">
-                <div className="p-3.5 bg-paper rounded-xl border border-[var(--border-subtle)] space-y-1.5 text-xs">
-                  <span className="text-xs font-bold text-[var(--text-muted)] uppercase">Athlete Submission Notes:</span>
-                  <p className="text-[var(--text-secondary)] italic">&quot;{selectedCheckIn.challenges}&quot;</p>
+                {/* The full brief check-in: measurements, consistency, how it felt, notes */}
+                <dl className="grid grid-cols-3 sm:grid-cols-5 gap-2 text-xs">
+                  {[
+                    ['Weight', `${selectedCheckIn.currentWeightKg} kg`],
+                    ['Waist', `${selectedCheckIn.waistCm} cm`],
+                    ['Avg steps', selectedCheckIn.averageDailySteps ? selectedCheckIn.averageDailySteps.toLocaleString() : '—'],
+                    ['Training', selectedCheckIn.trainingSessionsCompleted != null && selectedCheckIn.trainingSessionsPlanned ? `${selectedCheckIn.trainingSessionsCompleted} of ${selectedCheckIn.trainingSessionsPlanned}` : `${selectedCheckIn.workoutAdherence}%`],
+                    ['Nutrition', `${selectedCheckIn.nutritionAdherence}%`],
+                    ['Hunger', selectedCheckIn.hungerLevel ? `${selectedCheckIn.hungerLevel}/5` : '—'],
+                    ['Energy', `${selectedCheckIn.energyLevel}/5`],
+                    ['Sleep', `${selectedCheckIn.sleepQuality}/5`],
+                    ['Stress', selectedCheckIn.stressLevel ? `${selectedCheckIn.stressLevel}/5` : '—'],
+                    ['Difficulty', selectedCheckIn.difficultyLevel],
+                  ].map(([k, v]) => (
+                    <div key={k as string} className="p-2.5 rounded-lg bg-paper border border-line">
+                      <dt className="text-ink-muted">{k}</dt>
+                      <dd className="font-semibold text-ink">{v}</dd>
+                    </div>
+                  ))}
+                </dl>
+                <div className="space-y-2 text-xs">
+                  {[
+                    ['Challenges', selectedCheckIn.challenges],
+                    ['Wins', selectedCheckIn.wins],
+                    ['Needs help with', selectedCheckIn.helpNeeded || selectedCheckIn.generalFeedback],
+                    ['Trend summary', selectedCheckIn.aiTrendsSummary],
+                  ].filter(([, v]) => v).map(([k, v]) => (
+                    <div key={k as string} className="p-3 rounded-xl bg-paper border border-line">
+                      <p className="label-xs text-ink-muted mb-0.5">{k}</p>
+                      <p className="text-ink-secondary leading-relaxed">{v}</p>
+                    </div>
+                  ))}
                 </div>
 
                 <div>
-                  <label className="field-label">Calibrate Daily Calorie Target (kcal)</label>
+                  <label className="field-label">Daily calorie target (kcal)</label>
                   <input
                     type="number"
                     value={adjustedCalories}
@@ -179,7 +210,7 @@ export default function AdminCheckInsPage() {
                 </div>
 
                 <div>
-                  <label className="field-label">Coach Written Feedback</label>
+                  <label className="field-label">Written feedback to the client</label>
                   <textarea
                     rows={4}
                     required
@@ -194,7 +225,7 @@ export default function AdminCheckInsPage() {
                   disabled={submitting}
                   className="btn-brand text-xs w-full justify-center py-3 font-extrabold shadow-md"
                 >
-                  {submitting ? 'Delivering Review...' : 'Deliver Official Coach Review'} <ArrowRight size={14} />
+                  {submitting ? 'Sending…' : 'Send review'} <ArrowRight size={14} />
                 </button>
               </form>
             ) : (

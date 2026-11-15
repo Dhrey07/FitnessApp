@@ -22,18 +22,18 @@ export default function AdminTrainingBuilderPage() {
       dayName: 'Day 1',
       title: 'Upper Body Push & Core',
       exercises: [
-        { name: 'Incline Dumbbell Bench Press', sets: 4, reps: '8-10', restSeconds: 75, notes: 'Control the descent' },
-        { name: 'Seated Dumbbell Shoulder Press', sets: 3, reps: '10-12', restSeconds: 60, notes: 'Full lockout' },
-        { name: 'Push-ups', sets: 3, reps: '15', restSeconds: 45, notes: 'Chest to floor' },
+        { name: 'Incline Dumbbell Bench Press', sets: 4, reps: '8-10', restSeconds: 75, tempo: '2-0-1', rpe: '8', rir: '2', progressionGuidance: 'Add 2.5 kg once every set reaches the top of the range at RPE 8.', coachNotes: 'Control the descent', notes: 'Control the descent' },
+        { name: 'Seated Dumbbell Shoulder Press', sets: 3, reps: '10-12', restSeconds: 60, tempo: '2-0-1', rpe: '8', rir: '2', progressionGuidance: 'Add 2.5 kg once every set reaches the top of the range at RPE 8.', coachNotes: 'Full lockout', notes: 'Full lockout' },
+        { name: 'Push-ups', sets: 3, reps: '15', restSeconds: 45, tempo: '2-0-1', rpe: '8', rir: '2', progressionGuidance: 'Add 2.5 kg once every set reaches the top of the range at RPE 8.', coachNotes: 'Chest to floor', notes: 'Chest to floor' },
       ],
     },
     {
       dayName: 'Day 2',
       title: 'Lower Body & Conditioning',
       exercises: [
-        { name: 'Barbell Back Squats', sets: 4, reps: '8-10', restSeconds: 90, notes: 'Below parallel' },
-        { name: 'Romanian Deadlifts', sets: 3, reps: '10-12', restSeconds: 75, notes: 'Feel the hamstring stretch' },
-        { name: 'Walking Lunges', sets: 3, reps: '12 per leg', restSeconds: 60, notes: 'Upright torso' },
+        { name: 'Barbell Back Squats', sets: 4, reps: '8-10', restSeconds: 90, tempo: '2-0-1', rpe: '8', rir: '2', progressionGuidance: 'Add 2.5 kg once every set reaches the top of the range at RPE 8.', coachNotes: 'Below parallel', notes: 'Below parallel' },
+        { name: 'Romanian Deadlifts', sets: 3, reps: '10-12', restSeconds: 75, tempo: '2-0-1', rpe: '8', rir: '2', progressionGuidance: 'Add 2.5 kg once every set reaches the top of the range at RPE 8.', coachNotes: 'Feel the hamstring stretch', notes: 'Feel the hamstring stretch' },
+        { name: 'Walking Lunges', sets: 3, reps: '12 per leg', restSeconds: 60, tempo: '2-0-1', rpe: '8', rir: '2', progressionGuidance: 'Add 2.5 kg once every set reaches the top of the range at RPE 8.', coachNotes: 'Upright torso', notes: 'Upright torso' },
       ],
     },
   ]);
@@ -69,6 +69,11 @@ export default function AdminTrainingBuilderPage() {
       sets: 3,
       reps: '10-12',
       restSeconds: 60,
+      tempo: '2-0-1',
+      rpe: '8',
+      rir: '2',
+      progressionGuidance: '',
+      coachNotes: '',
       notes: '',
     });
     setWorkouts(updated);
@@ -101,7 +106,7 @@ export default function AdminTrainingBuilderPage() {
       });
 
       if (res.ok) {
-        setSuccessMsg('Workout plan created and assigned to client successfully!');
+        setSuccessMsg('Programme assigned to the client.');
         fetchClientsAndPlans();
         setTimeout(() => setSuccessMsg(''), 4000);
       }
@@ -115,7 +120,7 @@ export default function AdminTrainingBuilderPage() {
   return (
     <AdminAppShell
       title="Training Builder"
-      subtitle="Design structured periodized routines and assign custom training programs to athletes."
+      subtitle="Build a programme with sets, reps, rest, tempo, effort targets and progression guidance, then assign it."
     >
       {successMsg && (
         <div className="p-4 rounded-xl bg-status-approved/15 border border-status-approved/40 text-status-approved text-xs flex items-center gap-2 animate-fade-in">
@@ -130,8 +135,8 @@ export default function AdminTrainingBuilderPage() {
         <div className="lg:col-span-8 space-y-6">
           <form onSubmit={handleCreatePlan} className="surface p-6 sm:p-7 space-y-6 border border-[var(--border-subtle)]">
             <div>
-              <span className="label-xs text-brand">Routine Architect</span>
-              <h3 className="section-title text-base mt-0.5">Build New Workout Plan</h3>
+              <span className="label-xs text-brand">Programme</span>
+              <h3 className="section-title text-base mt-0.5">Build a training programme</h3>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -194,34 +199,58 @@ export default function AdminTrainingBuilderPage() {
                   </div>
 
                   <div className="space-y-2">
-                    {w.exercises.map((ex, exIdx) => (
-                      <div key={exIdx} className="p-3 bg-paper rounded-lg flex items-center justify-between gap-3 text-xs">
-                        <div className="flex-1 space-y-1">
-                          <input
-                            type="text"
-                            value={ex.name}
-                            onChange={(e) => {
-                              const updated = [...workouts];
-                              updated[wIdx].exercises[exIdx].name = e.target.value;
-                              setWorkouts(updated);
-                            }}
-                            className="bg-transparent border-b border-[var(--border-subtle)] text-[var(--text-heading)] font-semibold text-xs focus:outline-none w-full"
-                          />
-                          <div className="flex items-center gap-3 text-xs text-[var(--text-muted)]">
-                            <span>{ex.sets} Sets × {ex.reps} Reps</span>
-                            <span>Rest: {ex.restSeconds}s</span>
+                    {w.exercises.map((ex, exIdx) => {
+                      const set = (field: string, value: string | number) => {
+                        const updated = [...workouts];
+                        (updated[wIdx].exercises[exIdx] as any)[field] = value;
+                        setWorkouts(updated);
+                      };
+                      return (
+                        <div key={exIdx} className="p-3.5 bg-paper rounded-xl border border-line space-y-2.5 text-xs">
+                          <div className="flex items-center gap-3">
+                            <input
+                              type="text"
+                              aria-label="Exercise name"
+                              value={ex.name}
+                              onChange={(e) => set('name', e.target.value)}
+                              className="field-input font-semibold flex-1"
+                            />
+                            <button type="button" onClick={() => handleRemoveExercise(wIdx, exIdx)} className="p-2 text-ink-muted hover:text-status-rejected" aria-label="Remove exercise">
+                              <Trash2 size={14} />
+                            </button>
                           </div>
+                          <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
+                            {[
+                              ['sets', 'Sets', 'number'],
+                              ['reps', 'Reps', 'text'],
+                              ['restSeconds', 'Rest (s)', 'number'],
+                              ['tempo', 'Tempo', 'text'],
+                              ['rpe', 'RPE', 'number'],
+                              ['rir', 'RIR', 'number'],
+                            ].map(([field, label, type]) => (
+                              <label key={field} className="block">
+                                <span className="label-xs text-ink-muted block mb-1">{label}</span>
+                                <input
+                                  type={type}
+                                  step={field === 'rpe' ? '0.5' : '1'}
+                                  value={(ex as any)[field] ?? ''}
+                                  onChange={(e) => set(field, type === 'number' && field !== 'rpe' && field !== 'rir' ? Number(e.target.value) : e.target.value)}
+                                  className="field-input py-1.5"
+                                />
+                              </label>
+                            ))}
+                          </div>
+                          <label className="block">
+                            <span className="label-xs text-ink-muted block mb-1">Progression guidance</span>
+                            <input type="text" value={(ex as any).progressionGuidance ?? ''} onChange={(e) => set('progressionGuidance', e.target.value)} placeholder="When and how to add load or reps" className="field-input py-1.5" />
+                          </label>
+                          <label className="block">
+                            <span className="label-xs text-ink-muted block mb-1">Coach notes</span>
+                            <input type="text" value={(ex as any).coachNotes ?? ''} onChange={(e) => set('coachNotes', e.target.value)} placeholder="Technique cue or substitution" className="field-input py-1.5" />
+                          </label>
                         </div>
-
-                        <button
-                          type="button"
-                          onClick={() => handleRemoveExercise(wIdx, exIdx)}
-                          className="p-1 text-ink-muted hover:text-status-rejected"
-                        >
-                          <Trash2 size={13} />
-                        </button>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 </div>
               ))}
@@ -232,7 +261,7 @@ export default function AdminTrainingBuilderPage() {
               disabled={submitting}
               className="btn-brand text-xs w-full justify-center py-3 font-extrabold shadow-md"
             >
-              {submitting ? 'Assigning Plan...' : 'Assign Program to Client'} <ArrowRight size={14} />
+              {submitting ? 'Assigning…' : 'Assign programme to client'} <ArrowRight size={14} />
             </button>
           </form>
         </div>
