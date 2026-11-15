@@ -43,19 +43,19 @@ export default function ResourcesClientPage() {
 
   return (
     <ClientAppShell
-      title="Educational Resources & Science Guides"
-      subtitle="Evidence-based guides written by Oga Eric to help you master your training, nutrition, and recovery."
+      title="Guides"
+      subtitle="Practical, evidence-informed guides on training, nutrition and recovery."
     >
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
         {articles.map((art) => (
           <div key={art.id} className="surface p-6 space-y-4 border border-[var(--border-subtle)] surface-hover">
             <div className="flex items-center justify-between">
-              <span className="label-xs text-sky-400">{art.category}</span>
+              <span className="label-xs text-brand">{art.category}</span>
               <div className="flex items-center gap-2">
-                <span className="text-[11px] text-[var(--text-muted)] flex items-center gap-1">
+                <span className="text-xs text-[var(--text-muted)] flex items-center gap-1">
                   <Clock size={12} /> {art.readTime}
                 </span>
-                <span className={`badge text-[9px] ${art.isFree ? 'badge-approved' : 'badge-trial'}`}>
+                <span className={`badge text-xs${art.isFree ? 'badge-approved' : 'badge-trial'}`}>
                   {art.isFree ? 'FREE ACCESS' : 'PREMIUM'}
                 </span>
               </div>
@@ -67,8 +67,8 @@ export default function ResourcesClientPage() {
             </div>
 
             <div className="pt-3 border-t border-[var(--border-subtle)] flex items-center justify-between">
-              <span className="text-[11px] text-sky-400 font-bold flex items-center gap-1">
-                <ShieldCheck size={13} /> Written by Oga Eric
+              <span className="text-xs text-brand font-bold flex items-center gap-1">
+                <ShieldCheck size={13} /> Written by Coach Eric
               </span>
               <button
                 type="button"

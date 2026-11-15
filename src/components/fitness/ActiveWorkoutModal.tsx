@@ -106,83 +106,83 @@ export function ActiveWorkoutModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-start justify-center p-4 sm:p-6 overflow-y-auto">
-      <div className="surface max-w-2xl w-full p-5 sm:p-6 space-y-5 border border-sky-400/30 shadow-2xl relative animate-fade-in my-4 sm:my-auto">
+    <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-md flex items-start justify-center p-4 sm:p-6 overflow-y-auto">
+      <div className="surface max-w-2xl w-full p-5 sm:p-6 space-y-5 border border-line-active shadow-2xl relative animate-fade-in my-4 sm:my-auto">
         
         {/* Header Bar */}
-        <div className="flex items-center justify-between border-b border-white/10 pb-4">
+        <div className="flex items-center justify-between border-b border-line pb-4">
           <div>
             <div className="flex items-center gap-2">
-              <span className="badge badge-trial text-[10px]">ACTIVE WORKOUT FOCUS MODE</span>
-              <span className="text-xs text-slate-400 font-mono flex items-center gap-1">
-                <Clock size={13} className="text-sky-400" /> {formatTime(elapsedSeconds)}
+              <span className="badge badge-trial text-xs">ACTIVE WORKOUT FOCUS MODE</span>
+              <span className="text-xs text-ink-muted font-mono flex items-center gap-1">
+                <Clock size={13} className="text-brand" /> {formatTime(elapsedSeconds)}
               </span>
             </div>
-            <h2 className="text-xl font-extrabold text-white mt-1">{workoutTitle}</h2>
-            <p className="text-xs text-slate-400">{dayName} • Exercise {currentExerciseIndex + 1} of {exercises.length}</p>
+            <h2 className="text-xl font-extrabold text-[var(--text-heading)] mt-1">{workoutTitle}</h2>
+            <p className="text-xs text-ink-muted">{dayName} • Exercise {currentExerciseIndex + 1} of {exercises.length}</p>
           </div>
 
           <button
             type="button"
             onClick={onClose}
-            className="p-2 rounded-xl bg-slate-900 border border-white/10 text-slate-400 hover:text-white"
+            className="p-2 rounded-xl bg-paper border border-line text-ink-muted hover:text-[var(--text-heading)]"
           >
             <X size={18} />
           </button>
         </div>
 
         {/* Current Exercise Display Box */}
-        <div className="p-5 bg-slate-900/90 rounded-2xl border border-sky-400/40 space-y-4">
+        <div className="p-5 bg-paper rounded-2xl border border-line-active space-y-4">
           <div className="flex items-center justify-between">
             <div className="space-y-0.5">
-              <span className="label-xs text-sky-400">Current Movement</span>
-              <h3 className="text-lg font-black text-white">{currentExercise.name}</h3>
+              <span className="label-xs text-brand">Current Movement</span>
+              <h3 className="text-lg font-black text-[var(--text-heading)]">{currentExercise.name}</h3>
             </div>
-            <span className="badge bg-sky-500/20 text-sky-400 border border-sky-500/30 text-xs font-bold">
+            <span className="badge bg-brand-soft text-brand border border-line-active text-xs font-bold">
               Target: {currentExercise.sets} Sets × {currentExercise.reps}
             </span>
           </div>
 
           {currentExercise.notes && (
-            <div className="p-3 bg-slate-950 rounded-xl border border-white/5 text-xs text-slate-300 flex items-start gap-2">
-              <ShieldCheck size={15} className="text-sky-400 shrink-0 mt-0.5" />
+            <div className="p-3 bg-paper rounded-xl border border-line text-xs text-ink-secondary flex items-start gap-2">
+              <ShieldCheck size={15} className="text-brand shrink-0 mt-0.5" />
               <span>Coaching Cue: &quot;{currentExercise.notes}&quot;</span>
             </div>
           )}
 
           <div className="grid grid-cols-3 gap-3 text-center text-xs">
-            <div className="p-2.5 bg-slate-950 rounded-xl border border-white/5">
-              <span className="label-xs text-slate-400 block">Tempo</span>
-              <span className="font-bold text-white text-sm">{currentExercise.tempo || '2-0-1'}</span>
+            <div className="p-2.5 bg-paper rounded-xl border border-line">
+              <span className="label-xs text-ink-muted block">Tempo</span>
+              <span className="font-bold text-[var(--text-heading)] text-sm">{currentExercise.tempo || '2-0-1'}</span>
             </div>
-            <div className="p-2.5 bg-slate-950 rounded-xl border border-white/5">
-              <span className="label-xs text-slate-400 block">Rest Interval</span>
-              <span className="font-bold text-sky-400 text-sm">{currentExercise.restSeconds || 60}s</span>
+            <div className="p-2.5 bg-paper rounded-xl border border-line">
+              <span className="label-xs text-ink-muted block">Rest Interval</span>
+              <span className="font-bold text-brand text-sm">{currentExercise.restSeconds || 60}s</span>
             </div>
-            <div className="p-2.5 bg-slate-950 rounded-xl border border-white/5">
-              <span className="label-xs text-slate-400 block">Sets Logged</span>
-              <span className="font-bold text-emerald-400 text-sm">{setsCompleted} / {currentExercise.sets || 3}</span>
+            <div className="p-2.5 bg-paper rounded-xl border border-line">
+              <span className="label-xs text-ink-muted block">Sets Logged</span>
+              <span className="font-bold text-status-approved text-sm">{setsCompleted} / {currentExercise.sets || 3}</span>
             </div>
           </div>
         </div>
 
         {/* Rest Timer Banner */}
         {isResting && (
-          <div className="p-4 rounded-xl bg-sky-500/15 border border-sky-500/40 text-center space-y-1 animate-fade-in">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-sky-400 flex items-center justify-center gap-1.5">
+          <div className="p-4 rounded-xl bg-brand-soft border border-line-active text-center space-y-1 animate-fade-in">
+            <span className="text-xs font-bold uppercase tracking-wider text-brand flex items-center justify-center gap-1.5">
               <Clock size={13} /> Active Rest Period
             </span>
-            <p className="text-2xl font-black font-mono text-white">{restSecondsLeft}s</p>
-            <p className="text-[11px] text-slate-400">Breathe and hydrate before your next set.</p>
+            <p className="text-2xl font-black font-mono text-[var(--text-heading)]">{restSecondsLeft}s</p>
+            <p className="text-xs text-ink-muted">Breathe and hydrate before your next set.</p>
           </div>
         )}
 
         {/* Set & Load Logger Inputs */}
-        <div className="space-y-3 pt-2 border-t border-white/10">
+        <div className="space-y-3 pt-2 border-t border-line">
           <div className="grid grid-cols-3 gap-3">
             <div>
               <label className="field-label">Set #</label>
-              <div className="field-input text-center font-extrabold text-sky-400 text-base">
+              <div className="field-input text-center font-extrabold text-brand text-base">
                 Set {setsCompleted + 1}
               </div>
             </div>
@@ -202,7 +202,7 @@ export function ActiveWorkoutModal({
                 step="0.5"
                 value={weightUsedKg}
                 onChange={(e) => setWeightUsedKg(e.target.value)}
-                className="field-input text-center font-bold text-sky-400"
+                className="field-input text-center font-bold text-brand"
               />
             </div>
           </div>
@@ -210,7 +210,7 @@ export function ActiveWorkoutModal({
           <button
             type="button"
             onClick={handleLogSet}
-            className="btn-brand text-xs w-full justify-center py-3.5 font-extrabold shadow-md shadow-sky-500/20"
+            className="btn-brand text-xs w-full justify-center py-3.5 font-extrabold shadow-md"
           >
             <CheckCircle2 size={16} /> Complete Set {setsCompleted + 1} & Start Rest Timer
           </button>
@@ -218,16 +218,16 @@ export function ActiveWorkoutModal({
 
         {/* Next Exercise Preview Bar */}
         {currentExerciseIndex < exercises.length - 1 && (
-          <div className="p-3 bg-slate-900 rounded-xl border border-white/5 flex items-center justify-between text-xs">
-            <span className="text-slate-400">Up Next:</span>
-            <span className="font-bold text-white flex items-center gap-1">
-              {exercises[currentExerciseIndex + 1]?.name} <ChevronRight size={14} className="text-sky-400" />
+          <div className="p-3 bg-paper rounded-xl border border-line flex items-center justify-between text-xs">
+            <span className="text-ink-muted">Up Next:</span>
+            <span className="font-bold text-[var(--text-heading)] flex items-center gap-1">
+              {exercises[currentExerciseIndex + 1]?.name} <ChevronRight size={14} className="text-brand" />
             </span>
           </div>
         )}
 
         {/* Finish Workout CTA */}
-        <div className="pt-2 border-t border-white/10 flex items-center justify-between">
+        <div className="pt-2 border-t border-line flex items-center justify-between">
           <button
             type="button"
             onClick={() => setCurrentExerciseIndex((prev) => Math.min(exercises.length - 1, prev + 1))}
@@ -240,7 +240,7 @@ export function ActiveWorkoutModal({
           <button
             type="button"
             onClick={handleFinish}
-            className="btn-brand text-xs px-6 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black"
+            className="btn-brand text-xs px-6 bg-status-approved hover:brightness-95 text-brand-on-strong font-black"
           >
             Finish Workout Session
           </button>

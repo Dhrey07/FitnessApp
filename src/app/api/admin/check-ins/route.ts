@@ -58,7 +58,7 @@ export async function POST(request: Request) {
     await prisma.notification.create({
       data: {
         userId: updatedCheckIn.userId,
-        title: 'Weekly Check-In Reviewed by Oga Eric',
+        title: 'Your weekly check-in has been reviewed',
         message: `Your coach reviewed your weekly progress and left personalized feedback.`,
         link: '/client/check-in',
       },

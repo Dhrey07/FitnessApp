@@ -45,7 +45,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'An account with this email already exists. Please log in.' }, { status: 409 });
     }
 
-    // Calculate Nutrition Targets using Mifflin-St Jeor Engine
+    // Calculate Nutrition Targets using Mifflin-St Jeor equation
     const parsedAge = parseInt(String(age || 28), 10);
     const parsedHeight = parseFloat(String(heightCm || 175));
     const parsedWeight = parseFloat(String(weightKg || 80));
@@ -73,7 +73,6 @@ export async function POST(request: Request) {
         firstName: firstName.trim(),
         lastName: lastName.trim(),
         role: 'CLIENT',
-        avatarUrl: `https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80`,
         profile: {
           create: {
             age: parsedAge,
@@ -115,8 +114,8 @@ export async function POST(request: Request) {
         },
         notifications: {
           create: {
-            title: 'Welcome to Fitness Police!',
-            message: 'Your 14-Day Free Trial is now active. Explore your personalized workouts and log your meals for free in Food Police.',
+            title: 'Welcome to ERICONET',
+            message: 'Your 14-day trial is active. Explore your training programme and start logging meals in your nutrition log.',
             link: '/client/dashboard',
           },
         },

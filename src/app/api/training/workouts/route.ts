@@ -28,7 +28,7 @@ export async function GET(request: Request) {
     if (!isEntitled) {
       return NextResponse.json(
         {
-          error: 'Personalised training requires Gold tier (₦25,000/mo) or above.',
+          error: 'A personalised training programme is included from the Signature plan (₦25,000/month).',
           requiresUpgrade: true,
         },
         { status: 403 }

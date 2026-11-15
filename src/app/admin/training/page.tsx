@@ -9,7 +9,7 @@ import {
   ArrowRight,
 } from 'lucide-react';
 
-export default function AdminFitnessPoliceBuilderPage() {
+export default function AdminTrainingBuilderPage() {
   const [clients, setClients] = useState<any[]>([]);
   const [plans, setPlans] = useState<any[]>([]);
   const [selectedClientId, setSelectedClientId] = useState('');
@@ -114,11 +114,11 @@ export default function AdminFitnessPoliceBuilderPage() {
 
   return (
     <AdminAppShell
-      title="Fitness Police Workout Builder"
+      title="Training Builder"
       subtitle="Design structured periodized routines and assign custom training programs to athletes."
     >
       {successMsg && (
-        <div className="p-4 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-xs flex items-center gap-2 animate-fade-in">
+        <div className="p-4 rounded-xl bg-status-approved/15 border border-status-approved/40 text-status-approved text-xs flex items-center gap-2 animate-fade-in">
           <CheckCircle2 size={16} className="shrink-0" />
           <span>{successMsg}</span>
         </div>
@@ -130,7 +130,7 @@ export default function AdminFitnessPoliceBuilderPage() {
         <div className="lg:col-span-8 space-y-6">
           <form onSubmit={handleCreatePlan} className="surface p-6 sm:p-7 space-y-6 border border-[var(--border-subtle)]">
             <div>
-              <span className="label-xs text-purple-400">Routine Architect</span>
+              <span className="label-xs text-brand">Routine Architect</span>
               <h3 className="section-title text-base mt-0.5">Build New Workout Plan</h3>
             </div>
 
@@ -181,13 +181,13 @@ export default function AdminFitnessPoliceBuilderPage() {
                 <div key={wIdx} className="p-5 surface rounded-xl border border-[var(--border-subtle)] space-y-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <span className="badge badge-trial text-[10px]">{w.dayName}</span>
+                      <span className="badge badge-trial text-xs">{w.dayName}</span>
                       <h4 className="font-bold text-[var(--text-heading)] text-sm">{w.title}</h4>
                     </div>
                     <button
                       type="button"
                       onClick={() => handleAddExercise(wIdx)}
-                      className="btn-secondary text-[11px] py-1 px-2.5 flex items-center gap-1"
+                      className="btn-secondary text-xs py-1 px-2.5 flex items-center gap-1"
                     >
                       <Plus size={12} /> Add Exercise
                     </button>
@@ -195,7 +195,7 @@ export default function AdminFitnessPoliceBuilderPage() {
 
                   <div className="space-y-2">
                     {w.exercises.map((ex, exIdx) => (
-                      <div key={exIdx} className="p-3 bg-slate-950/40 rounded-lg flex items-center justify-between gap-3 text-xs">
+                      <div key={exIdx} className="p-3 bg-paper rounded-lg flex items-center justify-between gap-3 text-xs">
                         <div className="flex-1 space-y-1">
                           <input
                             type="text"
@@ -207,7 +207,7 @@ export default function AdminFitnessPoliceBuilderPage() {
                             }}
                             className="bg-transparent border-b border-[var(--border-subtle)] text-[var(--text-heading)] font-semibold text-xs focus:outline-none w-full"
                           />
-                          <div className="flex items-center gap-3 text-[10px] text-[var(--text-muted)]">
+                          <div className="flex items-center gap-3 text-xs text-[var(--text-muted)]">
                             <span>{ex.sets} Sets × {ex.reps} Reps</span>
                             <span>Rest: {ex.restSeconds}s</span>
                           </div>
@@ -216,7 +216,7 @@ export default function AdminFitnessPoliceBuilderPage() {
                         <button
                           type="button"
                           onClick={() => handleRemoveExercise(wIdx, exIdx)}
-                          className="p-1 text-slate-500 hover:text-rose-400"
+                          className="p-1 text-ink-muted hover:text-status-rejected"
                         >
                           <Trash2 size={13} />
                         </button>
@@ -230,7 +230,7 @@ export default function AdminFitnessPoliceBuilderPage() {
             <button
               type="submit"
               disabled={submitting}
-              className="btn-brand text-xs w-full justify-center py-3 font-extrabold shadow-md shadow-sky-500/20"
+              className="btn-brand text-xs w-full justify-center py-3 font-extrabold shadow-md"
             >
               {submitting ? 'Assigning Plan...' : 'Assign Program to Client'} <ArrowRight size={14} />
             </button>
@@ -246,12 +246,12 @@ export default function AdminFitnessPoliceBuilderPage() {
               <div key={p.id} className="surface p-5 space-y-3 border border-[var(--border-subtle)] text-xs">
                 <div className="flex items-center justify-between">
                   <h4 className="font-bold text-[var(--text-heading)] text-sm">{p.title}</h4>
-                  <span className="badge badge-trial text-[9px]">{p.durationWeeks} Weeks</span>
+                  <span className="badge badge-trial text-xs">{p.durationWeeks} Weeks</span>
                 </div>
                 <p className="text-[var(--text-muted)]">
                   Client: <strong className="text-[var(--text-heading)]">{p.user?.firstName} {p.user?.lastName}</strong>
                 </p>
-                <div className="text-[11px] text-[var(--text-muted)] pt-2 border-t border-[var(--border-subtle)]">
+                <div className="text-xs text-[var(--text-muted)] pt-2 border-t border-[var(--border-subtle)]">
                   {p.workouts?.length || 0} Training Days Included
                 </div>
               </div>

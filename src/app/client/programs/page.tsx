@@ -62,7 +62,7 @@ export default function ProgramsClientPage() {
       {/* Category Filter Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 surface p-4 border border-[var(--border-subtle)]">
         <div className="flex items-center gap-2">
-          <Layers size={18} className="text-sky-400" />
+          <Layers size={18} className="text-brand" />
           <span className="text-xs font-bold text-[var(--text-heading)]">Filter Programs:</span>
         </div>
 
@@ -74,7 +74,7 @@ export default function ProgramsClientPage() {
               onClick={() => setSelectedCategory(cat)}
               className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
                 selectedCategory === cat
-                  ? 'bg-sky-400 text-slate-950 shadow-sm'
+                  ? 'bg-brand-strong text-brand-on-strong shadow-sm'
                   : 'text-[var(--text-muted)] hover:text-[var(--text-heading)]'
               }`}
             >
@@ -93,8 +93,8 @@ export default function ProgramsClientPage() {
           >
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <span className="label-xs text-sky-400">{prog.category}</span>
-                <span className={`badge text-[9px] ${prog.isPremium ? 'badge-trial' : 'badge-approved'}`}>
+                <span className="label-xs text-brand">{prog.category}</span>
+                <span className={`badge text-xs${prog.isPremium ? 'badge-trial' : 'badge-approved'}`}>
                   {prog.isPremium ? 'PREMIUM TIER' : 'FREE TIER'}
                 </span>
               </div>
@@ -104,7 +104,7 @@ export default function ProgramsClientPage() {
                 <p className="text-xs text-[var(--text-muted)] mt-1">{prog.tagline}</p>
               </div>
 
-              <div className="grid grid-cols-2 gap-2 text-[11px] text-[var(--text-muted)] pt-2 border-t border-[var(--border-subtle)]">
+              <div className="grid grid-cols-2 gap-2 text-xs text-[var(--text-muted)] pt-2 border-t border-[var(--border-subtle)]">
                 <span>Duration: <strong className="text-[var(--text-heading)]">{prog.durationWeeks} Weeks</strong></span>
                 <span>Frequency: <strong className="text-[var(--text-heading)]">{prog.daysPerWeek} Days / Wk</strong></span>
                 <span>Level: <strong className="text-[var(--text-heading)]">{prog.difficulty}</strong></span>
@@ -114,7 +114,7 @@ export default function ProgramsClientPage() {
               <ul className="space-y-1.5 pt-2 border-t border-[var(--border-subtle)] text-xs text-[var(--text-secondary)]">
                 {prog.features.map((feat, i) => (
                   <li key={i} className="flex items-start gap-1.5">
-                    <CheckCircle2 size={13} className="text-sky-400 shrink-0 mt-0.5" />
+                    <CheckCircle2 size={13} className="text-brand shrink-0 mt-0.5" />
                     <span>{feat}</span>
                   </li>
                 ))}
@@ -123,8 +123,8 @@ export default function ProgramsClientPage() {
 
             <div className="pt-2 border-t border-[var(--border-subtle)]">
               <Link
-                href="/client/fitness-police"
-                className="btn-brand text-xs w-full justify-center py-2.5 font-bold shadow-md shadow-sky-500/20"
+                href="/client/training"
+                className="btn-brand text-xs w-full justify-center py-2.5 font-bold shadow-md"
               >
                 View Workout Schedule <ArrowRight size={13} />
               </Link>

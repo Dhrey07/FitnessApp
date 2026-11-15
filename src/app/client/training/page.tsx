@@ -18,11 +18,11 @@ import {
   Layers,
   Zap,
 } from 'lucide-react';
-import { PLAN_DETAILS, hasFitnessPoliceAccess } from '@/lib/services/entitlements';
+import { PLAN_DETAILS, hasTrainingAccess } from '@/lib/services/entitlements';
 import { ActiveWorkoutModal } from '@/components/fitness/ActiveWorkoutModal';
 import { WorkoutCompletionModal } from '@/components/fitness/WorkoutCompletionModal';
 
-export default function FitnessPoliceClientPage() {
+export default function TrainingClientPage() {
   const [user, setUser] = useState<any>(null);
   const [workoutPlan, setWorkoutPlan] = useState<any>(null);
   const [selectedWorkoutIndex, setSelectedWorkoutIndex] = useState(0);
@@ -49,7 +49,7 @@ export default function FitnessPoliceClientPage() {
       setUser(meData.user);
 
       if (meData.user?.id) {
-        const wRes = await fetch(`/api/fitness-police/workouts?userId=${meData.user.id}`);
+        const wRes = await fetch(`/api/training/workouts?userId=${meData.user.id}`);
         const wData = await wRes.json();
         setWorkoutPlan(wData.workoutPlan);
       }
@@ -65,7 +65,7 @@ export default function FitnessPoliceClientPage() {
     if (!user || !selectedExercise) return;
 
     try {
-      const res = await fetch('/api/fitness-police/workouts', {
+      const res = await fetch('/api/training/workouts', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -87,7 +87,7 @@ export default function FitnessPoliceClientPage() {
     }
   };
 
-  const isUnlocked = user ? hasFitnessPoliceAccess(user.subscription) : true;
+  const isUnlocked = user ? hasTrainingAccess(user.subscription) : true;
   const currentWorkout = workoutPlan?.workouts?.[selectedWorkoutIndex] || {
     dayName: 'Day 1',
     title: 'Upper Body Hypertrophy & Fat Burn',
@@ -101,7 +101,7 @@ export default function FitnessPoliceClientPage() {
 
   return (
     <ClientAppShell
-      title="Fitness Police Training Hub"
+      title="Training Hub"
       subtitle="Your personalised training routine, progressive overload logger, and exercise instruction."
     >
       {/* Active Workout Focus Mode Modal */}
@@ -128,15 +128,15 @@ export default function FitnessPoliceClientPage() {
 
       {/* LOCKED / EXPIRED TRIAL STATE */}
       {!isUnlocked ? (
-        <div className="surface p-8 sm:p-12 text-center max-w-4xl mx-auto space-y-6 border-amber-500/30 animate-fade-in w-full">
-          <div className="w-14 h-14 rounded-2xl bg-amber-500/20 text-amber-400 flex items-center justify-center mx-auto">
+        <div className="surface p-8 sm:p-12 text-center max-w-4xl mx-auto space-y-6 border-status-pending/40 animate-fade-in w-full">
+          <div className="w-14 h-14 rounded-2xl bg-status-pending/15 text-status-pending flex items-center justify-center mx-auto">
             <Lock size={28} />
           </div>
 
           <div className="space-y-2">
-            <h2 className="page-title text-2xl">Fitness Police Requires Active Subscription</h2>
+            <h2 className="page-title text-2xl">Your training programme needs an active plan</h2>
             <p className="text-xs text-[var(--text-secondary)] max-w-md mx-auto leading-relaxed">
-              Your 14-day free trial has concluded. Your Food Police meal logger and past progress history remain 100% free forever. Upgrade below to resume custom workout routines and coach check-ins.
+              Your 14-day trial has ended. Your nutrition log and progress history stay free. Choose a plan below to continue your training programme and coach check-ins.
             </p>
           </div>
 
@@ -146,15 +146,15 @@ export default function FitnessPoliceClientPage() {
                 key={plan.tier}
                 className={`p-5 rounded-2xl border flex flex-col justify-between space-y-4 ${
                   plan.tier === 'GOLD'
-                    ? 'border-2 border-sky-400 surface shadow-xl'
+                    ? 'border-2 border-line-active surface shadow-xl'
                     : 'border-[var(--border-subtle)] surface'
                 }`}
               >
                 <div>
-                  <span className="label-xs text-sky-400">{plan.tier}</span>
+                  <span className="label-xs text-brand">{plan.tier}</span>
                   <h3 className="font-extrabold text-[var(--text-heading)] text-base mt-1">{plan.name}</h3>
                   <p className="text-xl font-black text-[var(--text-heading)] mt-1">₦{plan.priceNgn.toLocaleString()}</p>
-                  <p className="text-[11px] text-[var(--text-muted)] mt-1">{plan.tagline}</p>
+                  <p className="text-xs text-[var(--text-muted)] mt-1">{plan.tagline}</p>
                 </div>
 
                 <Link
@@ -176,21 +176,21 @@ export default function FitnessPoliceClientPage() {
           <div className="surface p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 w-full border border-[var(--border-subtle)]">
             <div className="space-y-1.5">
               <div className="flex items-center gap-2">
-                <span className="label-xs text-sky-400">Active Routine</span>
-                <span className="badge badge-approved text-[10px]">4-Week Phase</span>
-                <span className="badge badge-trial text-[10px]">INTERMEDIATE</span>
+                <span className="label-xs text-brand">Active Routine</span>
+                <span className="badge badge-approved text-xs">4-Week Phase</span>
+                <span className="badge badge-trial text-xs">INTERMEDIATE</span>
               </div>
               <h2 className="text-xl font-extrabold text-[var(--text-heading)]">
                 {workoutPlan?.title || '4-Day Hypertrophy & Fat Burn Routine'}
               </h2>
               <p className="text-xs text-[var(--text-muted)]">
-                Goal: <strong className="text-sky-400">{workoutPlan?.goal?.replace('_', ' ') || 'FAT LOSS'}</strong> • Home & Gym Accessible • 45 min/session
+                Goal: <strong className="text-brand">{workoutPlan?.goal?.replace('_', ' ') || 'FAT LOSS'}</strong> • Home & Gym Accessible • 45 min/session
               </p>
             </div>
 
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
               {/* Day Switcher */}
-              <div className="flex items-center gap-1 bg-slate-900/60 dark:bg-slate-900 light:bg-slate-100 p-1 rounded-xl border border-[var(--border-subtle)]">
+              <div className="flex items-center gap-1 bg-paper p-1 rounded-xl border border-[var(--border-subtle)]">
                 {(workoutPlan?.workouts || [1, 2, 3, 4]).map((w: any, idx: number) => (
                   <button
                     key={idx}
@@ -198,7 +198,7 @@ export default function FitnessPoliceClientPage() {
                     onClick={() => setSelectedWorkoutIndex(idx)}
                     className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
                       selectedWorkoutIndex === idx
-                        ? 'bg-sky-400 text-slate-950 shadow-sm'
+                        ? 'bg-brand-strong text-brand-on-strong shadow-sm'
                         : 'text-[var(--text-muted)] hover:text-[var(--text-heading)]'
                     }`}
                   >
@@ -211,7 +211,7 @@ export default function FitnessPoliceClientPage() {
               <button
                 type="button"
                 onClick={() => setActiveWorkoutOpen(true)}
-                className="btn-brand text-xs font-black py-2.5 px-4 shadow-md shadow-sky-500/20"
+                className="btn-brand text-xs font-black py-2.5 px-4 shadow-md"
               >
                 <Play size={14} className="fill-current" /> Start Focus Session
               </button>
@@ -219,7 +219,7 @@ export default function FitnessPoliceClientPage() {
           </div>
 
           {logSuccess && (
-            <div className="p-4 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-xs flex items-center gap-2 animate-fade-in w-full">
+            <div className="p-4 rounded-xl bg-status-approved/15 border border-status-approved/40 text-status-approved text-xs flex items-center gap-2 animate-fade-in w-full">
               <CheckCircle2 size={16} className="shrink-0" />
               <span>{logSuccess}</span>
             </div>
@@ -230,25 +230,25 @@ export default function FitnessPoliceClientPage() {
             <div className="surface p-4 space-y-1">
               <span className="label-xs text-[var(--text-muted)]">Target Muscle Group</span>
               <p className="text-base font-extrabold text-[var(--text-heading)]">Upper Chest & Shoulders</p>
-              <p className="text-[10px] text-[var(--text-muted)]">Push focus day</p>
+              <p className="text-xs text-[var(--text-muted)]">Push focus day</p>
             </div>
 
             <div className="surface p-4 space-y-1">
               <span className="label-xs text-[var(--text-muted)]">Est. Duration</span>
-              <p className="text-base font-extrabold text-sky-400">45 Minutes</p>
-              <p className="text-[10px] text-[var(--text-muted)]">Including rest intervals</p>
+              <p className="text-base font-extrabold text-brand">45 Minutes</p>
+              <p className="text-xs text-[var(--text-muted)]">Including rest intervals</p>
             </div>
 
             <div className="surface p-4 space-y-1">
               <span className="label-xs text-[var(--text-muted)]">Equipment Needed</span>
               <p className="text-base font-extrabold text-[var(--text-heading)]">Dumbbells & Bench</p>
-              <p className="text-[10px] text-[var(--text-muted)]">Home or gym setup</p>
+              <p className="text-xs text-[var(--text-muted)]">Home or gym setup</p>
             </div>
 
             <div className="surface p-4 space-y-1">
               <span className="label-xs text-[var(--text-muted)]">Est. Energy Burn</span>
-              <p className="text-base font-extrabold text-amber-400">~380 kcal</p>
-              <p className="text-[10px] text-[var(--text-muted)]">Calibrated for fat loss</p>
+              <p className="text-base font-extrabold text-status-pending">~380 kcal</p>
+              <p className="text-xs text-[var(--text-muted)]">Calibrated for fat loss</p>
             </div>
           </div>
 
@@ -280,28 +280,28 @@ export default function FitnessPoliceClientPage() {
                     }}
                     className={`surface p-5 space-y-3 cursor-pointer transition-all ${
                       selectedExercise?.name === ex.name
-                        ? 'border-sky-400 shadow-md'
+                        ? 'border-line-active shadow-md'
                         : 'hover:border-[var(--border-active)]'
                     }`}
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
-                        <span className="w-6 h-6 rounded-md bg-slate-900/80 text-sky-400 font-bold text-xs flex items-center justify-center border border-[var(--border-subtle)]">
+                        <span className="w-6 h-6 rounded-md bg-paper text-brand font-bold text-xs flex items-center justify-center border border-[var(--border-subtle)]">
                           {idx + 1}
                         </span>
                         <h4 className="font-bold text-sm text-[var(--text-heading)]">{ex.name}</h4>
                       </div>
-                      <span className="text-sky-400 font-bold text-xs">{ex.sets} Sets × {ex.reps}</span>
+                      <span className="text-brand font-bold text-xs">{ex.sets} Sets × {ex.reps}</span>
                     </div>
 
-                    <div className="grid grid-cols-3 gap-2 text-[11px] text-[var(--text-muted)] pt-2 border-t border-[var(--border-subtle)]">
+                    <div className="grid grid-cols-3 gap-2 text-xs text-[var(--text-muted)] pt-2 border-t border-[var(--border-subtle)]">
                       <span>Rest: <strong className="text-[var(--text-heading)]">{ex.restSeconds || 60}s</strong></span>
                       <span>Tempo: <strong className="text-[var(--text-heading)]">{ex.tempo || '2-0-1'}</strong></span>
-                      <span className="text-right text-sky-400 font-semibold">Log Set →</span>
+                      <span className="text-right text-brand font-semibold">Log Set →</span>
                     </div>
 
                     {ex.notes && (
-                      <p className="text-[11px] text-[var(--text-muted)] italic">Cue: &quot;{ex.notes}&quot;</p>
+                      <p className="text-xs text-[var(--text-muted)] italic">Cue: &quot;{ex.notes}&quot;</p>
                     )}
                   </div>
                 ))}
@@ -310,9 +310,9 @@ export default function FitnessPoliceClientPage() {
 
             {/* Quick Set & Weight Logger Column */}
             <div className="lg:col-span-5 space-y-4">
-              <div className="surface p-6 space-y-5 border border-sky-400/30 sticky top-20">
+              <div className="surface p-6 space-y-5 border border-line-active sticky top-20">
                 <div>
-                  <span className="label-xs text-sky-400">Quick Set Logger</span>
+                  <span className="label-xs text-brand">Quick Set Logger</span>
                   <h3 className="text-base font-bold text-[var(--text-heading)] mt-1">
                     {selectedExercise ? selectedExercise.name : 'Select an Exercise to Log'}
                   </h3>
@@ -349,26 +349,26 @@ export default function FitnessPoliceClientPage() {
                           step="0.5"
                           value={weightUsed}
                           onChange={(e) => setWeightUsed(e.target.value)}
-                          className="field-input text-center font-bold text-sky-400"
+                          className="field-input text-center font-bold text-brand"
                         />
                       </div>
                     </div>
 
-                    <div className="p-3 bg-slate-950/60 rounded-xl border border-[var(--border-subtle)] flex items-center justify-between text-xs">
+                    <div className="p-3 bg-paper rounded-xl border border-[var(--border-subtle)] flex items-center justify-between text-xs">
                       <span className="text-[var(--text-muted)]">Rest Interval:</span>
-                      <span className="font-mono text-sky-400 font-bold">{selectedExercise.restSeconds || 60} Seconds</span>
+                      <span className="font-mono text-brand font-bold">{selectedExercise.restSeconds || 60} Seconds</span>
                     </div>
 
                     <button
                       type="submit"
-                      className="btn-brand text-xs w-full justify-center py-3 font-extrabold shadow-md shadow-sky-500/20"
+                      className="btn-brand text-xs w-full justify-center py-3 font-extrabold shadow-md"
                     >
                       <CheckCircle2 size={15} /> Save Set & Track Load
                     </button>
                   </form>
                 ) : (
-                  <div className="p-8 text-center bg-slate-950/40 rounded-xl border border-[var(--border-subtle)] text-[var(--text-muted)] text-xs space-y-2">
-                    <Dumbbell size={24} className="mx-auto text-slate-600" />
+                  <div className="p-8 text-center bg-paper rounded-xl border border-[var(--border-subtle)] text-[var(--text-muted)] text-xs space-y-2">
+                    <Dumbbell size={24} className="mx-auto text-ink-muted" />
                     <p>Click any exercise on the left to input your sets, reps, and weights used.</p>
                   </div>
                 )}

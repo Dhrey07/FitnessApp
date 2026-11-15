@@ -21,6 +21,7 @@ import {
   NutritionEngineResult,
 } from '@/lib/services/nutritionEngine';
 import { ThemeToggle } from '@/components/theme/ThemeToggle';
+import { BRAND } from '@/lib/brand';
 
 export default function OnboardingPage() {
   const router = useRouter();
@@ -147,8 +148,8 @@ export default function OnboardingPage() {
         <div className="flex items-center gap-3">
           <ThemeToggle variant="icon" />
           <div className="text-right">
-            <span className="text-xs font-bold text-sky-400">Step {step} of 7</span>
-            <p className="text-[10px] text-[var(--text-muted)] uppercase tracking-wider font-semibold">
+            <span className="text-xs font-bold text-brand">Step {step} of 7</span>
+            <p className="text-xs text-[var(--text-muted)] uppercase tracking-wider font-semibold">
               {step === 1 && 'About You'}
               {step === 2 && 'Body Metrics'}
               {step === 3 && 'Daily Activity'}
@@ -162,7 +163,7 @@ export default function OnboardingPage() {
       </div>
 
       {/* Progress Bar */}
-      <div className="max-w-3xl mx-auto w-full my-4 bg-slate-900/60 dark:bg-slate-900 light:bg-slate-200 h-1.5 rounded-full overflow-hidden border border-[var(--border-subtle)]">
+      <div className="max-w-3xl mx-auto w-full my-4 bg-paper h-1.5 rounded-full overflow-hidden border border-[var(--border-subtle)]">
         <div
           className="h-full bg-[var(--brand)] transition-all duration-300"
           style={{ width: `${(step / 7) * 100}%` }}
@@ -172,7 +173,7 @@ export default function OnboardingPage() {
       {/* Form Container */}
       <div className="max-w-3xl mx-auto w-full surface p-6 sm:p-10 space-y-6 my-auto border border-[var(--border-subtle)] shadow-2xl">
         {errorMsg && (
-          <div className="p-3.5 rounded-xl bg-rose-500/15 border border-rose-500/30 text-rose-400 text-xs flex items-center gap-2 animate-fade-in">
+          <div className="p-3.5 rounded-xl bg-status-rejected/15 border border-status-rejected/40 text-status-rejected text-xs flex items-center gap-2 animate-fade-in">
             <AlertCircle size={16} className="shrink-0" />
             <span>{errorMsg}</span>
           </div>
@@ -182,7 +183,7 @@ export default function OnboardingPage() {
         {step === 1 && (
           <div className="space-y-5 animate-fade-in">
             <div>
-              <span className="label-xs text-sky-400">Step 01 • Identity & Profile</span>
+              <span className="label-xs text-brand">Step 01 • Identity & Profile</span>
               <h2 className="page-title text-2xl mt-1">Let&apos;s Start with You</h2>
               <p className="text-xs text-[var(--text-muted)] mt-1">
                 Enter your basic information to initialize your personal coaching command center.
@@ -235,7 +236,7 @@ export default function OnboardingPage() {
                     onClick={() => setSex('male')}
                     className={`py-2.5 px-4 rounded-xl border text-xs font-bold transition-all ${
                       sex === 'male'
-                        ? 'border-sky-400 bg-sky-500/10 text-sky-400'
+                        ? 'border-line-active bg-brand-soft text-brand'
                         : 'border-[var(--border-subtle)] surface text-[var(--text-muted)] hover:text-[var(--text-heading)]'
                     }`}
                   >
@@ -246,7 +247,7 @@ export default function OnboardingPage() {
                     onClick={() => setSex('female')}
                     className={`py-2.5 px-4 rounded-xl border text-xs font-bold transition-all ${
                       sex === 'female'
-                        ? 'border-sky-400 bg-sky-500/10 text-sky-400'
+                        ? 'border-line-active bg-brand-soft text-brand'
                         : 'border-[var(--border-subtle)] surface text-[var(--text-muted)] hover:text-[var(--text-heading)]'
                     }`}
                   >
@@ -274,7 +275,7 @@ export default function OnboardingPage() {
         {step === 2 && (
           <div className="space-y-5 animate-fade-in">
             <div>
-              <span className="label-xs text-sky-400">Step 02 • Physical Baseline</span>
+              <span className="label-xs text-brand">Step 02 • Physical Baseline</span>
               <h2 className="page-title text-2xl mt-1">Your Body Measurements</h2>
               <p className="text-xs text-[var(--text-muted)] mt-1">
                 These measurements allow our Mifflin-St Jeor engine to calculate your exact Basal Metabolic Rate and body mass index.
@@ -317,7 +318,7 @@ export default function OnboardingPage() {
             </div>
 
             <div className="p-3.5 rounded-xl surface border border-[var(--border-subtle)] text-xs text-[var(--text-muted)] flex items-center gap-2">
-              <Scale size={16} className="text-sky-400 shrink-0" />
+              <Scale size={16} className="text-brand shrink-0" />
               <span>Waist is measured around the navel in a relaxed posture for accurate abdominal fat tracking.</span>
             </div>
           </div>
@@ -327,7 +328,7 @@ export default function OnboardingPage() {
         {step === 3 && (
           <div className="space-y-5 animate-fade-in">
             <div>
-              <span className="label-xs text-sky-400">Step 03 • Lifestyle & Movement</span>
+              <span className="label-xs text-brand">Step 03 • Lifestyle & Movement</span>
               <h2 className="page-title text-2xl mt-1">What is Your Daily Activity Level?</h2>
               <p className="text-xs text-[var(--text-muted)] mt-1">
                 Select the option that best reflects your non-exercise daily movement and physical occupation.
@@ -368,14 +369,14 @@ export default function OnboardingPage() {
                   onClick={() => setActivityLevel(opt.id as ActivityLevel)}
                   className={`w-full text-left p-4 rounded-xl border transition-all ${
                     activityLevel === opt.id
-                      ? 'border-sky-400 bg-sky-500/10 text-[var(--text-heading)] shadow-sm'
+                      ? 'border-line-active bg-brand-soft text-[var(--text-heading)] shadow-sm'
                       : 'border-[var(--border-subtle)] surface text-[var(--text-muted)] hover:border-[var(--border-active)]'
                   }`}
                 >
                   <div className="flex items-center justify-between">
                     <p className="font-bold text-sm text-[var(--text-heading)]">{opt.title}</p>
                     {activityLevel === opt.id && (
-                      <CheckCircle2 size={16} className="text-sky-400 shrink-0" />
+                      <CheckCircle2 size={16} className="text-brand shrink-0" />
                     )}
                   </div>
                   <p className="text-xs text-[var(--text-muted)] mt-0.5">{opt.desc}</p>
@@ -389,7 +390,7 @@ export default function OnboardingPage() {
         {step === 4 && (
           <div className="space-y-5 animate-fade-in">
             <div>
-              <span className="label-xs text-sky-400">Step 04 • Destination</span>
+              <span className="label-xs text-brand">Step 04 • Destination</span>
               <h2 className="page-title text-2xl mt-1">What is Your Primary Goal?</h2>
               <p className="text-xs text-[var(--text-muted)] mt-1">
                 Your goal dictates whether your calorie target is placed in a fat loss deficit, maintenance, or hyper-trophy surplus.
@@ -435,17 +436,17 @@ export default function OnboardingPage() {
                   onClick={() => setPrimaryGoal(g.id as FitnessGoal)}
                   className={`text-left p-4 rounded-xl border transition-all ${
                     primaryGoal === g.id
-                      ? 'border-sky-400 bg-sky-500/10 text-[var(--text-heading)] shadow-sm'
+                      ? 'border-line-active bg-brand-soft text-[var(--text-heading)] shadow-sm'
                       : 'border-[var(--border-subtle)] surface text-[var(--text-muted)] hover:border-[var(--border-active)]'
                   }`}
                 >
                   <div className="flex items-center justify-between">
                     <p className="font-bold text-xs text-[var(--text-heading)] uppercase">{g.title}</p>
                     {primaryGoal === g.id && (
-                      <CheckCircle2 size={15} className="text-sky-400 shrink-0" />
+                      <CheckCircle2 size={15} className="text-brand shrink-0" />
                     )}
                   </div>
-                  <p className="text-[11px] text-[var(--text-muted)] mt-1">{g.desc}</p>
+                  <p className="text-xs text-[var(--text-muted)] mt-1">{g.desc}</p>
                 </button>
               ))}
             </div>
@@ -456,7 +457,7 @@ export default function OnboardingPage() {
         {step === 5 && (
           <div className="space-y-5 animate-fade-in">
             <div>
-              <span className="label-xs text-sky-400">Step 05 • Training Experience & Setup</span>
+              <span className="label-xs text-brand">Step 05 • Training Experience & Setup</span>
               <h2 className="page-title text-2xl mt-1">Your Fitness & Training Profile</h2>
               <p className="text-xs text-[var(--text-muted)] mt-1">
                 We calibrate your assigned workout routines to match your available time and training gear.
@@ -548,10 +549,10 @@ export default function OnboardingPage() {
         {step === 6 && (
           <div className="space-y-5 animate-fade-in">
             <div>
-              <span className="label-xs text-sky-400">Step 06 • Dietary Preferences</span>
+              <span className="label-xs text-brand">Step 06 • Dietary Preferences</span>
               <h2 className="page-title text-2xl mt-1">Your Food & Dietary Profile</h2>
               <p className="text-xs text-[var(--text-muted)] mt-1">
-                Food Police adapts to African food staples, dietary traditions, and personal food tolerances.
+                Your plan is built around familiar foods, dietary traditions and personal tolerances.
               </p>
             </div>
 
@@ -617,7 +618,7 @@ export default function OnboardingPage() {
           <div className="space-y-6 animate-fade-in">
             <div className="flex items-center justify-between pb-3 border-b border-[var(--border-subtle)]">
               <div>
-                <span className="label-xs text-sky-400">Step 07 • Your Blueprint</span>
+                <span className="label-xs text-brand">Step 07 • Your Blueprint</span>
                 <h2 className="page-title text-2xl mt-1">Your Personal Metabolic Targets</h2>
               </div>
               <span className="badge badge-trial">14-Day Trial Included</span>
@@ -628,62 +629,62 @@ export default function OnboardingPage() {
               <div className="surface p-4 border-[var(--border-subtle)] space-y-1">
                 <span className="label-xs text-[var(--text-muted)]">Basal Rate (BMR)</span>
                 <p className="text-xl font-black text-[var(--text-heading)]">{nutritionResults.bmr} <span className="text-xs font-normal text-[var(--text-muted)]">kcal</span></p>
-                <p className="text-[10px] text-[var(--text-muted)]">Mifflin-St Jeor</p>
+                <p className="text-xs text-[var(--text-muted)]">Mifflin-St Jeor</p>
               </div>
 
               <div className="surface p-4 border-[var(--border-subtle)] space-y-1">
                 <span className="label-xs text-[var(--text-muted)]">Maintenance (TDEE)</span>
                 <p className="text-xl font-black text-[var(--text-heading)]">{nutritionResults.tdee} <span className="text-xs font-normal text-[var(--text-muted)]">kcal</span></p>
-                <p className="text-[10px] text-[var(--text-muted)]">Activity Multiplied</p>
+                <p className="text-xs text-[var(--text-muted)]">Activity Multiplied</p>
               </div>
 
-              <div className="surface p-4 border-sky-400/40 space-y-1">
-                <span className="label-xs text-sky-400">Daily Target</span>
-                <p className="text-xl font-black text-sky-400">{nutritionResults.dailyCalories} <span className="text-xs font-normal text-[var(--text-muted)]">kcal</span></p>
-                <p className="text-[10px] text-sky-400 font-bold">{primaryGoal.replace('_', ' ')}</p>
+              <div className="surface p-4 border-line-active space-y-1">
+                <span className="label-xs text-brand">Daily Target</span>
+                <p className="text-xl font-black text-brand">{nutritionResults.dailyCalories} <span className="text-xs font-normal text-[var(--text-muted)]">kcal</span></p>
+                <p className="text-xs text-brand font-bold">{primaryGoal.replace('_', ' ')}</p>
               </div>
 
               <div className="surface p-4 border-[var(--border-subtle)] space-y-1">
                 <span className="label-xs text-[var(--text-muted)]">BMI Index</span>
-                <p className="text-xl font-black text-cyan-400">{nutritionResults.bmi}</p>
-                <p className="text-[10px] text-[var(--text-muted)]">Body Mass Ratio</p>
+                <p className="text-xl font-black text-brand">{nutritionResults.bmi}</p>
+                <p className="text-xs text-[var(--text-muted)]">Body Mass Ratio</p>
               </div>
             </div>
 
             {/* Macronutrient Allocation */}
             <div className="surface p-5 border-[var(--border-subtle)] space-y-4">
               <h3 className="section-title text-sm flex items-center gap-2">
-                <Utensils size={15} className="text-sky-400" /> Daily Macronutrient Target Allocation
+                <Utensils size={15} className="text-brand" /> Daily Macronutrient Target Allocation
               </h3>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-center">
-                <div className="p-3 bg-slate-950/40 rounded-xl border border-sky-400/30">
-                  <span className="label-xs text-sky-400">PROTEIN</span>
+                <div className="p-3 bg-paper rounded-xl border border-line-active">
+                  <span className="label-xs text-brand">PROTEIN</span>
                   <p className="text-xl font-black text-[var(--text-heading)] mt-0.5">{nutritionResults.targetProteinG}g</p>
-                  <p className="text-[10px] text-[var(--text-muted)] mt-0.5">2.2g per kg bodyweight</p>
+                  <p className="text-xs text-[var(--text-muted)] mt-0.5">2.2g per kg bodyweight</p>
                 </div>
 
-                <div className="p-3 bg-slate-950/40 rounded-xl border border-cyan-400/30">
-                  <span className="label-xs text-cyan-400">CARBS</span>
+                <div className="p-3 bg-paper rounded-xl border border-line-active">
+                  <span className="label-xs text-brand">CARBS</span>
                   <p className="text-xl font-black text-[var(--text-heading)] mt-0.5">{nutritionResults.targetCarbsG}g</p>
-                  <p className="text-[10px] text-[var(--text-muted)] mt-0.5">Energy & Glycogen</p>
+                  <p className="text-xs text-[var(--text-muted)] mt-0.5">Energy & Glycogen</p>
                 </div>
 
-                <div className="p-3 bg-slate-950/40 rounded-xl border border-amber-500/30">
-                  <span className="label-xs text-amber-400">FATS</span>
+                <div className="p-3 bg-paper rounded-xl border border-status-pending/40">
+                  <span className="label-xs text-status-pending">FATS</span>
                   <p className="text-xl font-black text-[var(--text-heading)] mt-0.5">{nutritionResults.targetFatG}g</p>
-                  <p className="text-[10px] text-[var(--text-muted)] mt-0.5">25% Daily Energy</p>
+                  <p className="text-xs text-[var(--text-muted)] mt-0.5">25% Daily Energy</p>
                 </div>
               </div>
             </div>
 
             {/* 14-Day Free Trial Notice */}
-            <div className="p-4 rounded-xl bg-sky-500/10 border border-sky-500/30 text-xs text-[var(--text-secondary)] space-y-1">
-              <p className="text-sky-400 font-bold flex items-center gap-1.5">
-                <ShieldCheck size={16} /> 14-Day Free Fitness Police Trial Included
+            <div className="p-4 rounded-xl bg-brand-soft border border-line-active text-xs text-[var(--text-secondary)] space-y-1">
+              <p className="text-brand font-bold flex items-center gap-1.5">
+                <ShieldCheck size={16} /> 14-day free trial included
               </p>
-              <p className="text-[11px] text-[var(--text-muted)]">
-                You get full immediate access to custom workout routines, set loggers, and Food Police. No immediate charge.
+              <p className="text-xs text-[var(--text-muted)]">
+                Full access to your training programme, set logging and nutrition log. No charge today.
               </p>
             </div>
           </div>
@@ -718,7 +719,7 @@ export default function OnboardingPage() {
               type="button"
               onClick={handleFinishOnboarding}
               disabled={loading}
-              className="btn-brand text-xs font-black px-8 py-3 shadow-xl shadow-sky-500/25"
+              className="btn-brand text-xs font-black px-8 py-3 shadow-xl"
             >
               {loading ? 'Activating 14-Day Trial...' : 'Enter Personal Command Centre'} <ArrowRight size={14} />
             </button>
@@ -727,7 +728,7 @@ export default function OnboardingPage() {
       </div>
 
       <div className="text-center text-xs text-[var(--text-muted)] py-3">
-        Fitness Police Human-in-the-Loop Coaching Engine
+        {BRAND.legalName}
       </div>
     </div>
   );

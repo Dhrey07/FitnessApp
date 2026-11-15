@@ -7,7 +7,7 @@ import {
   Utensils,
 } from 'lucide-react';
 
-export default function AdminFoodPoliceQueuePage() {
+export default function AdminNutritionReviewPage() {
   const [queue, setQueue] = useState<any[]>([]);
   const [selectedMeal, setSelectedMeal] = useState<any>(null);
   const [adjCalories, setAdjCalories] = useState('500');
@@ -26,7 +26,7 @@ export default function AdminFoodPoliceQueuePage() {
   const fetchQueue = async () => {
     setLoading(true);
     try {
-      const res = await fetch('/api/food-police/queue');
+      const res = await fetch('/api/nutrition/queue');
       const data = await res.json();
       setQueue(data.queue || []);
     } catch (e) {
@@ -51,7 +51,7 @@ export default function AdminFoodPoliceQueuePage() {
     setSuccessMsg('');
 
     try {
-      const res = await fetch('/api/food-police/review', {
+      const res = await fetch('/api/nutrition/review', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -80,11 +80,11 @@ export default function AdminFoodPoliceQueuePage() {
 
   return (
     <AdminAppShell
-      title="Food Police Review & Decision Queue"
+      title="Nutrition Review Queue"
       subtitle="Verify client meals, calibrate portion yields, and deliver personalized cultural nutrition feedback."
     >
       {successMsg && (
-        <div className="p-4 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-xs flex items-center gap-2 animate-fade-in">
+        <div className="p-4 rounded-xl bg-status-approved/15 border border-status-approved/40 text-status-approved text-xs flex items-center gap-2 animate-fade-in">
           <CheckCircle2 size={16} className="shrink-0" />
           <span>{successMsg}</span>
         </div>
@@ -111,16 +111,16 @@ export default function AdminFoodPoliceQueuePage() {
                   onClick={() => handleSelectMeal(sub)}
                   className={`surface p-5 space-y-3 cursor-pointer transition-all ${
                     isSelected
-                      ? 'border-purple-500 shadow-md'
+                      ? 'border-line-active shadow-md'
                       : 'hover:border-[var(--border-active)]'
                   }`}
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <span className="badge text-[9px] bg-slate-900/80 text-slate-300">{sub.mealType}</span>
+                      <span className="badge text-xs bg-paper text-ink-secondary">{sub.mealType}</span>
                       <span className="font-bold text-[var(--text-heading)] text-xs">{sub.user?.firstName || 'Client'}</span>
                     </div>
-                    <span className={`badge text-[9px] ${isApproved ? 'badge-approved' : 'badge-pending'}`}>
+                    <span className={`badge text-xs${isApproved ? 'badge-approved' : 'badge-pending'}`}>
                       {sub.status}
                     </span>
                   </div>
@@ -129,7 +129,7 @@ export default function AdminFoodPoliceQueuePage() {
                     &quot;{sub.rawInput}&quot;
                   </p>
 
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-1 text-center text-[10px] text-[var(--text-muted)] pt-2 border-t border-[var(--border-subtle)]">
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-1 text-center text-xs text-[var(--text-muted)] pt-2 border-t border-[var(--border-subtle)]">
                     <span>{ai?.estimatedCalories || 500} kcal</span>
                     <span>{ai?.estimatedProtein || 35}g Pro</span>
                     <span>{ai?.estimatedCarbs || 50}g Carb</span>
@@ -141,11 +141,11 @@ export default function AdminFoodPoliceQueuePage() {
           </div>
         </div>
 
-        {/* Right Column: Coach Review & Adjustment Console */}
+        {/* Right Column: Coach review panel */}
         <div className="lg:col-span-6 space-y-4">
-          <div className="surface p-6 sm:p-7 space-y-5 border border-purple-500/30 sticky top-20">
+          <div className="surface p-6 sm:p-7 space-y-5 border border-line-active sticky top-20">
             <div>
-              <span className="label-xs text-purple-400">Coach Decision Console</span>
+              <span className="label-xs text-brand">Coach review</span>
               <h3 className="text-base font-bold text-[var(--text-heading)] mt-1">
                 {selectedMeal ? `Reviewing ${selectedMeal.user?.firstName || 'Client'}'s ${selectedMeal.mealType}` : 'Select a Meal from the Queue'}
               </h3>
@@ -156,7 +156,7 @@ export default function AdminFoodPoliceQueuePage() {
 
             {selectedMeal ? (
               <div className="space-y-4 animate-fade-in">
-                <div className="p-3.5 bg-slate-950/40 rounded-xl border border-[var(--border-subtle)] text-xs text-[var(--text-secondary)] italic">
+                <div className="p-3.5 bg-paper rounded-xl border border-[var(--border-subtle)] text-xs text-[var(--text-secondary)] italic">
                   &quot;{selectedMeal.rawInput}&quot;
                 </div>
 
@@ -176,7 +176,7 @@ export default function AdminFoodPoliceQueuePage() {
                       type="number"
                       value={adjProtein}
                       onChange={(e) => setAdjProtein(e.target.value)}
-                      className="field-input text-center text-xs font-bold text-sky-400"
+                      className="field-input text-center text-xs font-bold text-brand"
                     />
                   </div>
                   <div>
@@ -185,7 +185,7 @@ export default function AdminFoodPoliceQueuePage() {
                       type="number"
                       value={adjCarbs}
                       onChange={(e) => setAdjCarbs(e.target.value)}
-                      className="field-input text-center text-xs font-bold text-cyan-400"
+                      className="field-input text-center text-xs font-bold text-brand"
                     />
                   </div>
                   <div>
@@ -194,7 +194,7 @@ export default function AdminFoodPoliceQueuePage() {
                       type="number"
                       value={adjFat}
                       onChange={(e) => setAdjFat(e.target.value)}
-                      className="field-input text-center text-xs font-bold text-amber-400"
+                      className="field-input text-center text-xs font-bold text-status-pending"
                     />
                   </div>
                 </div>
@@ -214,7 +214,7 @@ export default function AdminFoodPoliceQueuePage() {
                     type="button"
                     disabled={submitting}
                     onClick={() => handleReviewMeal('APPROVE')}
-                    className="btn-brand text-xs justify-center py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black"
+                    className="btn-brand text-xs justify-center py-3 bg-status-approved hover:brightness-95 text-brand-on-strong font-black"
                   >
                     <CheckCircle2 size={14} /> Approve AI Output
                   </button>
@@ -223,15 +223,15 @@ export default function AdminFoodPoliceQueuePage() {
                     type="button"
                     disabled={submitting}
                     onClick={() => handleReviewMeal('MODIFY')}
-                    className="btn-secondary text-xs justify-center py-3 font-bold border-purple-500/40 text-purple-400 hover:bg-purple-950/40"
+                    className="btn-secondary text-xs justify-center py-3 font-bold border-line-active text-brand hover:bg-[var(--bg-card-hover)]"
                   >
                     Submit Adjustments
                   </button>
                 </div>
               </div>
             ) : (
-              <div className="p-8 text-center bg-slate-950/40 rounded-xl border border-[var(--border-subtle)] text-[var(--text-muted)] text-xs space-y-2">
-                <Utensils size={24} className="mx-auto text-slate-600" />
+              <div className="p-8 text-center bg-paper rounded-xl border border-[var(--border-subtle)] text-[var(--text-muted)] text-xs space-y-2">
+                <Utensils size={24} className="mx-auto text-ink-muted" />
                 <p>Click any meal on the left to verify calories, edit macros, and send feedback.</p>
               </div>
             )}

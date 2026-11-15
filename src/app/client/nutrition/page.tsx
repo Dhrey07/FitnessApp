@@ -14,13 +14,15 @@ import {
   Clock,
   ChevronRight,
 } from 'lucide-react';
+import { PhotoPlaceholder } from '@/components/brand/PhotoPlaceholder';
+import { BRAND } from '@/lib/brand';
 
-export default function FoodPoliceClientPage() {
+export default function NutritionClientPage() {
   const [user, setUser] = useState<any>(null);
   const [tab, setTab] = useState<'NATURAL_LANGUAGE' | 'PHOTO' | 'SEARCH'>('NATURAL_LANGUAGE');
   const [rawInput, setRawInput] = useState('');
   const [mealType, setMealType] = useState('LUNCH');
-  const [photoUrl, setPhotoUrl] = useState('https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=400&q=80');
+  const [photoUrl, setPhotoUrl] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [successMsg, setSuccessMsg] = useState('');
@@ -51,7 +53,7 @@ export default function FoodPoliceClientPage() {
       const meData = await meRes.json();
       setUser(meData.user);
 
-      const qRes = await fetch('/api/food-police/queue');
+      const qRes = await fetch('/api/nutrition/queue');
       const qData = await qRes.json();
       setHistory(qData.queue || []);
     } catch (e) {
@@ -74,7 +76,7 @@ export default function FoodPoliceClientPage() {
     try {
       const input = tab === 'PHOTO' ? rawInput || 'Meal photo submission' : rawInput;
 
-      const res = await fetch('/api/food-police/submit', {
+      const res = await fetch('/api/nutrition/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -110,31 +112,32 @@ export default function FoodPoliceClientPage() {
 
   return (
     <ClientAppShell
-      title="Food Police Nutrition Hub"
-      subtitle="Free nutrition logging for all registered clients. Log photos, text descriptions, or search African and global foods."
+      title="Nutrition Log"
+      subtitle="Log what you eat by photo or plain description. Nigerian and international foods are recognised, and your coach checks the estimate."
     >
       {/* 100% Free Guarantee Banner */}
-      <div className="p-4 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-between gap-4 w-full">
+      <div className="p-4 rounded-2xl bg-brand-soft border border-line-active flex flex-wrap items-center justify-between gap-3 w-full">
         <div className="flex items-center gap-3">
-          <span className="badge badge-approved text-[10px]">100% FREE FOREVER</span>
+          <span className="badge badge-approved text-xs">Free</span>
           <p className="text-xs text-[var(--text-secondary)]">
-            Food Police is free forever for all clients. Never put behind a paywall.
+            The nutrition log is free for every registered client. Every estimate is checked by your coach.
           </p>
         </div>
-        <span className="text-[11px] text-cyan-400 font-bold hidden sm:inline">
-          Coach Verified Nutrition
+        {/* The one playful sub-brand touchpoint in the product. Everything else uses ERICONET naming. */}
+        <span className="badge badge-trial hidden sm:inline-flex normal-case tracking-normal" title="Our light-hearted name for coach-checked meals">
+          {BRAND.subBrand.name}: every meal gets a verdict
         </span>
       </div>
 
       {successMsg && (
-        <div className="p-4 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-xs flex items-center gap-2 animate-fade-in w-full">
+        <div className="p-4 rounded-xl bg-status-approved/15 border border-status-approved/40 text-status-approved text-xs flex items-center gap-2 animate-fade-in w-full">
           <CheckCircle2 size={16} className="shrink-0" />
           <span>{successMsg}</span>
         </div>
       )}
 
       {errorMsg && (
-        <div className="p-4 rounded-xl bg-rose-500/15 border border-rose-500/30 text-rose-400 text-xs flex items-center gap-2 animate-fade-in w-full">
+        <div className="p-4 rounded-xl bg-status-rejected/15 border border-status-rejected/40 text-status-rejected text-xs flex items-center gap-2 animate-fade-in w-full">
           <AlertTriangle size={16} className="shrink-0" />
           <span>{errorMsg}</span>
         </div>
@@ -142,7 +145,7 @@ export default function FoodPoliceClientPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 w-full">
         
-        {/* Left Column: Meal Submission Console */}
+        {/* Left Column: Meal submission */}
         <div className="lg:col-span-7 space-y-6">
           <div className="surface p-6 sm:p-7 space-y-6 border border-[var(--border-subtle)]">
             
@@ -153,13 +156,13 @@ export default function FoodPoliceClientPage() {
                 <p className="text-xs text-[var(--text-muted)] mt-0.5">Select your preferred logging method.</p>
               </div>
 
-              <div className="bg-slate-900/60 dark:bg-slate-900 light:bg-slate-100 p-1 rounded-xl border border-[var(--border-subtle)] flex items-center text-xs font-semibold">
+              <div className="bg-paper p-1 rounded-xl border border-[var(--border-subtle)] flex items-center text-xs font-semibold">
                 <button
                   type="button"
                   onClick={() => setTab('NATURAL_LANGUAGE')}
                   className={`px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-all ${
                     tab === 'NATURAL_LANGUAGE'
-                      ? 'bg-sky-400 text-slate-950 font-bold'
+                      ? 'bg-brand-strong text-brand-on-strong font-bold'
                       : 'text-[var(--text-muted)] hover:text-[var(--text-heading)]'
                   }`}
                 >
@@ -170,7 +173,7 @@ export default function FoodPoliceClientPage() {
                   onClick={() => setTab('PHOTO')}
                   className={`px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-all ${
                     tab === 'PHOTO'
-                      ? 'bg-sky-400 text-slate-950 font-bold'
+                      ? 'bg-brand-strong text-brand-on-strong font-bold'
                       : 'text-[var(--text-muted)] hover:text-[var(--text-heading)]'
                   }`}
                 >
@@ -181,7 +184,7 @@ export default function FoodPoliceClientPage() {
                   onClick={() => setTab('SEARCH')}
                   className={`px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-all ${
                     tab === 'SEARCH'
-                      ? 'bg-sky-400 text-slate-950 font-bold'
+                      ? 'bg-brand-strong text-brand-on-strong font-bold'
                       : 'text-[var(--text-muted)] hover:text-[var(--text-heading)]'
                   }`}
                 >
@@ -202,7 +205,7 @@ export default function FoodPoliceClientPage() {
                       onClick={() => setMealType(m)}
                       className={`py-2 rounded-xl text-xs font-bold border transition-all ${
                         mealType === m
-                          ? 'border-sky-400 bg-sky-500/10 text-sky-400'
+                          ? 'border-line-active bg-brand-soft text-brand'
                           : 'border-[var(--border-subtle)] surface text-[var(--text-muted)] hover:text-[var(--text-heading)]'
                       }`}
                     >
@@ -223,7 +226,7 @@ export default function FoodPoliceClientPage() {
                     placeholder="e.g. 2 cups of jollof rice, 1 grilled chicken breast, 4 slices of fried plantain"
                     className="field-input resize-none"
                   />
-                  <p className="text-[11px] text-[var(--text-muted)] mt-1">
+                  <p className="text-xs text-[var(--text-muted)] mt-1">
                     African & global staples recognized: Jollof, Pounded Yam, Egusi, Efo Riro, Moi Moi, Suya, Dodo, Tilapia, Oatmeal, Eggs, etc.
                   </p>
                 </div>
@@ -233,13 +236,24 @@ export default function FoodPoliceClientPage() {
               {tab === 'PHOTO' && (
                 <div className="space-y-3">
                   <label className="field-label">Meal Photo Upload</label>
-                  <div className="p-4 bg-slate-950/40 rounded-xl border border-dashed border-[var(--border-subtle)] flex flex-col items-center justify-center text-center space-y-2">
-                    <img
-                      src={photoUrl}
-                      alt="Meal Preview"
-                      className="w-full h-40 object-cover rounded-lg border border-[var(--border-subtle)]"
+                  <div className="p-4 bg-paper rounded-xl border border-dashed border-[var(--border-subtle)] flex flex-col items-center justify-center text-center space-y-2">
+                    {photoUrl ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={photoUrl}
+                        alt="Meal preview"
+                        className="w-full h-40 object-cover rounded-lg border border-[var(--border-subtle)]"
+                      />
+                    ) : (
+                      <PhotoPlaceholder aspect="h-40" label="No photo yet" className="rounded-lg" />
+                    )}
+                    <input
+                      type="url"
+                      value={photoUrl}
+                      onChange={(e) => setPhotoUrl(e.target.value)}
+                      placeholder="Paste a photo link (optional)"
+                      className="field-input text-xs"
                     />
-                    <p className="text-[11px] text-[var(--text-muted)]">Default high-protein meal photo loaded.</p>
                   </div>
                   <input
                     type="text"
@@ -276,18 +290,18 @@ export default function FoodPoliceClientPage() {
                       >
                         <div>
                           <p className="font-bold text-[var(--text-heading)]">{food.name}</p>
-                          <p className="text-[10px] text-[var(--text-muted)]">
+                          <p className="text-xs text-[var(--text-muted)]">
                             {food.protein}g Protein • {food.carbs}g Carbs • {food.fat}g Fat
                           </p>
                         </div>
-                        <span className="text-sky-400 font-bold text-xs">~{food.calories} kcal</span>
+                        <span className="text-brand font-bold text-xs">~{food.calories} kcal</span>
                       </button>
                     ))}
                   </div>
 
                   {rawInput && (
-                    <div className="p-3 bg-slate-950/60 rounded-xl border border-sky-400/30 text-xs">
-                      <span className="text-[10px] text-[var(--text-muted)] uppercase font-bold block">Selected for Logging:</span>
+                    <div className="p-3 bg-paper rounded-xl border border-line-active text-xs">
+                      <span className="text-xs text-[var(--text-muted)] uppercase font-bold block">Selected for Logging:</span>
                       <p className="font-bold text-[var(--text-heading)] mt-0.5">{rawInput}</p>
                     </div>
                   )}
@@ -297,14 +311,14 @@ export default function FoodPoliceClientPage() {
               <button
                 type="submit"
                 disabled={submitting}
-                className="btn-brand text-xs w-full justify-center py-3 font-extrabold shadow-md shadow-sky-500/20"
+                className="btn-brand text-xs w-full justify-center py-3 font-extrabold shadow-md"
               >
                 {submitting ? 'Analyzing Macronutrients...' : 'Submit Meal for Analysis'}
               </button>
             </form>
 
-            <div className="pt-3 border-t border-[var(--border-subtle)] flex items-start gap-2 text-[11px] text-[var(--text-muted)]">
-              <Info size={13} className="shrink-0 text-sky-400 mt-0.5" />
+            <div className="pt-3 border-t border-[var(--border-subtle)] flex items-start gap-2 text-xs text-[var(--text-muted)]">
+              <Info size={13} className="shrink-0 text-brand mt-0.5" />
               <span>
                 Nutritional values are generated via nutrient estimation engines and verified by your human coach.
               </span>
@@ -329,7 +343,7 @@ export default function FoodPoliceClientPage() {
                 <div key={sub.id} className="surface p-5 space-y-3 border border-[var(--border-subtle)]">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded bg-slate-900/80 text-slate-300 border border-[var(--border-subtle)]">
+                      <span className="text-xs font-extrabold uppercase px-2 py-0.5 rounded bg-paper text-ink-secondary border border-[var(--border-subtle)]">
                         {sub.mealType}
                       </span>
                       <span className="text-xs font-bold text-[var(--text-heading)]">
@@ -337,7 +351,7 @@ export default function FoodPoliceClientPage() {
                       </span>
                     </div>
 
-                    <span className={`badge text-[9px] ${
+                    <span className={`badge text-xs${
                       isApproved ? 'badge-approved' : 'badge-pending'
                     }`}>
                       {isApproved ? 'Coach Approved' : 'Awaiting Review'}
@@ -349,25 +363,25 @@ export default function FoodPoliceClientPage() {
                   </p>
 
                   {/* Macros breakdown */}
-                  <div className="grid grid-cols-3 gap-2 text-center text-[10px] pt-1">
-                    <div className="p-1.5 bg-slate-950/60 rounded-lg border border-[var(--border-subtle)]">
-                      <span className="text-sky-400 font-bold block">{coach?.finalProtein || ai?.estimatedProtein || 30}g</span> Protein
+                  <div className="grid grid-cols-3 gap-2 text-center text-xs pt-1">
+                    <div className="p-1.5 bg-paper rounded-lg border border-[var(--border-subtle)]">
+                      <span className="text-brand font-bold block">{coach?.finalProtein || ai?.estimatedProtein || 30}g</span> Protein
                     </div>
-                    <div className="p-1.5 bg-slate-950/60 rounded-lg border border-[var(--border-subtle)]">
-                      <span className="text-cyan-400 font-bold block">{coach?.finalCarbs || ai?.estimatedCarbs || 60}g</span> Carbs
+                    <div className="p-1.5 bg-paper rounded-lg border border-[var(--border-subtle)]">
+                      <span className="text-brand font-bold block">{coach?.finalCarbs || ai?.estimatedCarbs || 60}g</span> Carbs
                     </div>
-                    <div className="p-1.5 bg-slate-950/60 rounded-lg border border-[var(--border-subtle)]">
-                      <span className="text-amber-400 font-bold block">{coach?.finalFat || ai?.estimatedFat || 15}g</span> Fats
+                    <div className="p-1.5 bg-paper rounded-lg border border-[var(--border-subtle)]">
+                      <span className="text-status-pending font-bold block">{coach?.finalFat || ai?.estimatedFat || 15}g</span> Fats
                     </div>
                   </div>
 
                   {/* Coach Feedback if exists */}
                   {coach && (
-                    <div className="p-3 bg-slate-950/60 rounded-xl border border-sky-400/30 text-xs space-y-1">
-                      <p className="text-[10px] font-bold text-sky-400 flex items-center gap-1">
-                        <ShieldCheck size={12} /> Oga Eric Advice:
+                    <div className="p-3 bg-paper rounded-xl border border-line-active text-xs space-y-1">
+                      <p className="text-xs font-bold text-brand flex items-center gap-1">
+                        <ShieldCheck size={12} /> Coach advice:
                       </p>
-                      <p className="text-[var(--text-secondary)] text-[11px] leading-relaxed italic">
+                      <p className="text-[var(--text-secondary)] text-xs leading-relaxed italic">
                         &quot;{coach.coachFeedback}&quot;
                       </p>
                     </div>

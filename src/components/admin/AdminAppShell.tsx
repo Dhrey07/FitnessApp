@@ -6,7 +6,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import {
   LayoutDashboard,
   Users,
-  ShieldAlert,
+  ClipboardList,
   Dumbbell,
   Calendar,
   Quote,
@@ -46,11 +46,11 @@ export function AdminAppShell({ title, subtitle, children }: AdminAppShellProps)
 
   const navItems = [
     { href: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard, exact: true },
-    { href: '/admin/clients', label: 'Clients Roster', icon: Users },
-    { href: '/admin/food-police', label: 'Food Police Queue', icon: ShieldAlert },
-    { href: '/admin/fitness-police', label: 'Workout Builder', icon: Dumbbell },
-    { href: '/admin/check-ins', label: 'Check-In Reviews', icon: Calendar },
-    { href: '/admin/testimonials', label: 'Social Proof', icon: Quote },
+    { href: '/admin/clients', label: 'Clients', icon: Users },
+    { href: '/admin/nutrition-review', label: 'Nutrition Review', icon: ClipboardList },
+    { href: '/admin/training', label: 'Training Builder', icon: Dumbbell },
+    { href: '/admin/check-ins', label: 'Check-ins', icon: Calendar },
+    { href: '/admin/testimonials', label: 'Testimonials', icon: Quote },
   ];
 
   const isActive = (item: typeof navItems[0]) => {
@@ -67,7 +67,7 @@ export function AdminAppShell({ title, subtitle, children }: AdminAppShellProps)
           <div className="flex items-center gap-2 shrink-0">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 rounded-xl bg-slate-900/60 dark:bg-slate-900 border border-white/10 text-slate-400 hover:text-white transition-colors"
+              className="lg:hidden p-2 rounded-xl bg-paper border border-line text-ink-muted hover:text-[var(--text-heading)] transition-colors"
               aria-label="Toggle navigation"
             >
               {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
@@ -83,17 +83,13 @@ export function AdminAppShell({ title, subtitle, children }: AdminAppShellProps)
           <div className="flex items-center gap-2 shrink-0">
             <ThemeToggle variant="icon" />
 
-            <div className="flex items-center gap-1.5 bg-slate-900/60 dark:bg-slate-900 light:bg-slate-100 border border-white/10 dark:border-white/10 light:border-slate-300 rounded-xl px-2 py-1.5">
-              <img
-                src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80"
-                alt="Oga Eric"
-                className="w-6 h-6 rounded-full object-cover border border-purple-400/40 shrink-0"
-              />
+            <div className="flex items-center gap-1.5 bg-paper border border-line rounded-xl px-2 py-1.5">
+              <div className="w-6 h-6 rounded-full bg-brand-soft text-brand font-bold flex items-center justify-center text-xs shrink-0" aria-hidden="true">{BRAND.coachName.split(' ').map((w) => w[0]).join('').slice(0, 2)}</div>
               <span className="text-xs font-bold text-[var(--text-heading)] hidden sm:inline">{BRAND.coachName}</span>
               <button
                 onClick={handleLogout}
                 title="Log Out"
-                className="p-1 text-slate-400 hover:text-rose-400 transition-colors"
+                className="p-1 text-ink-muted hover:text-status-rejected transition-colors"
               >
                 <LogOut size={14} />
               </button>
@@ -109,7 +105,7 @@ export function AdminAppShell({ title, subtitle, children }: AdminAppShellProps)
         {/* Desktop Sidebar Navigation */}
         <aside className="hidden lg:flex flex-col w-60 xl:w-64 border-r border-[var(--border-subtle)] px-3 py-5 shrink-0 space-y-6 bg-[var(--bg-sidebar)]">
           <div className="space-y-0.5">
-            <p className="label-xs px-3 pb-2 text-purple-400 font-bold">Coach Controls</p>
+            <p className="label-xs px-3 pb-2 text-brand font-bold">Coach Controls</p>
             {navItems.map((item) => {
               const active = isActive(item);
               const Icon = item.icon;
@@ -119,11 +115,11 @@ export function AdminAppShell({ title, subtitle, children }: AdminAppShellProps)
                   href={item.href}
                   className={`flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-bold transition-all ${
                     active
-                      ? 'bg-purple-600 text-white shadow-md shadow-purple-600/20'
+                      ? 'bg-brand-strong text-brand-on-strong shadow-md'
                       : 'text-[var(--text-secondary)] hover:bg-[var(--bg-card-hover)] hover:text-[var(--text-heading)]'
                   }`}
                 >
-                  <Icon size={15} className={active ? 'text-white' : 'text-[var(--text-muted)]'} />
+                  <Icon size={15} className={active ? 'text-[var(--text-heading)]' : 'text-[var(--text-muted)]'} />
                   <span>{item.label}</span>
                 </Link>
               );
@@ -131,9 +127,9 @@ export function AdminAppShell({ title, subtitle, children }: AdminAppShellProps)
           </div>
 
           <div className="mt-auto p-3.5 rounded-xl surface border border-[var(--border-subtle)] space-y-1.5 text-xs">
-            <span className="text-[10px] font-bold text-purple-400 uppercase tracking-wider">System Status</span>
+            <span className="text-xs font-bold text-brand uppercase tracking-wider">System Status</span>
             <p className="font-bold text-[var(--text-heading)] text-xs">Human-in-the-Loop Active</p>
-            <p className="text-[11px] text-[var(--text-muted)]">All client logs & check-ins require coach signoff.</p>
+            <p className="text-xs text-[var(--text-muted)]">All client logs & check-ins require coach signoff.</p>
           </div>
         </aside>
 
@@ -161,15 +157,15 @@ export function AdminAppShell({ title, subtitle, children }: AdminAppShellProps)
           >
             <div className="flex items-center justify-between pb-4 border-b border-[var(--border-subtle)]">
               <div className="flex items-center gap-2.5">
-                <div className="w-7 h-7 rounded-lg bg-purple-600 flex items-center justify-center text-white font-black shrink-0">
+                <div className="w-7 h-7 rounded-lg bg-brand-strong flex items-center justify-center text-brand-on-strong font-black shrink-0">
                   <UserCheck size={15} />
                 </div>
-                <span className="font-extrabold text-[var(--text-heading)] text-sm">COACH OS</span>
+                <span className="font-extrabold text-[var(--text-heading)] text-sm">{BRAND.shortName}</span>
               </div>
               <button
                 type="button"
                 onClick={() => setMobileMenuOpen(false)}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-white transition-colors"
+                className="p-1.5 rounded-lg text-ink-muted hover:text-[var(--text-heading)] transition-colors"
                 aria-label="Close menu"
               >
                 <X size={18} />
@@ -187,11 +183,11 @@ export function AdminAppShell({ title, subtitle, children }: AdminAppShellProps)
                     onClick={() => setMobileMenuOpen(false)}
                     className={`flex items-center gap-3 px-3.5 py-3 rounded-xl text-sm font-bold transition-all ${
                       active
-                        ? 'bg-purple-600 text-white shadow-md'
+                        ? 'bg-brand-strong text-brand-on-strong shadow-md'
                         : 'text-[var(--text-secondary)] hover:bg-[var(--bg-card-hover)]'
                     }`}
                   >
-                    <Icon size={17} className={active ? 'text-white' : 'text-[var(--text-muted)]'} />
+                    <Icon size={17} className={active ? 'text-[var(--text-heading)]' : 'text-[var(--text-muted)]'} />
                     <span>{item.label}</span>
                   </Link>
                 );
@@ -205,7 +201,7 @@ export function AdminAppShell({ title, subtitle, children }: AdminAppShellProps)
               </div>
               <button
                 onClick={handleLogout}
-                className="w-full flex items-center gap-2.5 px-3.5 py-3 rounded-xl text-sm font-bold text-rose-400 hover:bg-rose-400/10 transition-colors"
+                className="w-full flex items-center gap-2.5 px-3.5 py-3 rounded-xl text-sm font-bold text-status-rejected hover:bg-status-rejected/15 transition-colors"
               >
                 <LogOut size={17} />
                 <span>Sign Out</span>

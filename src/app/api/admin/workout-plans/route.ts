@@ -80,7 +80,7 @@ export async function POST(request: Request) {
         userId,
         title: 'New Workout Plan Assigned!',
         message: `Your coach assigned a new workout routine: "${title}". Check your Fitness Hub now!`,
-        link: '/client/fitness-police',
+        link: '/client/training',
       },
     });
 

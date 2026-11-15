@@ -80,7 +80,7 @@ export default function AdminCheckInsPage() {
       subtitle="Analyze athlete Sunday assessments, evaluate adherence scores, and issue targeted coaching directives."
     >
       {successMsg && (
-        <div className="p-4 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-xs flex items-center gap-2 animate-fade-in">
+        <div className="p-4 rounded-xl bg-status-approved/15 border border-status-approved/40 text-status-approved text-xs flex items-center gap-2 animate-fade-in">
           <CheckCircle2 size={16} className="shrink-0" />
           <span>{successMsg}</span>
         </div>
@@ -106,38 +106,38 @@ export default function AdminCheckInsPage() {
                   onClick={() => handleSelectCheckIn(ci)}
                   className={`surface p-5 space-y-3 cursor-pointer transition-all ${
                     isSelected
-                      ? 'border-purple-500 shadow-md'
+                      ? 'border-line-active shadow-md'
                       : 'hover:border-[var(--border-active)]'
                   }`}
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <div className="w-7 h-7 rounded-lg bg-purple-500/20 text-purple-400 font-bold text-xs flex items-center justify-center">
+                      <div className="w-7 h-7 rounded-lg bg-brand-soft text-brand font-bold text-xs flex items-center justify-center">
                         {ci.user?.firstName?.charAt(0)}
                       </div>
                       <span className="font-bold text-[var(--text-heading)] text-xs">{ci.user?.firstName} {ci.user?.lastName}</span>
                     </div>
-                    <span className={`badge text-[9px] ${isReviewed ? 'badge-approved' : 'badge-pending'}`}>
+                    <span className={`badge text-xs${isReviewed ? 'badge-approved' : 'badge-pending'}`}>
                       {ci.status}
                     </span>
                   </div>
 
                   <div className="grid grid-cols-3 gap-2 text-center text-xs">
-                    <div className="p-2 bg-slate-950/40 rounded-lg">
-                      <span className="text-[10px] text-[var(--text-muted)] block">Weight</span>
-                      <strong className="text-sky-400">{ci.currentWeightKg} kg</strong>
+                    <div className="p-2 bg-paper rounded-lg">
+                      <span className="text-xs text-[var(--text-muted)] block">Weight</span>
+                      <strong className="text-brand">{ci.currentWeightKg} kg</strong>
                     </div>
-                    <div className="p-2 bg-slate-950/40 rounded-lg">
-                      <span className="text-[10px] text-[var(--text-muted)] block">Waist</span>
-                      <strong className="text-cyan-400">{ci.waistCm} cm</strong>
+                    <div className="p-2 bg-paper rounded-lg">
+                      <span className="text-xs text-[var(--text-muted)] block">Waist</span>
+                      <strong className="text-brand">{ci.waistCm} cm</strong>
                     </div>
-                    <div className="p-2 bg-slate-950/40 rounded-lg">
-                      <span className="text-[10px] text-[var(--text-muted)] block">Adherence</span>
-                      <strong className="text-emerald-400">{ci.workoutAdherence || 85}%</strong>
+                    <div className="p-2 bg-paper rounded-lg">
+                      <span className="text-xs text-[var(--text-muted)] block">Adherence</span>
+                      <strong className="text-status-approved">{ci.workoutAdherence || 85}%</strong>
                     </div>
                   </div>
 
-                  <p className="text-[11px] text-[var(--text-secondary)] italic truncate">
+                  <p className="text-xs text-[var(--text-secondary)] italic truncate">
                     &quot;{ci.challenges || 'No challenges reported'}&quot;
                   </p>
                 </div>
@@ -146,11 +146,11 @@ export default function AdminCheckInsPage() {
           </div>
         </div>
 
-        {/* Right Column: Review Submission Console */}
+        {/* Right Column: Review panel */}
         <div className="lg:col-span-6 space-y-4">
-          <div className="surface p-6 sm:p-7 space-y-5 border border-purple-500/30 sticky top-20">
+          <div className="surface p-6 sm:p-7 space-y-5 border border-line-active sticky top-20">
             <div>
-              <span className="label-xs text-purple-400">Coach Feedback Terminal</span>
+              <span className="label-xs text-brand">Coach feedback</span>
               <h3 className="text-base font-bold text-[var(--text-heading)] mt-1">
                 {selectedCheckIn
                   ? `Reviewing ${selectedCheckIn.user?.firstName}'s Check-In`
@@ -163,8 +163,8 @@ export default function AdminCheckInsPage() {
 
             {selectedCheckIn ? (
               <form onSubmit={handleSubmitReview} className="space-y-4 animate-fade-in">
-                <div className="p-3.5 bg-slate-950/40 rounded-xl border border-[var(--border-subtle)] space-y-1.5 text-xs">
-                  <span className="text-[10px] font-bold text-[var(--text-muted)] uppercase">Athlete Submission Notes:</span>
+                <div className="p-3.5 bg-paper rounded-xl border border-[var(--border-subtle)] space-y-1.5 text-xs">
+                  <span className="text-xs font-bold text-[var(--text-muted)] uppercase">Athlete Submission Notes:</span>
                   <p className="text-[var(--text-secondary)] italic">&quot;{selectedCheckIn.challenges}&quot;</p>
                 </div>
 
@@ -174,7 +174,7 @@ export default function AdminCheckInsPage() {
                     type="number"
                     value={adjustedCalories}
                     onChange={(e) => setAdjustedCalories(e.target.value)}
-                    className="field-input font-bold text-sky-400"
+                    className="field-input font-bold text-brand"
                   />
                 </div>
 
@@ -192,14 +192,14 @@ export default function AdminCheckInsPage() {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="btn-brand text-xs w-full justify-center py-3 font-extrabold shadow-md shadow-sky-500/20"
+                  className="btn-brand text-xs w-full justify-center py-3 font-extrabold shadow-md"
                 >
                   {submitting ? 'Delivering Review...' : 'Deliver Official Coach Review'} <ArrowRight size={14} />
                 </button>
               </form>
             ) : (
-              <div className="p-8 text-center bg-slate-950/40 rounded-xl border border-[var(--border-subtle)] text-[var(--text-muted)] text-xs space-y-2">
-                <Calendar size={24} className="mx-auto text-slate-600" />
+              <div className="p-8 text-center bg-paper rounded-xl border border-[var(--border-subtle)] text-[var(--text-muted)] text-xs space-y-2">
+                <Calendar size={24} className="mx-auto text-ink-muted" />
                 <p>Click any check-in on the left to write review feedback and adjust calorie targets.</p>
               </div>
             )}

@@ -75,10 +75,10 @@ export default function AdminTestimonialsPage() {
   return (
     <AdminAppShell
       title="Member Social Proof & Testimonials Manager"
-      subtitle="Publish verified client physical transformations and testimonials directly to the public website."
+      subtitle="Publish verified client results and testimonials to the public website."
     >
       {successMsg && (
-        <div className="p-4 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-xs flex items-center gap-2 animate-fade-in">
+        <div className="p-4 rounded-xl bg-status-approved/15 border border-status-approved/40 text-status-approved text-xs flex items-center gap-2 animate-fade-in">
           <CheckCircle2 size={16} className="shrink-0" />
           <span>{successMsg}</span>
         </div>
@@ -90,7 +90,7 @@ export default function AdminTestimonialsPage() {
         <div className="lg:col-span-6 space-y-4">
           <form onSubmit={handleAddTestimonial} className="surface p-6 sm:p-7 space-y-5 border border-[var(--border-subtle)]">
             <div>
-              <span className="label-xs text-purple-400">Transformation Publishing</span>
+              <span className="label-xs text-brand">Transformation Publishing</span>
               <h3 className="section-title text-base mt-0.5">Add Verified Client Story</h3>
             </div>
 
@@ -136,7 +136,7 @@ export default function AdminTestimonialsPage() {
                   step="0.1"
                   value={endingWeightKg}
                   onChange={(e) => setEndingWeightKg(e.target.value)}
-                  className="field-input text-center text-sky-400 font-bold"
+                  className="field-input text-center text-brand font-bold"
                 />
               </div>
               <div>
@@ -169,7 +169,7 @@ export default function AdminTestimonialsPage() {
                 required
                 value={quote}
                 onChange={(e) => setQuote(e.target.value)}
-                placeholder="Describe their experience with Food Police, coaching accountability, and physical results..."
+                placeholder="Describe their experience with the coaching, the accountability and the results..."
                 className="field-input resize-none text-xs"
               />
             </div>
@@ -177,7 +177,7 @@ export default function AdminTestimonialsPage() {
             <button
               type="submit"
               disabled={submitting}
-              className="btn-brand text-xs w-full justify-center py-3 font-extrabold shadow-md shadow-sky-500/20"
+              className="btn-brand text-xs w-full justify-center py-3 font-extrabold shadow-md"
             >
               {submitting ? 'Publishing Story...' : 'Publish Transformation Story'} <ArrowRight size={14} />
             </button>
@@ -197,16 +197,16 @@ export default function AdminTestimonialsPage() {
                 <div className="flex items-center justify-between">
                   <div>
                     <h4 className="font-bold text-[var(--text-heading)] text-sm">{t.name}</h4>
-                    <p className="text-[11px] text-[var(--text-muted)]">{t.location} • {t.durationWeeks} Weeks</p>
+                    <p className="text-xs text-[var(--text-muted)]">{t.location} • {t.durationWeeks} Weeks</p>
                   </div>
-                  <span className="badge badge-approved text-[9px]">
+                  <span className="badge badge-approved text-xs">
                     <ShieldCheck size={11} /> Verified
                   </span>
                 </div>
 
-                <div className="p-2.5 bg-slate-950/40 rounded-lg flex items-center justify-between font-semibold">
+                <div className="p-2.5 bg-paper rounded-lg flex items-center justify-between font-semibold">
                   <span className="text-[var(--text-secondary)]">{t.goalAchieved}</span>
-                  <span className="text-sky-400">{t.startingWeightKg}kg → {t.endingWeightKg}kg</span>
+                  <span className="text-brand">{t.startingWeightKg}kg → {t.endingWeightKg}kg</span>
                 </div>
 
                 <p className="text-[var(--text-secondary)] italic leading-relaxed">

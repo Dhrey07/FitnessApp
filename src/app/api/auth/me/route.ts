@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { prisma } from '@/lib/db';
 import { SESSION_COOKIE_NAME } from '@/lib/auth';
-import { calculateTrialInfo, hasFitnessPoliceAccess } from '@/lib/services/entitlements';
+import { calculateTrialInfo, hasTrainingAccess } from '@/lib/services/entitlements';
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -33,7 +33,7 @@ export async function GET(request: Request) {
     };
 
     const trialInfo = calculateTrialInfo(activeSubscription);
-    const fitnessPoliceUnlocked = hasFitnessPoliceAccess(activeSubscription);
+    const trainingUnlocked = hasTrainingAccess(activeSubscription);
 
     return NextResponse.json({
       user: {
@@ -47,7 +47,7 @@ export async function GET(request: Request) {
         profile: user.profile,
         subscription: activeSubscription,
         trialInfo,
-        fitnessPoliceUnlocked,
+        trainingUnlocked,
       },
     });
   } catch (error) {

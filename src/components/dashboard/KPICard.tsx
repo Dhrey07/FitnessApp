@@ -45,8 +45,8 @@ export function KPICard({ title, value, icon: Icon, colorConfig, trend, isLoadin
         </div>
         {trend && (
           <span
-            className={`text-[10px] sm:text-xs font-semibold px-1.5 py-0.5 rounded-full whitespace-nowrap ${
-              trend.positive ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-rose-500/20 text-rose-400 border border-rose-500/30'
+            className={`text-xs sm:text-xs font-semibold px-1.5 py-0.5 rounded-full whitespace-nowrap${
+              trend.positive ? 'bg-status-approved/15 text-status-approved border border-status-approved/40' : 'bg-status-rejected/15 text-status-rejected border border-status-rejected/40'
             }`}
           >
             {trend.positive ? '↑' : '↓'} {Math.abs(trend.value)}%
@@ -57,11 +57,11 @@ export function KPICard({ title, value, icon: Icon, colorConfig, trend, isLoadin
       <p className={`text-lg sm:text-2xl font-bold tracking-tight mb-0.5 transition-transform duration-200 group-hover:scale-105 origin-left ${colorConfig.number}`}>
         {value}
       </p>
-      <p className={`text-[11px] sm:text-xs font-medium truncate ${colorConfig.label}`}>
+      <p className={`text-xs sm:text-xs font-medium truncate${colorConfig.label}`}>
         {title}
       </p>
       {trend && (
-        <p className="text-[10px] text-slate-400 mt-0.5 truncate">{trend.label}</p>
+        <p className="text-xs text-ink-muted mt-0.5 truncate">{trend.label}</p>
       )}
     </div>
   );

@@ -24,41 +24,41 @@ export interface PlanDetails {
 export const PLAN_DETAILS: Record<PlanTier, PlanDetails> = {
   FREE: {
     tier: 'FREE',
-    name: 'Food Police Free',
+    name: 'Starter',
     priceNgn: 0,
-    tagline: 'Always Free for All Registered Clients',
-    description: 'Instant food logging, natural language macro parsing, and human coach review.',
+    tagline: 'Free for every registered client',
+    description: 'Log meals in plain language or with a photo, get an instant estimate, and have a coach check it.',
     features: ['food_police'],
     bulletPoints: [
-      'Food photo & natural language meal logging',
-      'Instant AI calorie & macronutrient estimation',
-      'Nigerian & global food staple recognition',
-      'Human-in-the-loop coach portion verification',
-      'Daily nutrition intake timeline',
+      'Meal logging by photo or plain description',
+      'Instant calorie and macro estimate',
+      'Nigerian and international foods recognised',
+      'Coach checks portions and estimates',
+      'Daily nutrition timeline',
     ],
   },
   SILVER: {
     tier: 'SILVER',
-    name: 'Silver Coaching',
+    name: 'Essential',
     priceNgn: 15000,
-    tagline: 'Essential Guidance & Accountability',
-    description: 'Structured coaching guidance with weekly check-ins and coach feedback.',
+    tagline: 'Structure and weekly accountability',
+    description: 'Weekly check-ins reviewed by your coach, with written feedback and monthly adjustments.',
     features: ['food_police', 'weekly_checkin'],
     bulletPoints: [
-      'Everything in Free Food Police',
-      'Structured weekly check-in system',
-      'Personal coach progress reviews & advice',
-      'Weight, waist, and milestone metrics',
-      'Monthly training adjustments',
+      'Everything in Starter',
+      'Weekly check-in reviewed by your coach',
+      'Written coach feedback each week',
+      'Weight, waist and milestone tracking',
+      'Monthly programme adjustments',
     ],
   },
   GOLD: {
     tier: 'GOLD',
-    name: 'Gold Fitness Police',
+    name: 'Signature',
     priceNgn: 25000,
-    badge: 'MOST POPULAR',
-    tagline: 'Personalised Training, Nutrition & WhatsApp',
-    description: 'Complete bespoke fitness routines, meal plans, and direct WhatsApp accountability.',
+    badge: 'Most chosen',
+    tagline: 'Personalised nutrition, training and WhatsApp support',
+    description: 'A personalised meal plan and training programme, with direct WhatsApp accountability.',
     features: [
       'food_police',
       'weekly_checkin',
@@ -67,20 +67,20 @@ export const PLAN_DETAILS: Record<PlanTier, PlanDetails> = {
       'whatsapp_accountability',
     ],
     bulletPoints: [
-      'Everything in Silver Coaching',
-      'Custom 4-day & 5-day workout routines (Home/Gym)',
-      'Interactive set, rep, and weight logger',
-      'Bespoke African & international meal plans',
-      'Direct WhatsApp coach accountability',
+      'Everything in Essential',
+      'Personalised 4 or 5 day training programme (home or gym)',
+      'Set, rep and load logging with progression guidance',
+      'Personalised meal plan built on familiar foods',
+      'Direct WhatsApp accountability with your coach',
     ],
   },
   DIAMOND: {
     tier: 'DIAMOND',
-    name: 'Diamond VIP Coaching',
+    name: 'Private Coaching',
     priceNgn: 40000,
-    badge: 'VIP HIGH-TOUCH',
-    tagline: '1-on-1 VIP Coaching & Custom Calls',
-    description: 'High-touch 1-on-1 coaching, frequent check-ins, custom progress reports, and calls.',
+    badge: 'One to one',
+    tagline: 'One-to-one coaching with calls and reports',
+    description: 'Closest coach contact: calls, priority feedback, weekly adjustments and monthly progress reports.',
     features: [
       'food_police',
       'weekly_checkin',
@@ -92,11 +92,11 @@ export const PLAN_DETAILS: Record<PlanTier, PlanDetails> = {
       'progress_reports',
     ],
     bulletPoints: [
-      'Everything in Gold Fitness Police',
-      '1-on-1 bi-weekly coaching video/voice calls',
+      'Everything in Signature',
+      'Fortnightly one-to-one coaching calls',
       'Priority same-day coach feedback',
-      'Dynamic weekly macro & volume micro-adjustments',
-      'Comprehensive monthly transformation reports',
+      'Weekly calorie, macro and training adjustments',
+      'Monthly branded progress report',
     ],
   },
 };
@@ -158,9 +158,9 @@ export function calculateTrialInfo(subscription?: {
 }
 
 /**
- * Determines whether user has active Fitness Police access (via active trial or paid subscription).
+ * Determines whether the user has Training Hub access (active trial or paid plan).
  */
-export function hasFitnessPoliceAccess(subscription?: {
+export function hasTrainingAccess(subscription?: {
   planTier?: string | null;
   status?: string | null;
   isTrial?: boolean | null;
@@ -189,18 +189,18 @@ export function hasFeatureEntitlement(planTier: PlanTier, feature: FeatureKey): 
 export function getUpgradeMessage(feature: FeatureKey): string {
   switch (feature) {
     case 'weekly_checkin':
-      return 'Weekly check-ins require Silver tier (₦15,000/mo) or active trial.';
+      return 'Weekly check-ins are included from the Essential plan (₦15,000/month) or during your trial.';
     case 'personalised_nutrition':
-      return 'Personalised African/Global meal plans require Gold tier (₦25,000/mo) or active trial.';
+      return 'A personalised meal plan is included from the Signature plan (₦25,000/month) or during your trial.';
     case 'personalised_training':
-      return 'Personalised workout routines & set logging require Gold tier (₦25,000/mo) or active trial.';
+      return 'A personalised training programme and set logging are included from the Signature plan (₦25,000/month) or during your trial.';
     case 'whatsapp_accountability':
-      return 'WhatsApp direct coach accountability requires Gold tier (₦25,000/mo).';
+      return 'Direct WhatsApp accountability is included from the Signature plan (₦25,000/month).';
     case 'one_on_one_coaching':
     case 'coaching_calls':
     case 'progress_reports':
-      return '1-on-1 VIP coaching calls and custom reports require Diamond tier (₦40,000/mo).';
+      return 'Coaching calls and progress reports are part of Private Coaching (₦40,000/month).';
     default:
-      return 'This feature requires an active Fitness Police subscription.';
+      return 'This feature needs an active coaching plan.';
   }
 }

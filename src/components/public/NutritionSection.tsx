@@ -1,91 +1,82 @@
 import React from 'react';
 import Link from 'next/link';
-import { Utensils, Camera, MessageSquare, Search, CheckCircle2, ShieldAlert, ArrowRight, Sparkles } from 'lucide-react';
+import { ArrowRight, Camera, MessageSquare, CheckCircle2 } from 'lucide-react';
+
+const SAMPLE_DAY = [
+  { meal: 'Meal 1', food: 'Oats 60 g, 2 whole eggs, 1 banana', kcal: 520 },
+  { meal: 'Snack', food: 'Greek yoghurt 170 g, groundnuts 20 g', kcal: 260 },
+  { meal: 'Meal 2', food: 'Jollof rice 180 g cooked, grilled chicken 150 g, salad', kcal: 640 },
+  { meal: 'Meal 3', food: 'Boiled yam 200 g, efo riro 1 bowl, fish 120 g', kcal: 600 },
+];
 
 export function NutritionSection() {
+  const total = SAMPLE_DAY.reduce((s, m) => s + m.kcal, 0);
   return (
-    <section id="nutrition" className="py-20 sm:py-28 border-b border-white/10 bg-[#080b11]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-8 space-y-16">
-        
-        {/* Header */}
-        <div className="max-w-3xl space-y-4">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-500/10 border border-sky-500/30 text-sky-400 text-xs font-bold uppercase tracking-wider">
-            <Sparkles size={14} /> 100% Free For All Registered Clients
-          </div>
-          <h2 className="text-3xl sm:text-5xl font-black text-white uppercase tracking-tight leading-tight">
-            MEET FOOD POLICE. <br />
-            <span className="text-slate-400">Nutrition Without Blind Restrictions.</span>
+    <section id="nutrition" className="py-20 sm:py-24 bg-surface border-b border-line">
+      <div className="max-w-6xl mx-auto px-4 sm:px-8 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div className="space-y-6">
+          <p className="label-xs text-brand">Nutrition</p>
+          <h2 className="font-display text-3xl sm:text-4xl font-extrabold tracking-tight text-[var(--text-heading)]">
+            Nutrition that fits familiar foods.
           </h2>
-          <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
-            Nutrition isn’t about eating boiled chicken and lettuce every single day. Food Police gives you instant calorie and macronutrient clarity for African and international meals — completely free.
+          <p className="text-ink-secondary leading-relaxed">
+            Jollof, yam, plantain, beans, eba and egusi can all sit inside a fat-loss plan when quantities are clear. Your meal plan gives exact weights, daily calorie and protein targets, and sensible swaps for eating out, travel and social events.
           </p>
+          <ul className="space-y-3 text-sm">
+            {[
+              'Day-by-day meal plan with exact food quantities',
+              'Daily calorie, protein, carbohydrate and fat targets',
+              'Guidelines on raw vs cooked weights, oils, sauces, drinks and missed meals',
+              'A free nutrition log: describe or photograph a meal and get an estimate your coach checks',
+            ].map((t) => (
+              <li key={t} className="flex gap-2.5">
+                <CheckCircle2 size={18} className="text-brand shrink-0 mt-0.5" />
+                <span className="text-ink-secondary">{t}</span>
+              </li>
+            ))}
+          </ul>
+          <div className="flex flex-wrap gap-3 pt-1">
+            <Link href="/onboarding" className="btn-brand text-sm">
+              Start your assessment <ArrowRight size={14} />
+            </Link>
+            <div className="flex items-center gap-4 text-xs text-ink-muted">
+              <span className="flex items-center gap-1.5"><Camera size={14} /> Photo</span>
+              <span className="flex items-center gap-1.5"><MessageSquare size={14} /> Plain description</span>
+            </div>
+          </div>
         </div>
 
-        {/* 4 Interaction Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          
-          <div className="surface p-6 space-y-3 surface-hover">
-            <div className="w-10 h-10 rounded-xl bg-sky-500/20 text-sky-400 flex items-center justify-center font-bold">
-              <Camera size={20} />
-            </div>
-            <h3 className="text-sm font-bold text-white uppercase">Photo Meal Logging</h3>
-            <p className="text-xs text-slate-300">
-              Snap or upload a photo of your meal. The engine parses portion yields, estimated macros, and ingredient density.
-            </p>
+        <div className="surface p-6 space-y-4">
+          <div className="flex items-center justify-between">
+            <p className="font-display font-bold text-ink">Day 3 of 7</p>
+            <span className="label-xs text-ink-muted">Example meal plan</span>
           </div>
-
-          <div className="surface p-6 space-y-3 surface-hover">
-            <div className="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold">
-              <MessageSquare size={20} />
-            </div>
-            <h3 className="text-sm font-bold text-white uppercase">Natural Language Entry</h3>
-            <p className="text-xs text-slate-300">
-              Type what you ate in plain English (e.g. &quot;2 wraps of pounded yam, egusi soup and goat meat&quot;) for fast parsing.
-            </p>
+          <table className="w-full text-sm">
+            <tbody>
+              {SAMPLE_DAY.map((m) => (
+                <tr key={m.meal} className="border-t border-line">
+                  <td className="py-3 pr-3 label-xs text-ink-muted whitespace-nowrap align-top">{m.meal}</td>
+                  <td className="py-3 text-ink-secondary">{m.food}</td>
+                  <td className="py-3 pl-3 text-right font-semibold text-ink whitespace-nowrap">{m.kcal} kcal</td>
+                </tr>
+              ))}
+            </tbody>
+            <tfoot>
+              <tr className="border-t border-[var(--accent)]">
+                <td colSpan={2} className="pt-3 font-semibold text-ink">Daily total</td>
+                <td className="pt-3 text-right font-display font-bold text-ink">{total.toLocaleString()} kcal</td>
+              </tr>
+            </tfoot>
+          </table>
+          <div className="grid grid-cols-3 gap-2 text-center text-xs">
+            {[['Protein', '165 g'], ['Carbs', '210 g'], ['Fat', '62 g']].map(([k, v]) => (
+              <div key={k} className="p-2.5 rounded-lg bg-paper border border-line">
+                <p className="text-ink-muted">{k}</p>
+                <p className="font-semibold text-ink">{v}</p>
+              </div>
+            ))}
           </div>
-
-          <div className="surface p-6 space-y-3 surface-hover">
-            <div className="w-10 h-10 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center font-bold">
-              <Search size={20} />
-            </div>
-            <h3 className="text-sm font-bold text-white uppercase">African & Global Foods</h3>
-            <p className="text-xs text-slate-300">
-              Extensive built-in database of Nigerian staples (Jollof, Moi Moi, Efo Riro, Yam, Suya, Dodo) and international foods.
-            </p>
-          </div>
-
-          <div className="surface p-6 space-y-3 surface-hover">
-            <div className="w-10 h-10 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center font-bold">
-              <ShieldAlert size={20} />
-            </div>
-            <h3 className="text-sm font-bold text-white uppercase">Coach Oversight & Advice</h3>
-            <p className="text-xs text-slate-300">
-              Your human coach reviews your logs, validates portion sizes, and provides cultural swaps to keep you on goal.
-            </p>
-          </div>
-
         </div>
-
-        {/* Free Banner with CTA & Medical Disclaimer */}
-        <div className="surface p-8 sm:p-10 border-sky-500/40 bg-gradient-to-r from-sky-950/30 via-slate-900 to-slate-900 flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div className="space-y-2 max-w-xl">
-            <div className="flex items-center gap-2">
-              <span className="badge badge-approved">ALWAYS FREE</span>
-              <h3 className="text-xl font-bold text-white">Food Police is Never Put Behind a Paywall</h3>
-            </div>
-            <p className="text-xs text-slate-300">
-              Create your free account today and start logging meals with instant macro analysis and coach verification right away.
-            </p>
-            <p className="text-[11px] text-slate-500 pt-1">
-              *Note: Nutritional calculations are estimates and do not replace professional medical or clinical advice.
-            </p>
-          </div>
-
-          <Link href="/onboarding" className="btn-brand text-xs px-6 py-3 shrink-0">
-            Create Free Food Police Account <ArrowRight size={14} />
-          </Link>
-        </div>
-
       </div>
     </section>
   );

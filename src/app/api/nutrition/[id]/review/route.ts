@@ -61,9 +61,9 @@ export async function POST(
     await prisma.notification.create({
       data: {
         userId: submission.userId,
-        title: 'Food Police Review Complete',
+        title: 'Meal review complete',
         message: `Your human coach has reviewed your ${submission.mealType.toLowerCase()} submission!`,
-        link: '/client/food-police',
+        link: '/client/nutrition',
       },
     });
 

@@ -28,7 +28,7 @@ export async function GET(request: Request) {
     if (!isEntitled) {
       return NextResponse.json(
         {
-          error: 'Personalised nutrition requires Gold tier (₦25,000/mo) or above.',
+          error: 'A personalised meal plan is included from the Signature plan (₦25,000/month).',
           requiresUpgrade: true,
         },
         { status: 403 }

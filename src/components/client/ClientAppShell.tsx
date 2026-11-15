@@ -24,6 +24,7 @@ import { TrialInfo } from '@/lib/services/entitlements';
 import { ThemeToggle } from '@/components/theme/ThemeToggle';
 import { Logo } from '@/components/brand/Logo';
 import { NotificationCenter } from '@/components/layout/NotificationCenter';
+import { BRAND } from '@/lib/brand';
 
 interface ClientAppShellProps {
   title: string;
@@ -75,12 +76,12 @@ export function ClientAppShell({ title, subtitle, children }: ClientAppShellProp
 
   const navItems = [
     { href: '/client/dashboard', label: 'Home', shortLabel: 'Home', icon: LayoutDashboard, exact: true },
-    { href: '/client/fitness-police', label: 'Workouts', shortLabel: 'Train', icon: Dumbbell },
-    { href: '/client/food-police', label: 'Food Police', shortLabel: 'Food', icon: Utensils, badge: 'FREE' },
+    { href: '/client/training', label: 'Training', shortLabel: 'Train', icon: Dumbbell },
+    { href: '/client/nutrition', label: 'Nutrition', shortLabel: 'Food', icon: Utensils },
     { href: '/client/progress', label: 'Progress', shortLabel: 'Progress', icon: TrendingUp },
     { href: '/client/programs', label: 'Programs', shortLabel: 'Plans', icon: Layers },
-    { href: '/client/resources', label: 'Resources', shortLabel: 'Learn', icon: BookOpen },
-    { href: '/client/check-in', label: 'Coaching', shortLabel: 'Coach', icon: Calendar },
+    { href: '/client/resources', label: 'Guides', shortLabel: 'Guides', icon: BookOpen },
+    { href: '/client/check-in', label: 'Check-in', shortLabel: 'Check-in', icon: Calendar },
     { href: '/client/profile', label: 'Settings', shortLabel: 'Me', icon: Settings },
   ];
 
@@ -103,7 +104,7 @@ export function ClientAppShell({ title, subtitle, children }: ClientAppShellProp
           <div className="flex items-center gap-2 shrink-0">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 rounded-xl bg-slate-900/60 dark:bg-slate-900 border border-white/10 dark:border-white/10 light:border-slate-200 text-slate-400 hover:text-white transition-colors touch-target"
+              className="lg:hidden p-2 rounded-xl bg-paper border border-line text-ink-muted hover:text-[var(--text-heading)] transition-colors touch-target"
               aria-label="Open navigation"
             >
               {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
@@ -115,16 +116,16 @@ export function ClientAppShell({ title, subtitle, children }: ClientAppShellProp
           {/* User Status, Notification Bell, Theme Switcher & Profile */}
           <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
             {trialInfo?.isTrial && trialInfo.isActive && (
-              <span className="badge badge-trial text-[10px] hidden sm:inline-flex">
+              <span className="badge badge-trial text-xs hidden sm:inline-flex">
                 <Sparkles size={11} /> Day {trialInfo.currentDay}/14
               </span>
             )}
 
             {sub && !sub.isTrial && (
-              <span className={`badge text-[10px] hidden sm:inline-flex ${
+              <span className={`badge text-xs hidden sm:inline-flex${
                 sub.planTier === 'GOLD' ? 'badge-tier-gold' :
                 sub.planTier === 'DIAMOND' ? 'badge-tier-diamond' :
-                'bg-slate-800 dark:bg-slate-800 light:bg-slate-200 text-slate-300 dark:text-slate-300 light:text-slate-800'
+                'bg-paper text-ink-secondary'
               }`}>
                 {sub.planTier}
               </span>
@@ -137,8 +138,8 @@ export function ClientAppShell({ title, subtitle, children }: ClientAppShellProp
             <ThemeToggle variant="icon" />
 
             {/* Profile Avatar & Logout */}
-            <div className="flex items-center gap-1.5 bg-slate-900/60 dark:bg-slate-900 light:bg-slate-100 border border-white/10 dark:border-white/10 light:border-slate-300 rounded-xl px-2 py-1.5">
-              <div className="w-6 h-6 rounded-full bg-sky-500/20 text-sky-400 font-bold flex items-center justify-center text-[10px] border border-sky-500/30 shrink-0">
+            <div className="flex items-center gap-1.5 bg-paper border border-line rounded-xl px-2 py-1.5">
+              <div className="w-6 h-6 rounded-full bg-brand-soft text-brand font-bold flex items-center justify-center text-xs border border-line-active shrink-0">
                 {user?.firstName?.charAt(0) || 'C'}
               </div>
               <span className="text-xs font-bold text-[var(--text-heading)] hidden lg:inline truncate max-w-[100px]">
@@ -147,7 +148,7 @@ export function ClientAppShell({ title, subtitle, children }: ClientAppShellProp
               <button
                 onClick={handleLogout}
                 title="Log Out"
-                className="p-1 text-slate-400 hover:text-rose-400 transition-colors"
+                className="p-1 text-ink-muted hover:text-status-rejected transition-colors"
               >
                 <LogOut size={14} />
               </button>
@@ -173,19 +174,14 @@ export function ClientAppShell({ title, subtitle, children }: ClientAppShellProp
                   href={item.href}
                   className={`flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold transition-all ${
                     active
-                      ? 'bg-sky-400 text-slate-950 shadow-md shadow-sky-400/20'
+                      ? 'bg-brand-strong text-brand-on-strong shadow-md'
                       : 'text-[var(--text-secondary)] hover:bg-[var(--bg-card-hover)] hover:text-[var(--text-heading)]'
                   }`}
                 >
                   <div className="flex items-center gap-2.5">
-                    <Icon size={15} className={active ? 'text-slate-950' : 'text-[var(--text-muted)]'} />
+                    <Icon size={15} className={active ? 'text-brand-on-strong' : 'text-[var(--text-muted)]'} />
                     <span>{item.label}</span>
                   </div>
-                  {item.badge && !active && (
-                    <span className="bg-sky-400/20 text-sky-400 text-[9px] px-1.5 py-0.5 rounded font-black">
-                      {item.badge}
-                    </span>
-                  )}
                 </Link>
               );
             })}
@@ -193,16 +189,12 @@ export function ClientAppShell({ title, subtitle, children }: ClientAppShellProp
 
           {/* Quick Coach Link */}
           <div className="mt-auto p-3.5 rounded-xl surface border border-[var(--border-subtle)] space-y-2 text-xs">
-            <p className="font-bold text-[var(--text-heading)] text-[11px] uppercase tracking-wider">Head Coach</p>
+            <p className="font-bold text-[var(--text-heading)] text-xs uppercase tracking-wider">Head Coach</p>
             <div className="flex items-center gap-2.5">
-              <img
-                src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80"
-                alt="Oga Eric"
-                className="w-8 h-8 rounded-full object-cover border border-sky-400/40 shrink-0"
-              />
+              <div className="w-8 h-8 rounded-full bg-brand-soft text-brand font-bold flex items-center justify-center text-xs shrink-0" aria-hidden="true">{BRAND.coachName.split(' ').map((w) => w[0]).join('').slice(0, 2)}</div>
               <div className="min-w-0">
-                <p className="font-bold text-[var(--text-heading)] text-xs truncate">Oga Eric</p>
-                <p className="text-[10px] text-sky-400 font-semibold">Online & Reviewing</p>
+                <p className="font-bold text-[var(--text-heading)] text-xs truncate">{BRAND.coachName}</p>
+                <p className="text-xs text-brand font-semibold">Head coach</p>
               </div>
             </div>
           </div>
@@ -240,15 +232,15 @@ export function ClientAppShell({ title, subtitle, children }: ClientAppShellProp
           >
             <div className="flex items-center justify-between pb-4 border-b border-[var(--border-subtle)]">
               <div className="flex items-center gap-2.5">
-                <div className="w-7 h-7 rounded-lg bg-sky-400 flex items-center justify-center text-slate-950 font-black shrink-0">
+                <div className="w-7 h-7 rounded-lg bg-brand-strong flex items-center justify-center text-brand-on-strong font-black shrink-0">
                   <Flame size={15} />
                 </div>
-                <span className="font-extrabold text-[var(--text-heading)] text-sm">FITNESS POLICE</span>
+                <span className="font-extrabold text-[var(--text-heading)] text-sm">{BRAND.shortName}</span>
               </div>
               <button
                 type="button"
                 onClick={() => setMobileMenuOpen(false)}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-white transition-colors"
+                className="p-1.5 rounded-lg text-ink-muted hover:text-[var(--text-heading)] transition-colors"
                 aria-label="Close menu"
               >
                 <X size={18} />
@@ -258,12 +250,12 @@ export function ClientAppShell({ title, subtitle, children }: ClientAppShellProp
             {/* User info in drawer */}
             {user && (
               <div className="flex items-center gap-2.5 px-1">
-                <div className="w-8 h-8 rounded-full bg-sky-500/20 text-sky-400 font-bold flex items-center justify-center text-sm border border-sky-500/30 shrink-0">
+                <div className="w-8 h-8 rounded-full bg-brand-soft text-brand font-bold flex items-center justify-center text-sm border border-line-active shrink-0">
                   {user.firstName?.charAt(0)}
                 </div>
                 <div className="min-w-0">
                   <p className="text-xs font-bold text-[var(--text-heading)] truncate">{user.firstName} {user.lastName}</p>
-                  <p className="text-[10px] text-[var(--text-muted)] truncate">{user.email}</p>
+                  <p className="text-xs text-[var(--text-muted)] truncate">{user.email}</p>
                 </div>
               </div>
             )}
@@ -279,19 +271,14 @@ export function ClientAppShell({ title, subtitle, children }: ClientAppShellProp
                     onClick={() => setMobileMenuOpen(false)}
                     className={`flex items-center justify-between px-3.5 py-3 rounded-xl text-sm font-bold transition-all ${
                       active
-                        ? 'bg-sky-400 text-slate-950 shadow-md'
+                        ? 'bg-brand-strong text-brand-on-strong shadow-md'
                         : 'text-[var(--text-secondary)] hover:bg-[var(--bg-card-hover)]'
                     }`}
                   >
                     <div className="flex items-center gap-3">
-                      <Icon size={17} className={active ? 'text-slate-950' : 'text-[var(--text-muted)]'} />
+                      <Icon size={17} className={active ? 'text-brand-on-strong' : 'text-[var(--text-muted)]'} />
                       <span>{item.label}</span>
                     </div>
-                    {item.badge && !active && (
-                      <span className="bg-sky-400/20 text-sky-400 text-[9px] px-1.5 py-0.5 rounded font-black">
-                        {item.badge}
-                      </span>
-                    )}
                   </Link>
                 );
               })}
@@ -304,7 +291,7 @@ export function ClientAppShell({ title, subtitle, children }: ClientAppShellProp
               </div>
               <button
                 onClick={handleLogout}
-                className="w-full flex items-center gap-2.5 px-3.5 py-3 rounded-xl text-sm font-bold text-rose-400 hover:bg-rose-400/10 transition-colors"
+                className="w-full flex items-center gap-2.5 px-3.5 py-3 rounded-xl text-sm font-bold text-status-rejected hover:bg-status-rejected/15 transition-colors"
               >
                 <LogOut size={17} />
                 <span>Sign Out</span>
@@ -325,14 +312,14 @@ export function ClientAppShell({ title, subtitle, children }: ClientAppShellProp
                 key={item.href}
                 href={item.href}
                 className={`flex flex-col items-center justify-center py-1.5 px-2 rounded-xl min-w-0 flex-1 transition-all ${
-                  active ? 'text-sky-400' : 'text-[var(--text-muted)] hover:text-[var(--text-heading)]'
+                  active ? 'text-brand' : 'text-[var(--text-muted)] hover:text-[var(--text-heading)]'
                 }`}
               >
-                <Icon size={18} className={`shrink-0 ${active ? 'text-sky-400' : 'text-[var(--text-muted)]'}`} />
-                <span className="text-[9px] font-bold mt-0.5 truncate w-full text-center leading-tight">
+                <Icon size={18} className={`shrink-0 ${active ? 'text-brand' : 'text-[var(--text-muted)]'}`} />
+                <span className="text-xs font-bold mt-0.5 truncate w-full text-center leading-tight">
                   {item.shortLabel}
                 </span>
-                {active && <span className="w-1 h-1 rounded-full bg-sky-400 mt-0.5" />}
+                {active && <span className="w-1 h-1 rounded-full bg-brand-strong mt-0.5" />}
               </Link>
             );
           })}

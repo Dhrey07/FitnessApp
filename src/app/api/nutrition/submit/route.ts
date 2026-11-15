@@ -61,7 +61,7 @@ export async function POST(request: Request) {
     });
 
     return NextResponse.json({
-      message: 'Meal submitted to Food Police. AI analysis complete and awaiting coach review.',
+      message: 'Meal logged. Estimate ready and awaiting coach review.',
       submission,
     });
   } catch (error) {

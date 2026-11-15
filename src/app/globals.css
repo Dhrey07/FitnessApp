@@ -117,6 +117,8 @@ html.light {
   --color-ink-secondary: var(--text-secondary);
   --color-ink-muted: var(--text-muted);
   --color-line: var(--border-subtle);
+  --color-line-active: var(--border-active);
+  --color-brand-on-strong: var(--brand-on-strong);
   --color-status-pending: var(--status-pending);
   --color-status-approved: var(--status-approved);
   --color-status-modified: var(--status-modified);

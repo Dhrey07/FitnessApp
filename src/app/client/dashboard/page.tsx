@@ -35,11 +35,11 @@ export default function ClientDashboardPage() {
       setUser(meData.user);
 
       if (meData.user?.id) {
-        const wRes = await fetch(`/api/fitness-police/workouts?userId=${meData.user.id}`);
+        const wRes = await fetch(`/api/training/workouts?userId=${meData.user.id}`);
         const wData = await wRes.json();
         setWorkoutPlan(wData.workoutPlan);
 
-        const fRes = await fetch('/api/food-police/queue');
+        const fRes = await fetch('/api/nutrition/queue');
         const fData = await fRes.json();
         setFoodLogs(fData.queue || []);
       }
@@ -97,8 +97,8 @@ export default function ClientDashboardPage() {
         <div className="surface p-6 sm:p-7 flex flex-col justify-between space-y-6 border-l-4 border-l-sky-400 surface-hover">
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <span className="label-xs text-sky-400">Focus 01 • Training</span>
-              <span className="badge badge-trial text-[10px]">45 MIN</span>
+              <span className="label-xs text-brand">Focus 01 • Training</span>
+              <span className="badge badge-trial text-xs">45 MIN</span>
             </div>
 
             <div>
@@ -109,28 +109,28 @@ export default function ClientDashboardPage() {
 
             <div className="space-y-2 pt-2 border-t border-[var(--border-subtle)]">
               {(activeWorkout.exercises || []).slice(0, 3).map((ex: any, i: number) => (
-                <div key={i} className="p-2.5 bg-slate-900/60 dark:bg-slate-900/90 light:bg-slate-50 rounded-xl border border-[var(--border-subtle)] flex items-center justify-between text-xs">
+                <div key={i} className="p-2.5 bg-paper rounded-xl border border-[var(--border-subtle)] flex items-center justify-between text-xs">
                   <span className="font-semibold text-[var(--text-heading)] truncate">{ex.name}</span>
-                  <span className="text-sky-400 font-bold text-[11px] shrink-0 ml-2">{ex.sets} sets × {ex.reps}</span>
+                  <span className="text-brand font-bold text-xs shrink-0 ml-2">{ex.sets} sets × {ex.reps}</span>
                 </div>
               ))}
             </div>
           </div>
 
           <Link
-            href="/client/fitness-police"
-            className="btn-brand text-xs w-full justify-center py-3 font-extrabold shadow-md shadow-sky-500/20"
+            href="/client/training"
+            className="btn-brand text-xs w-full justify-center py-3 font-extrabold shadow-md"
           >
             <Play size={14} className="fill-current" /> Start Today&apos;s Workout
           </Link>
         </div>
 
-        {/* PILLAR 2: WHAT SHOULD I EAT? (Food Police) */}
+        {/* PILLAR 2: WHAT SHOULD I EAT? (Nutrition log) */}
         <div className="surface p-6 sm:p-7 flex flex-col justify-between space-y-6 border-l-4 border-l-cyan-400 surface-hover">
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <span className="label-xs text-cyan-400">Focus 02 • Nutrition</span>
-              <span className="badge badge-approved text-[10px]">100% FREE TIER</span>
+              <span className="label-xs text-brand">Focus 02 • Nutrition</span>
+              <span className="badge badge-approved text-xs">100% FREE TIER</span>
             </div>
 
             <div>
@@ -145,42 +145,42 @@ export default function ClientDashboardPage() {
             {/* Macro Progress Bars */}
             <div className="space-y-2.5 pt-2 border-t border-[var(--border-subtle)] text-xs">
               <div>
-                <div className="flex justify-between text-[11px] font-semibold mb-1">
-                  <span className="text-sky-400">Protein: {todayProtein}g / {profile.targetProteinG}g</span>
+                <div className="flex justify-between text-xs font-semibold mb-1">
+                  <span className="text-brand">Protein: {todayProtein}g / {profile.targetProteinG}g</span>
                   <span className="text-[var(--text-muted)]">{proteinPercent}%</span>
                 </div>
-                <div className="h-1.5 bg-slate-900 rounded-full overflow-hidden">
-                  <div className="h-full bg-sky-400 rounded-full" style={{ width: `${proteinPercent}%` }} />
+                <div className="h-1.5 bg-paper rounded-full overflow-hidden">
+                  <div className="h-full bg-brand-strong rounded-full" style={{ width: `${proteinPercent}%` }} />
                 </div>
               </div>
 
               <div>
-                <div className="flex justify-between text-[11px] font-semibold mb-1">
-                  <span className="text-cyan-400">Carbs: {todayCarbs}g / {profile.targetCarbsG}g</span>
+                <div className="flex justify-between text-xs font-semibold mb-1">
+                  <span className="text-brand">Carbs: {todayCarbs}g / {profile.targetCarbsG}g</span>
                   <span className="text-[var(--text-muted)]">78%</span>
                 </div>
-                <div className="h-1.5 bg-slate-900 rounded-full overflow-hidden">
-                  <div className="h-full bg-cyan-400 rounded-full" style={{ width: `78%` }} />
+                <div className="h-1.5 bg-paper rounded-full overflow-hidden">
+                  <div className="h-full bg-brand-strong rounded-full" style={{ width: `78%` }} />
                 </div>
               </div>
 
               <div>
-                <div className="flex justify-between text-[11px] font-semibold mb-1">
-                  <span className="text-amber-400">Fats: {todayFat}g / {profile.targetFatG}g</span>
+                <div className="flex justify-between text-xs font-semibold mb-1">
+                  <span className="text-status-pending">Fats: {todayFat}g / {profile.targetFatG}g</span>
                   <span className="text-[var(--text-muted)]">75%</span>
                 </div>
-                <div className="h-1.5 bg-slate-900 rounded-full overflow-hidden">
-                  <div className="h-full bg-amber-400 rounded-full" style={{ width: `75%` }} />
+                <div className="h-1.5 bg-paper rounded-full overflow-hidden">
+                  <div className="h-full bg-brand-strong rounded-full" style={{ width: `75%` }} />
                 </div>
               </div>
             </div>
           </div>
 
           <Link
-            href="/client/food-police"
+            href="/client/nutrition"
             className="btn-secondary text-xs w-full justify-center py-3 font-bold"
           >
-            <Utensils size={14} className="text-cyan-400" /> Log Meal in Food Police
+            <Utensils size={14} className="text-brand" /> Log a meal
           </Link>
         </div>
 
@@ -188,23 +188,23 @@ export default function ClientDashboardPage() {
         <div className="surface p-6 sm:p-7 flex flex-col justify-between space-y-6 border-l-4 border-l-blue-400 surface-hover">
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <span className="label-xs text-blue-400">Focus 03 • Progress</span>
-              <span className="badge text-[10px] bg-slate-800 text-slate-300">WEEK 4 OF 12</span>
+              <span className="label-xs text-brand">Focus 03 • Progress</span>
+              <span className="badge text-xs bg-paper text-ink-secondary">WEEK 4 OF 12</span>
             </div>
 
             <div>
               <h2 className="text-xs font-bold text-[var(--text-muted)] uppercase tracking-wider">Am I Making Progress?</h2>
               <div className="flex items-baseline gap-2 mt-1">
                 <span className="text-2xl font-black text-[var(--text-heading)]">{profile.weightKg} kg</span>
-                <span className="text-xs font-bold text-sky-400">-2.3kg total loss</span>
+                <span className="text-xs font-bold text-brand">-2.3kg total loss</span>
               </div>
               <p className="text-xs text-[var(--text-muted)] mt-0.5">Waist: {profile.waistCm} cm (-2.5cm reduction)</p>
             </div>
 
             {/* Latest Coach Feedback Note */}
-            <div className="p-3.5 bg-slate-900/60 dark:bg-slate-900/90 light:bg-slate-50 rounded-xl border border-[var(--border-subtle)] space-y-1.5 pt-2">
-              <div className="flex items-center justify-between text-[10px] font-bold text-[var(--text-muted)] uppercase">
-                <span className="text-sky-400 flex items-center gap-1"><ShieldCheck size={12} /> Oga Eric Feedback</span>
+            <div className="p-3.5 bg-paper rounded-xl border border-[var(--border-subtle)] space-y-1.5 pt-2">
+              <div className="flex items-center justify-between text-xs font-bold text-[var(--text-muted)] uppercase">
+                <span className="text-brand flex items-center gap-1"><ShieldCheck size={12} /> Coach feedback</span>
                 <span>2d ago</span>
               </div>
               <p className="text-xs text-[var(--text-primary)] italic leading-relaxed">
@@ -217,7 +217,7 @@ export default function ClientDashboardPage() {
             href="/client/check-in"
             className="btn-secondary text-xs w-full justify-center py-3 font-bold"
           >
-            <Calendar size={14} className="text-blue-400" /> Submit Weekly Check-In
+            <Calendar size={14} className="text-brand" /> Submit Weekly Check-In
           </Link>
         </div>
 
@@ -227,26 +227,26 @@ export default function ClientDashboardPage() {
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 w-full">
         <div className="surface p-4 space-y-1">
           <span className="label-xs text-[var(--text-muted)]">Daily Water</span>
-          <p className="text-xl font-extrabold text-cyan-400">2.5 / 3.0 <span className="text-xs font-normal text-[var(--text-muted)]">L</span></p>
-          <p className="text-[10px] text-[var(--text-muted)]">Hydration baseline</p>
+          <p className="text-xl font-extrabold text-brand">2.5 / 3.0 <span className="text-xs font-normal text-[var(--text-muted)]">L</span></p>
+          <p className="text-xs text-[var(--text-muted)]">Hydration baseline</p>
         </div>
 
         <div className="surface p-4 space-y-1">
           <span className="label-xs text-[var(--text-muted)]">Daily Steps</span>
-          <p className="text-xl font-extrabold text-sky-400">8,420 <span className="text-xs font-normal text-[var(--text-muted)]">steps</span></p>
-          <p className="text-[10px] text-[var(--text-muted)]">Goal: 8,000 / day</p>
+          <p className="text-xl font-extrabold text-brand">8,420 <span className="text-xs font-normal text-[var(--text-muted)]">steps</span></p>
+          <p className="text-xs text-[var(--text-muted)]">Goal: 8,000 / day</p>
         </div>
 
         <div className="surface p-4 space-y-1">
           <span className="label-xs text-[var(--text-muted)]">Streak</span>
-          <p className="text-xl font-extrabold text-amber-400">14 Days</p>
-          <p className="text-[10px] text-[var(--text-muted)]">Nutrition logging</p>
+          <p className="text-xl font-extrabold text-status-pending">14 Days</p>
+          <p className="text-xs text-[var(--text-muted)]">Nutrition logging</p>
         </div>
 
         <div className="surface p-4 space-y-1">
           <span className="label-xs text-[var(--text-muted)]">Adherence Score</span>
-          <p className="text-xl font-extrabold text-emerald-400">92%</p>
-          <p className="text-[10px] text-[var(--text-muted)]">Excellent rating</p>
+          <p className="text-xl font-extrabold text-status-approved">92%</p>
+          <p className="text-xs text-[var(--text-muted)]">Excellent rating</p>
         </div>
       </div>
     </ClientAppShell>

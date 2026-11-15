@@ -6,13 +6,14 @@ import Link from 'next/link';
 import { Lock, Mail, ArrowRight, AlertCircle, Eye, EyeOff } from 'lucide-react';
 import { Logo } from '@/components/brand/Logo';
 import { ThemeToggle } from '@/components/theme/ThemeToggle';
+import { BRAND } from '@/lib/brand';
 
 function LoginFormContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const defaultRole = searchParams.get('role');
 
-  const [email, setEmail] = useState(defaultRole === 'coach' ? 'coach@fitnesspolice.com' : 'chidi@example.com');
+  const [email, setEmail] = useState(defaultRole === 'coach' ? 'coach@ericonet.fit' : 'chidi@example.com');
   const [password, setPassword] = useState('password123');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -66,15 +67,15 @@ function LoginFormContent() {
       {/* Login Card */}
       <div className="max-w-md mx-auto w-full surface p-7 sm:p-9 space-y-6 my-auto border border-[var(--border-subtle)] shadow-xl">
         <div>
-          <span className="label-xs text-sky-400">Account Access</span>
-          <h1 className="page-title text-2xl mt-1">Sign In to Your Portal</h1>
+          <span className="label-xs text-brand">Account Access</span>
+          <h1 className="page-title text-2xl mt-1">Sign in</h1>
           <p className="text-xs text-[var(--text-muted)] mt-1">
-            Access your personalized workouts, free Food Police log, and coaching reviews.
+            Access your training programme, nutrition log and coach reviews.
           </p>
         </div>
 
         {errorMsg && (
-          <div className="p-3.5 rounded-xl bg-rose-500/15 border border-rose-500/30 text-rose-400 text-xs flex items-center gap-2 animate-fade-in">
+          <div className="p-3.5 rounded-xl bg-status-rejected/15 border border-status-rejected/40 text-status-rejected text-xs flex items-center gap-2 animate-fade-in">
             <AlertCircle size={16} className="shrink-0" />
             <span>{errorMsg}</span>
           </div>
@@ -99,7 +100,7 @@ function LoginFormContent() {
           <div>
             <div className="flex items-center justify-between mb-1">
               <label className="field-label mb-0">Password</label>
-              <span className="text-[10px] text-[var(--text-muted)]">Default: password123</span>
+              <span className="text-xs text-[var(--text-muted)]">Default: password123</span>
             </div>
             <div className="relative">
               <Lock size={15} className="text-[var(--text-muted)] absolute left-3.5 top-1/2 -translate-y-1/2" />
@@ -124,7 +125,7 @@ function LoginFormContent() {
           <button
             type="submit"
             disabled={loading}
-            className="btn-brand text-xs w-full justify-center py-3 font-extrabold shadow-lg shadow-sky-500/20"
+            className="btn-brand text-xs w-full justify-center py-3 font-extrabold shadow-lg"
           >
             {loading ? 'Authenticating...' : 'Sign In'} <ArrowRight size={14} />
           </button>
@@ -132,41 +133,41 @@ function LoginFormContent() {
 
         {/* Quick Testing Accounts */}
         <div className="pt-4 border-t border-[var(--border-subtle)] space-y-2">
-          <p className="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wider">
-            Quick Fill (Development / Testing Accounts):
+          <p className="text-xs font-bold text-[var(--text-muted)] uppercase tracking-wider">
+            Demo accounts
           </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px]">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
             <button
               type="button"
               onClick={() => setDemoCredentials('chidi@example.com')}
-              className="p-2 rounded-lg surface hover:border-sky-400/40 text-left transition-colors"
+              className="p-2 rounded-lg surface hover:border-line-active text-left transition-colors"
             >
               <p className="font-bold text-[var(--text-heading)]">Chidi (Client)</p>
-              <p className="text-[10px] text-sky-400 font-semibold">Gold Tier Subscriber</p>
+              <p className="text-xs text-brand font-semibold">Signature member</p>
             </button>
             <button
               type="button"
               onClick={() => setDemoCredentials('zainab@example.com')}
-              className="p-2 rounded-lg surface hover:border-sky-400/40 text-left transition-colors"
+              className="p-2 rounded-lg surface hover:border-line-active text-left transition-colors"
             >
               <p className="font-bold text-[var(--text-heading)]">Zainab (Client)</p>
-              <p className="text-[10px] text-amber-400 font-semibold">14-Day Trial (Day 5)</p>
+              <p className="text-xs text-status-pending font-semibold">14-Day Trial (Day 5)</p>
             </button>
             <button
               type="button"
               onClick={() => setDemoCredentials('tunde@example.com')}
-              className="p-2 rounded-lg surface hover:border-sky-400/40 text-left transition-colors"
+              className="p-2 rounded-lg surface hover:border-line-active text-left transition-colors"
             >
               <p className="font-bold text-[var(--text-heading)]">Tunde (Client)</p>
-              <p className="text-[10px] text-[var(--text-muted)]">Free Food Police User</p>
+              <p className="text-xs text-[var(--text-muted)]">Starter (free)</p>
             </button>
             <button
               type="button"
-              onClick={() => setDemoCredentials('coach@fitnesspolice.com')}
-              className="p-2 rounded-lg surface hover:border-purple-400 text-left transition-colors"
+              onClick={() => setDemoCredentials('coach@ericonet.fit')}
+              className="p-2 rounded-lg surface hover:border-line-active text-left transition-colors"
             >
-              <p className="font-bold text-purple-400">Oga Eric</p>
-              <p className="text-[10px] text-purple-400 font-semibold">Head Coach Admin</p>
+              <p className="font-bold text-brand">{BRAND.coachName}</p>
+              <p className="text-xs text-brand font-semibold">Head coach</p>
             </button>
           </div>
         </div>
@@ -174,14 +175,14 @@ function LoginFormContent() {
         {/* Footer Link */}
         <div className="text-center text-xs text-[var(--text-muted)] pt-1">
           Don&apos;t have an account yet?{' '}
-          <Link href="/onboarding" className="text-sky-400 font-bold hover:underline">
+          <Link href="/onboarding" className="text-brand font-bold hover:underline">
             Start 14-Day Free Trial
           </Link>
         </div>
       </div>
 
       <div className="text-center text-xs text-[var(--text-muted)] py-3">
-        Fitness Police Secure Authentication Engine
+        {BRAND.legalName}
       </div>
     </div>
   );

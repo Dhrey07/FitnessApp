@@ -30,12 +30,12 @@ export function ThemeToggle({ variant = 'icon', className = '' }: ThemeTogglePro
         type="button"
         onClick={toggleTheme}
         title={`Current: ${resolvedTheme} mode. Click to toggle.`}
-        className={`p-2 rounded-xl bg-slate-900/60 dark:bg-slate-900 border border-white/10 dark:border-white/10 light:border-slate-300 text-slate-300 dark:text-slate-300 light:text-slate-700 hover:text-sky-400 dark:hover:text-sky-400 light:hover:text-sky-600 transition-colors ${className}`}
+        className={`p-2 rounded-xl bg-paper border border-line text-ink-secondary hover:text-brand transition-colors${className}`}
       >
         {resolvedTheme === 'dark' ? (
-          <Moon size={16} className="text-sky-400" />
+          <Moon size={16} className="text-brand" />
         ) : (
-          <Sun size={16} className="text-amber-500" />
+          <Sun size={16} className="text-status-pending" />
         )}
       </button>
     );
@@ -43,14 +43,14 @@ export function ThemeToggle({ variant = 'icon', className = '' }: ThemeTogglePro
 
   if (variant === 'buttons') {
     return (
-      <div className={`flex items-center gap-1.5 bg-slate-900/80 dark:bg-slate-900 light:bg-slate-100 p-1 rounded-xl border border-white/10 dark:border-white/10 light:border-slate-300 text-xs ${className}`}>
+      <div className={`flex items-center gap-1.5 bg-paper p-1 rounded-xl border border-line text-xs${className}`}>
         <button
           type="button"
           onClick={() => setTheme('light')}
           className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-bold transition-all ${
             theme === 'light'
-              ? 'bg-sky-500 text-white shadow-sm'
-              : 'text-slate-400 hover:text-slate-200 light:hover:text-slate-800'
+              ? 'bg-brand-strong text-brand-on-strong shadow-sm'
+              : 'text-ink-muted hover:text-ink hover:text-ink'
           }`}
         >
           <Sun size={13} /> Light
@@ -60,8 +60,8 @@ export function ThemeToggle({ variant = 'icon', className = '' }: ThemeTogglePro
           onClick={() => setTheme('dark')}
           className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-bold transition-all ${
             theme === 'dark'
-              ? 'bg-sky-400 text-slate-950 shadow-sm'
-              : 'text-slate-400 hover:text-slate-200 light:hover:text-slate-800'
+              ? 'bg-brand-strong text-brand-on-strong shadow-sm'
+              : 'text-ink-muted hover:text-ink hover:text-ink'
           }`}
         >
           <Moon size={13} /> Dark
@@ -71,8 +71,8 @@ export function ThemeToggle({ variant = 'icon', className = '' }: ThemeTogglePro
           onClick={() => setTheme('system')}
           className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-bold transition-all ${
             theme === 'system'
-              ? 'bg-slate-800 text-white light:bg-slate-300 light:text-slate-900 shadow-sm'
-              : 'text-slate-400 hover:text-slate-200 light:hover:text-slate-800'
+              ? 'bg-paper text-[var(--text-heading)] bg-paper text-ink-secondary shadow-sm'
+              : 'text-ink-muted hover:text-ink hover:text-ink'
           }`}
         >
           <Monitor size={13} /> System
@@ -86,20 +86,20 @@ export function ThemeToggle({ variant = 'icon', className = '' }: ThemeTogglePro
       <button
         type="button"
         onClick={() => setDropdownOpen(!dropdownOpen)}
-        className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900/80 dark:bg-slate-900 light:bg-slate-100 border border-white/10 dark:border-white/10 light:border-slate-300 text-xs font-semibold text-slate-300 dark:text-slate-300 light:text-slate-700"
+        className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-paper border border-line text-xs font-semibold text-ink-secondary"
       >
-        {resolvedTheme === 'dark' ? <Moon size={14} className="text-sky-400" /> : <Sun size={14} className="text-amber-500" />}
+        {resolvedTheme === 'dark' ? <Moon size={14} className="text-brand" /> : <Sun size={14} className="text-status-pending" />}
         <span className="capitalize">{theme}</span>
         <ChevronDown size={13} />
       </button>
 
       {dropdownOpen && (
-        <div className="absolute right-0 mt-2 w-36 py-1 bg-slate-900 dark:bg-slate-900 light:bg-white rounded-xl border border-white/10 dark:border-white/10 light:border-slate-200 shadow-xl z-50 text-xs space-y-0.5">
+        <div className="absolute right-0 mt-2 w-36 py-1 bg-paper rounded-xl border border-line shadow-xl z-50 text-xs space-y-0.5">
           <button
             type="button"
             onClick={() => { setTheme('light'); setDropdownOpen(false); }}
-            className={`w-full flex items-center gap-2 px-3 py-2 text-left hover:bg-slate-800 dark:hover:bg-slate-800 light:hover:bg-slate-100 ${
-              theme === 'light' ? 'text-sky-400 font-bold' : 'text-slate-300 light:text-slate-700'
+            className={`w-full flex items-center gap-2 px-3 py-2 text-left hover:bg-[var(--bg-card-hover)] ${
+              theme === 'light' ? 'text-brand font-bold' : 'text-ink-secondary'
             }`}
           >
             <Sun size={14} /> Light
@@ -107,8 +107,8 @@ export function ThemeToggle({ variant = 'icon', className = '' }: ThemeTogglePro
           <button
             type="button"
             onClick={() => { setTheme('dark'); setDropdownOpen(false); }}
-            className={`w-full flex items-center gap-2 px-3 py-2 text-left hover:bg-slate-800 dark:hover:bg-slate-800 light:hover:bg-slate-100 ${
-              theme === 'dark' ? 'text-sky-400 font-bold' : 'text-slate-300 light:text-slate-700'
+            className={`w-full flex items-center gap-2 px-3 py-2 text-left hover:bg-[var(--bg-card-hover)] ${
+              theme === 'dark' ? 'text-brand font-bold' : 'text-ink-secondary'
             }`}
           >
             <Moon size={14} /> Dark
@@ -116,8 +116,8 @@ export function ThemeToggle({ variant = 'icon', className = '' }: ThemeTogglePro
           <button
             type="button"
             onClick={() => { setTheme('system'); setDropdownOpen(false); }}
-            className={`w-full flex items-center gap-2 px-3 py-2 text-left hover:bg-slate-800 dark:hover:bg-slate-800 light:hover:bg-slate-100 ${
-              theme === 'system' ? 'text-sky-400 font-bold' : 'text-slate-300 light:text-slate-700'
+            className={`w-full flex items-center gap-2 px-3 py-2 text-left hover:bg-[var(--bg-card-hover)] ${
+              theme === 'system' ? 'text-brand font-bold' : 'text-ink-secondary'
             }`}
           >
             <Monitor size={14} /> System

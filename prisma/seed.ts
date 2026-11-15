@@ -28,13 +28,12 @@ async function main() {
   // 1. Create Coach / Admin
   const coach = await prisma.user.create({
     data: {
-      email: 'coach@fitnesspolice.com',
+      email: 'coach@ericonet.fit',
       passwordHash: 'password123',
       role: 'COACH',
-      firstName: 'Oga',
+      firstName: 'Coach',
       lastName: 'Eric',
       phone: '+2348012345678',
-      avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80',
     },
   });
 
@@ -47,7 +46,6 @@ async function main() {
       firstName: 'Chidi',
       lastName: 'Okonkwo',
       phone: '+2348023456789',
-      avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80',
       profile: {
         create: {
           age: 29,
@@ -97,7 +95,6 @@ async function main() {
       firstName: 'Aminat',
       lastName: 'Bello',
       phone: '+2348034567890',
-      avatarUrl: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=300&q=80',
       profile: {
         create: {
           age: 26,
@@ -138,7 +135,7 @@ async function main() {
     },
   });
 
-  // 4. Client 3: Tunde (Free Tier - Food Police user)
+  // 4. Client 3: Tunde (Free Tier - nutrition log user)
   const clientTunde = await prisma.user.create({
     data: {
       email: 'tunde@example.com',
@@ -147,7 +144,6 @@ async function main() {
       firstName: 'Tunde',
       lastName: 'Johnson',
       phone: '+2348045678901',
-      avatarUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80',
       profile: {
         create: {
           age: 34,
@@ -198,7 +194,6 @@ async function main() {
       firstName: 'Zainab',
       lastName: 'Dahiru',
       phone: '+2348056789012',
-      avatarUrl: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&q=80',
       profile: {
         create: {
           age: 28,
@@ -466,7 +461,7 @@ async function main() {
     data: {
       userId: clientTunde.id,
       submissionType: 'PHOTO',
-      imageUrl: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=400&q=80',
+      imageUrl: null,
       rawInput: 'Grilled Tilapia with steamed vegetables and fried sweet potato wedges.',
       mealType: 'DINNER',
       status: 'AWAITING_COACH',
@@ -525,9 +520,9 @@ async function main() {
         startingWeightKg: 94.0,
         endingWeightKg: 81.6,
         durationWeeks: 16,
-        quote: 'Food Police changed the game for me. I didn’t have to give up Nigerian food like Jollof or Moi Moi — Oga Eric taught me exact portion management and cultural swaps. The accountability is 100% real.',
-        beforePhotoUrl: 'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?auto=format&fit=crop&w=500&q=80',
-        afterPhotoUrl: 'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?auto=format&fit=crop&w=500&q=80',
+        quote: 'nutrition log changed the game for me. I didn’t have to give up Nigerian food like Jollof or Moi Moi — Coach Eric taught me exact portion management and cultural swaps. The accountability is 100% real.',
+        beforePhotoUrl: null,
+        afterPhotoUrl: null,
         verifiedClient: true,
         featured: true,
       },
@@ -540,8 +535,8 @@ async function main() {
         endingWeightKg: 68.0,
         durationWeeks: 12,
         quote: 'Having a real human coach reviewing what I ate every day kept me honest. The 14-day trial showed me how structured training should actually feel. I upgraded to Gold and haven’t looked back.',
-        beforePhotoUrl: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=500&q=80',
-        afterPhotoUrl: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=500&q=80',
+        beforePhotoUrl: null,
+        afterPhotoUrl: null,
         verifiedClient: true,
         featured: true,
       },
@@ -553,9 +548,9 @@ async function main() {
         startingWeightKg: 82.0,
         endingWeightKg: 83.5,
         durationWeeks: 20,
-        quote: 'The VIP Diamond coaching was worth every single naira. Oga Eric adjusted my training volume every single week based on my check-ins. My energy levels and physique are the best they’ve ever been.',
-        beforePhotoUrl: 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=500&q=80',
-        afterPhotoUrl: 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=500&q=80',
+        quote: 'The VIP Diamond coaching was worth every single naira. Coach Eric adjusted my training volume every single week based on my check-ins. My energy levels and physique are the best they’ve ever been.',
+        beforePhotoUrl: null,
+        afterPhotoUrl: null,
         verifiedClient: true,
         featured: true,
       },

@@ -46,8 +46,8 @@ export async function POST(request: Request) {
       data: {
         userId,
         title: `${plan.name} Activated!`,
-        message: `Welcome to Fitness Police ${plan.name}. Full tier features are now active for 30 days.`,
-        link: '/client/fitness-police',
+        message: `Welcome to ${plan.name}. Full tier features are now active for 30 days.`,
+        link: '/client/training',
       },
     });
 

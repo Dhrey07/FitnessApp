@@ -3,7 +3,7 @@ import { prisma } from '@/lib/db';
 
 export async function GET() {
   try {
-    // 1. Pending Food Police Submissions
+    // 1. Pending meal submissions
     const pendingFoodSubmissions = await prisma.foodSubmission.findMany({
       where: { status: 'AWAITING_COACH' },
       include: {

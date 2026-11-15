@@ -1,56 +1,36 @@
 import React from 'react';
 import { PublicHeader } from '@/components/public/PublicHeader';
 import { HeroSection } from '@/components/public/HeroSection';
-import { TransformationSection } from '@/components/public/TransformationSection';
-import { FitnessSection } from '@/components/public/FitnessSection';
+import { ServicesSection } from '@/components/public/ServicesSection';
+import { HowItWorksSection } from '@/components/public/HowItWorksSection';
 import { NutritionSection } from '@/components/public/NutritionSection';
-import { PersonalisationSection } from '@/components/public/PersonalisationSection';
-import { TrackingSection } from '@/components/public/TrackingSection';
-import { CoachingSection } from '@/components/public/CoachingSection';
-import { SocialProofSection } from '@/components/public/SocialProofSection';
+import { TrainingSection } from '@/components/public/TrainingSection';
+import { ProgressSection } from '@/components/public/ProgressSection';
+import { ResultsSection } from '@/components/public/ResultsSection';
 import { PricingSection } from '@/components/public/PricingSection';
+import { FaqSection } from '@/components/public/FaqSection';
 import { FinalCtaSection } from '@/components/public/FinalCtaSection';
 import { PublicFooter } from '@/components/public/PublicFooter';
 
+// Client results are read from the database on each request.
+export const dynamic = 'force-dynamic';
+
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)] flex flex-col justify-between selection:bg-sky-400 selection:text-slate-950 transition-colors duration-200">
-      {/* Editorial Navigation Header */}
+    <div className="min-h-screen bg-paper text-ink flex flex-col">
       <PublicHeader />
-
-      <main className="flex-1 space-y-0">
-        {/* Hero Section */}
+      <main className="flex-1">
         <HeroSection />
-
-        {/* Section 1: Transformation */}
-        <TransformationSection />
-
-        {/* Section 2: Fitness (Fitness Police) */}
-        <FitnessSection />
-
-        {/* Section 3: Nutrition (Food Police - Free) */}
+        <ServicesSection />
+        <HowItWorksSection />
         <NutritionSection />
-
-        {/* Section 4: Personalisation */}
-        <PersonalisationSection />
-
-        {/* Section 5: Tracking */}
-        <TrackingSection />
-
-        {/* Section 6: Coaching */}
-        <CoachingSection />
-
-        {/* Section 7: Social Proof & Transformations */}
-        <SocialProofSection />
-
-        {/* Membership Tiers */}
+        <TrainingSection />
+        <ProgressSection />
+        <ResultsSection />
         <PricingSection />
-
-        {/* Section 8: Final Conversion CTA */}
+        <FaqSection />
         <FinalCtaSection />
       </main>
-
-      {/* Editorial Footer */}
       <PublicFooter />
     </div>
   );

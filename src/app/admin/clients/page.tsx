@@ -63,7 +63,7 @@ export default function AdminClientsPage() {
             className="field-input text-xs py-2 w-auto"
           >
             <option value="">All Tiers & Statuses</option>
-            <option value="FREE">Free Food Police Only</option>
+            <option value="FREE">Starter (free)</option>
             <option value="SILVER">Silver Tier (₦15k)</option>
             <option value="GOLD">Gold Tier (₦25k)</option>
             <option value="DIAMOND">Diamond VIP (₦40k)</option>
@@ -74,7 +74,7 @@ export default function AdminClientsPage() {
       {/* Clients Table */}
       <div className="surface overflow-x-auto border border-[var(--border-subtle)]">
         <table className="w-full text-left text-xs">
-          <thead className="bg-slate-900/60 dark:bg-slate-900 light:bg-slate-100 text-[var(--text-muted)] border-b border-[var(--border-subtle)] text-[11px] uppercase tracking-wider font-bold">
+          <thead className="bg-paper text-[var(--text-muted)] border-b border-[var(--border-subtle)] text-xs uppercase tracking-wider font-bold">
             <tr>
               <th className="p-4">Client</th>
               <th className="p-4">Goal & Metrics</th>
@@ -90,23 +90,23 @@ export default function AdminClientsPage() {
               const isTrial = sub.isTrial;
 
               return (
-                <tr key={client.id} className="hover:bg-slate-900/40 dark:hover:bg-slate-900/40 light:hover:bg-slate-50 transition-colors">
+                <tr key={client.id} className="hover:bg-[var(--bg-card-hover)] hover:bg-[var(--bg-card-hover)] hover:bg-[var(--bg-card-hover)] transition-colors">
                   <td className="p-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-9 h-9 rounded-xl bg-purple-500/20 text-purple-400 font-bold flex items-center justify-center border border-purple-500/30">
+                      <div className="w-9 h-9 rounded-xl bg-brand-soft text-brand font-bold flex items-center justify-center border border-line-active">
                         {client.firstName?.charAt(0)}{client.lastName?.charAt(0)}
                       </div>
                       <div>
                         <p className="font-bold text-[var(--text-heading)] text-sm">{client.firstName} {client.lastName}</p>
-                        <p className="text-[11px] text-[var(--text-muted)]">{client.email}</p>
+                        <p className="text-xs text-[var(--text-muted)]">{client.email}</p>
                       </div>
                     </div>
                   </td>
 
                   <td className="p-4">
                     <div className="space-y-0.5">
-                      <p className="font-semibold text-[var(--text-heading)] uppercase text-[11px]">{profile?.primaryGoal?.replace('_', ' ') || 'Fat Loss'}</p>
-                      <p className="text-[11px] text-[var(--text-muted)]">
+                      <p className="font-semibold text-[var(--text-heading)] uppercase text-xs">{profile?.primaryGoal?.replace('_', ' ') || 'Fat Loss'}</p>
+                      <p className="text-xs text-[var(--text-muted)]">
                         {profile?.weightKg || 80} kg • {profile?.waistCm || 85} cm waist
                       </p>
                     </div>
@@ -114,20 +114,20 @@ export default function AdminClientsPage() {
 
                   <td className="p-4">
                     <div className="space-y-1">
-                      <span className={`badge text-[10px] ${
+                      <span className={`badge text-xs${
                         isTrial ? 'badge-trial' :
                         sub.planTier === 'GOLD' ? 'badge-tier-gold' :
                         sub.planTier === 'DIAMOND' ? 'badge-tier-diamond' :
-                        'bg-slate-800 text-slate-300'
+                        'bg-paper text-ink-secondary'
                       }`}>
                         {isTrial ? '14-Day Free Trial' : `${sub.planTier} Tier`}
                       </span>
-                      <p className="text-[10px] text-[var(--text-muted)]">{sub.status}</p>
+                      <p className="text-xs text-[var(--text-muted)]">{sub.status}</p>
                     </div>
                   </td>
 
                   <td className="p-4">
-                    <span className="badge badge-approved text-[10px]">
+                    <span className="badge badge-approved text-xs">
                       {client.weeklyCheckIns?.length || 0} Check-Ins Logged
                     </span>
                   </td>
@@ -136,20 +136,20 @@ export default function AdminClientsPage() {
                     <div className="flex items-center justify-end gap-2">
                       <a
                         href={`https://wa.me/2348012345678?text=${encodeURIComponent(
-                          `Hello ${client.firstName}, Oga Eric here checking in on your Fitness Police progress.`
+                          `Hello ${client.firstName}, Coach Eric here, checking in on your progress.`
                         )}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="p-2 rounded-lg bg-emerald-500/15 text-emerald-400 hover:bg-emerald-500/30 transition-colors"
+                        className="p-2 rounded-lg bg-status-approved/15 text-status-approved hover:bg-status-approved/25 transition-colors"
                         title="WhatsApp Client"
                       >
                         <MessageCircle size={15} />
                       </a>
                       <Link
                         href={`/admin/clients/${client.id}`}
-                        className="btn-secondary text-[11px] py-1.5 px-3"
+                        className="btn-secondary text-xs py-1.5 px-3"
                       >
-                        Open 360° File <ArrowRight size={12} />
+                        Open profile <ArrowRight size={12} />
                       </Link>
                     </div>
                   </td>
