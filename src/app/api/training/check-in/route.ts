@@ -18,6 +18,13 @@ export async function POST(request: Request) {
       challenges,
       generalFeedback,
       photoUrl,
+      averageDailySteps,
+      trainingSessionsCompleted,
+      trainingSessionsPlanned,
+      hungerLevel,
+      stressLevel,
+      wins,
+      helpNeeded,
     } = body;
 
     if (!userId || !currentWeightKg || !waistCm) {
@@ -39,11 +46,18 @@ export async function POST(request: Request) {
     const previousCheckIn = user.weeklyCheckIns[0];
     const previousWeight = previousCheckIn ? previousCheckIn.currentWeightKg : null;
 
+    // Training consistency: derive from sessions when both are supplied, otherwise use the % given.
+    const completed = trainingSessionsCompleted != null && trainingSessionsCompleted !== '' ? Number(trainingSessionsCompleted) : null;
+    const planned = trainingSessionsPlanned != null && trainingSessionsPlanned !== '' ? Number(trainingSessionsPlanned) : user.profile.preferredWorkoutDays || null;
+    const derivedWorkoutAdherence =
+      completed != null && planned ? Math.max(0, Math.min(100, Math.round((completed / planned) * 100))) : Number(workoutAdherence) || 80;
+    const clamp15 = (v: unknown) => (v == null || v === '' ? null : Math.max(1, Math.min(5, Math.round(Number(v)))));
+
     // AI Check-in Analysis
     const aiResult = ProgressAnalysisService.analyzeCheckIn(
       Number(currentWeightKg),
       previousWeight,
-      Number(workoutAdherence) || 80,
+      derivedWorkoutAdherence,
       Number(nutritionAdherence) || 80,
       user.profile.primaryGoal as FitnessGoal
     );
@@ -56,14 +70,31 @@ export async function POST(request: Request) {
         waistCm: Number(waistCm),
         energyLevel: Number(energyLevel) || 4,
         sleepQuality: Number(sleepQuality) || 4,
-        workoutAdherence: Number(workoutAdherence) || 80,
+        workoutAdherence: derivedWorkoutAdherence,
         nutritionAdherence: Number(nutritionAdherence) || 80,
         difficultyLevel: difficultyLevel || 'Moderate',
+        averageDailySteps: averageDailySteps != null && averageDailySteps !== '' ? Math.round(Number(averageDailySteps)) : null,
+        trainingSessionsCompleted: completed,
+        trainingSessionsPlanned: planned,
+        hungerLevel: clamp15(hungerLevel),
+        stressLevel: clamp15(stressLevel),
         challenges: challenges || null,
+        wins: wins || null,
+        helpNeeded: helpNeeded || null,
         generalFeedback: generalFeedback || null,
         photoUrl: photoUrl || null,
         status: 'PENDING_REVIEW',
         aiTrendsSummary: aiResult.trendsSummary,
+      },
+    });
+
+    // Keep the profile's current measurements in step with the latest check-in
+    await prisma.profile.update({
+      where: { userId },
+      data: {
+        weightKg: Number(currentWeightKg),
+        waistCm: Number(waistCm),
+        ...(averageDailySteps != null && averageDailySteps !== '' ? { averageDailySteps: Math.round(Number(averageDailySteps)) } : {}),
       },
     });
 

@@ -16,7 +16,7 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { name, age, location, goalAchieved, startingWeightKg, endingWeightKg, durationWeeks, quote, beforePhotoUrl, afterPhotoUrl } = body;
+    const { name, age, location, goalAchieved, startingWeightKg, endingWeightKg, durationWeeks, quote, beforePhotoUrl, afterPhotoUrl, consentGiven } = body;
 
     if (!name || !quote || !goalAchieved) {
       return NextResponse.json({ error: 'Name, quote, and goal achieved are required' }, { status: 400 });
@@ -35,6 +35,7 @@ export async function POST(request: Request) {
         beforePhotoUrl,
         afterPhotoUrl,
         verifiedClient: true,
+        consentGiven: Boolean(consentGiven),
         featured: true,
       },
     });

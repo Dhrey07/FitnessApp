@@ -46,6 +46,8 @@ export default function OnboardingPage() {
 
   // Step 4: Primary Goal
   const [primaryGoal, setPrimaryGoal] = useState<FitnessGoal>('FAT_LOSS');
+  const [targetWeightKg, setTargetWeightKg] = useState('');
+  const [programmeDurationWeeks, setProgrammeDurationWeeks] = useState('12');
 
   // Step 5: Fitness Experience & Environment
   const [fitnessLevel, setFitnessLevel] = useState('INTERMEDIATE');
@@ -122,6 +124,8 @@ export default function OnboardingPage() {
           allergies,
           foodRestrictions,
           typicalMealFrequency,
+          targetWeightKg,
+          programmeDurationWeeks,
         }),
       });
 
@@ -449,6 +453,35 @@ export default function OnboardingPage() {
                   <p className="text-xs text-[var(--text-muted)] mt-1">{g.desc}</p>
                 </button>
               ))}
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+              <div>
+                <label className="field-label">Target weight (kg)</label>
+                <input
+                  type="number"
+                  step="0.1"
+                  value={targetWeightKg}
+                  onChange={(e) => setTargetWeightKg(e.target.value)}
+                  placeholder={weightKg ? String(Math.round(parseFloat(weightKg) * 0.92)) : '75'}
+                  className="field-input"
+                />
+                <p className="text-xs text-[var(--text-muted)] mt-1">Optional. Your coach will confirm a realistic target with you.</p>
+              </div>
+              <div>
+                <label className="field-label">Programme length</label>
+                <select
+                  value={programmeDurationWeeks}
+                  onChange={(e) => setProgrammeDurationWeeks(e.target.value)}
+                  className="field-input"
+                >
+                  <option value="8">8 weeks</option>
+                  <option value="12">12 weeks</option>
+                  <option value="16">16 weeks</option>
+                  <option value="24">24 weeks</option>
+                </select>
+                <p className="text-xs text-[var(--text-muted)] mt-1">Most clients plan in 12-week blocks.</p>
+              </div>
             </div>
           </div>
         )}

@@ -60,7 +60,10 @@ export async function POST(request: Request) {
                 reps: String(ex.reps || '10-12'),
                 restSeconds: parseInt(String(ex.restSeconds || 60), 10),
                 tempo: ex.tempo || '2-0-1',
-                notes: ex.notes,
+                rpe: ex.rpe != null && ex.rpe !== '' ? parseFloat(String(ex.rpe)) : null,
+                rir: ex.rir != null && ex.rir !== '' ? parseInt(String(ex.rir), 10) : null,
+                progressionGuidance: ex.progressionGuidance || null,
+                coachNotes: ex.coachNotes || ex.notes || null,
                 orderIndex: exIndex + 1,
               })),
             },
@@ -78,8 +81,8 @@ export async function POST(request: Request) {
     await prisma.notification.create({
       data: {
         userId,
-        title: 'New Workout Plan Assigned!',
-        message: `Your coach assigned a new workout routine: "${title}". Check your Fitness Hub now!`,
+        title: 'New training programme assigned',
+        message: `Your coach has assigned a new programme: "${title}". Open the Training Hub to see it.`,
         link: '/client/training',
       },
     });

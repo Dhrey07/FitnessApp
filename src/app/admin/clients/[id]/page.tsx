@@ -15,6 +15,9 @@ export default function AdminClientDetailPage({ params }: { params: Promise<{ id
   const [client, setClient] = useState<any>(null);
   const [activeTab, setActiveTab] = useState<'OVERVIEW' | 'NUTRITION' | 'WORKOUTS' | 'CHECKINS'>('OVERVIEW');
   const [loading, setLoading] = useState(true);
+  const [targets, setTargets] = useState({ startingWeightKg: '', targetWeightKg: '', programmeDurationWeeks: '12', programmeStartDate: '' });
+  const [savingTargets, setSavingTargets] = useState(false);
+  const [targetsMsg, setTargetsMsg] = useState('');
 
   useEffect(() => {
     fetchClientFile();
@@ -27,10 +30,38 @@ export default function AdminClientDetailPage({ params }: { params: Promise<{ id
       const data = await res.json();
       const match = (data.clients || []).find((c: any) => c.id === clientId);
       setClient(match);
+      if (match?.profile) {
+        setTargets({
+          startingWeightKg: match.profile.startingWeightKg != null ? String(match.profile.startingWeightKg) : String(match.profile.weightKg ?? ''),
+          targetWeightKg: match.profile.targetWeightKg != null ? String(match.profile.targetWeightKg) : '',
+          programmeDurationWeeks: String(match.profile.programmeDurationWeeks ?? 12),
+          programmeStartDate: match.profile.programmeStartDate ? String(match.profile.programmeStartDate).slice(0, 10) : '',
+        });
+      }
     } catch (e) {
       console.error(e);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const saveTargets = async () => {
+    setSavingTargets(true);
+    setTargetsMsg('');
+    try {
+      const res = await fetch(`/api/admin/clients/${clientId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(targets),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Could not save');
+      setTargetsMsg('Saved');
+      fetchClientFile();
+    } catch (e: any) {
+      setTargetsMsg(e.message || 'Could not save');
+    } finally {
+      setSavingTargets(false);
     }
   };
 
@@ -109,6 +140,37 @@ export default function AdminClientDetailPage({ params }: { params: Promise<{ id
               <span className="text-[var(--text-muted)]">Waistline:</span>
               <p className="text-base font-black text-brand">{p.waistCm} cm</p>
             </div>
+          </div>
+        </div>
+
+        {/* Programme targets (feed the meal plan cover and progress reports) */}
+        <div className="pb-4 border-b border-[var(--border-subtle)] space-y-3">
+          <div className="flex items-center justify-between">
+            <p className="section-title text-sm">Programme targets</p>
+            {targetsMsg && <span className="text-xs text-[var(--text-muted)]">{targetsMsg}</span>}
+          </div>
+          <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 items-end">
+            <div>
+              <label className="field-label">Starting weight (kg)</label>
+              <input type="number" step="0.1" className="field-input" value={targets.startingWeightKg} onChange={(e) => setTargets({ ...targets, startingWeightKg: e.target.value })} />
+            </div>
+            <div>
+              <label className="field-label">Target weight (kg)</label>
+              <input type="number" step="0.1" className="field-input" value={targets.targetWeightKg} onChange={(e) => setTargets({ ...targets, targetWeightKg: e.target.value })} />
+            </div>
+            <div>
+              <label className="field-label">Programme length</label>
+              <select className="field-input" value={targets.programmeDurationWeeks} onChange={(e) => setTargets({ ...targets, programmeDurationWeeks: e.target.value })}>
+                {[8, 12, 16, 24].map((w) => <option key={w} value={w}>{w} weeks</option>)}
+              </select>
+            </div>
+            <div>
+              <label className="field-label">Start date</label>
+              <input type="date" className="field-input" value={targets.programmeStartDate} onChange={(e) => setTargets({ ...targets, programmeStartDate: e.target.value })} />
+            </div>
+            <button type="button" onClick={saveTargets} disabled={savingTargets} className="btn-brand text-xs py-2.5 w-full">
+              {savingTargets ? 'Saving…' : 'Save targets'}
+            </button>
           </div>
         </div>
 

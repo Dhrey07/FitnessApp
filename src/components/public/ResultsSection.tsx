@@ -13,6 +13,7 @@ interface Story {
   durationWeeks: number;
   quote: string;
   verifiedClient: boolean;
+  consentGiven: boolean;
   beforePhotoUrl: string | null;
   afterPhotoUrl: string | null;
 }
@@ -52,7 +53,7 @@ export async function ResultsSection() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {stories.map((s) => {
             const delta = Math.round((s.endingWeightKg - s.startingWeightKg) * 10) / 10;
-            const showPhotos = s.verifiedClient && !!s.beforePhotoUrl && !!s.afterPhotoUrl;
+            const showPhotos = s.verifiedClient && s.consentGiven && !!s.beforePhotoUrl && !!s.afterPhotoUrl;
             return (
               <article key={s.id} className="surface p-6 flex flex-col gap-4">
                 {showPhotos ? (

@@ -28,6 +28,8 @@ export async function POST(request: Request) {
       allergies,
       foodRestrictions,
       typicalMealFrequency,
+      targetWeightKg,
+      programmeDurationWeeks,
     } = body;
 
     if (!email || !firstName || !lastName) {
@@ -92,6 +94,10 @@ export async function POST(request: Request) {
             allergies: allergies || 'None',
             foodRestrictions: foodRestrictions || 'None',
             typicalMealFrequency: parseInt(String(typicalMealFrequency || 3), 10),
+            startingWeightKg: parsedWeight,
+            targetWeightKg: targetWeightKg ? parseFloat(String(targetWeightKg)) : null,
+            programmeStartDate: now,
+            programmeDurationWeeks: parseInt(String(programmeDurationWeeks || 12), 10),
             bmr: nutrition.bmr,
             tdee: nutrition.tdee,
             dailyCalories: nutrition.dailyCalories,

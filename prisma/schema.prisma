@@ -34,6 +34,8 @@ model User {
   coachNotesReceived   CoachNote[]      @relation("UserNotesReceived")
   notifications        Notification[]
   auditLogs            AuditLog[]
+  progressReports      ProgressReport[] @relation("UserProgressReports")
+  progressReportsGiven ProgressReport[] @relation("CoachProgressReports")
 }
 
 model Profile {
@@ -57,6 +59,12 @@ model Profile {
   allergies             String?
   foodRestrictions      String?
   typicalMealFrequency  Int?     @default(3)
+  // Programme framing (brief: cover page needs starting weight, target weight, duration)
+  startingWeightKg      Float?
+  targetWeightKg        Float?
+  programmeStartDate    DateTime?
+  programmeDurationWeeks Int?    @default(12)
+  averageDailySteps     Int?
   bmr                   Float
   tdee                  Float
   dailyCalories         Float
@@ -98,6 +106,7 @@ model Testimonial {
   beforePhotoUrl   String?
   afterPhotoUrl    String?
   verifiedClient   Boolean  @default(true)
+  consentGiven     Boolean  @default(false) // written consent to publish photos
   featured         Boolean  @default(true)
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
@@ -165,6 +174,8 @@ model MealPlan {
   carbsTargetG       Float
   fatTargetG         Float
   notes              String?
+  durationDays       Int      @default(7)
+  guidelinesIncluded Boolean  @default(true)
   active             Boolean  @default(true)
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
@@ -176,9 +187,12 @@ model MealPlanItem {
   id                  String   @id @default(uuid())
   mealPlanId          String
   mealPlan            MealPlan @relation(fields: [mealPlanId], references: [id], onDelete: Cascade)
+  dayNumber           Int      @default(1)
   mealType            String // "BREAKFAST" | "LUNCH" | "DINNER" | "SNACK"
+  mealLabel           String?  // "Meal 1" | "Snack" | "Meal 2" | "Meal 3"
   foodName            String
   portion             String
+  quantity            String?  // exact quantity, e.g. "150 g cooked rice"
   calories            Float
   proteinG            Float
   carbsG              Float
@@ -225,7 +239,11 @@ model Exercise {
   reps        String  @default("10-12")
   restSeconds Int     @default(60)
   tempo       String? @default("2-0-2")
-  notes       String?
+  rpe         Float?  // rate of perceived exertion, 1-10
+  rir         Int?    // reps in reserve
+  progressionGuidance String?
+  coachNotes  String?
+  notes       String? // legacy; builder writes coachNotes
   mediaUrl    String?
   orderIndex  Int     @default(1)
 }
@@ -256,7 +274,14 @@ model WeeklyCheckIn {
   workoutAdherence   Int // 0 to 100%
   nutritionAdherence Int // 0 to 100%
   difficultyLevel    String // "Easy" | "Moderate" | "Challenging" | "Overwhelming"
+  averageDailySteps         Int?
+  trainingSessionsCompleted Int?
+  trainingSessionsPlanned   Int?
+  hungerLevel               Int?    // 1 to 5
+  stressLevel               Int?    // 1 to 5
   challenges         String?
+  wins               String?
+  helpNeeded         String?
   generalFeedback    String?
   photoUrl           String?
   status             String    @default("PENDING_REVIEW") // "PENDING_REVIEW" | "REVIEWED"
@@ -307,4 +332,42 @@ model AuditLog {
   entityId   String?
   details    String?
   createdAt  DateTime @default(now())
+}
+
+model ProgressReport {
+  id                   String    @id @default(uuid())
+  userId               String
+  user                 User      @relation("UserProgressReports", fields: [userId], references: [id], onDelete: Cascade)
+  coachId              String
+  coach                User      @relation("CoachProgressReports", fields: [coachId], references: [id])
+  periodStart          DateTime
+  periodEnd            DateTime
+  startingWeightKg     Float
+  currentWeightKg      Float
+  waistCm              Float
+  averageSteps         Int?
+  trainingConsistency  Int       // %
+  nutritionAdherence   Int       // %
+  hunger               Int?      // 1-5 average
+  energy               Int?      // 1-5 average
+  sleep                Int?      // 1-5 average
+  strengthPerformance  String?
+  challenges           String?
+  wins                 String?
+  coachAssessment      String
+  nextAdjustments      String
+  publishedAt          DateTime?
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+}
+
+model NutritionGuideline {
+  id         String   @id @default(uuid())
+  slug       String   @unique
+  title      String
+  orderIndex Int      @default(0)
+  body       String   // Markdown
+  active     Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }

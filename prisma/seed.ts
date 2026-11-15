@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import { NUTRITION_GUIDELINES } from './seed-data/nutritionGuidelines';
 
 const prisma = new PrismaClient();
 
@@ -7,6 +8,8 @@ async function main() {
 
   // Clean existing tables
   await prisma.auditLog.deleteMany({});
+  await prisma.progressReport.deleteMany({});
+  await prisma.nutritionGuideline.deleteMany({});
   await prisma.notification.deleteMany({});
   await prisma.coachNote.deleteMany({});
   await prisma.progressRecord.deleteMany({});
@@ -65,6 +68,11 @@ async function main() {
           allergies: 'None',
           foodRestrictions: 'None',
           typicalMealFrequency: 3,
+          startingWeightKg: 86.5,
+          targetWeightKg: 78,
+          programmeStartDate: new Date(Date.now() - 21 * 86400000),
+          programmeDurationWeeks: 12,
+          averageDailySteps: 8400,
           bmr: 1845,
           tdee: 2860,
           dailyCalories: 2288,
@@ -114,6 +122,11 @@ async function main() {
           allergies: 'Shellfish',
           foodRestrictions: 'Low lactose',
           typicalMealFrequency: 4,
+          startingWeightKg: 60,
+          targetWeightKg: 65,
+          programmeStartDate: new Date(Date.now() - 42 * 86400000),
+          programmeDurationWeeks: 16,
+          averageDailySteps: 9500,
           bmr: 1424,
           tdee: 2456,
           dailyCalories: 2700,
@@ -163,6 +176,11 @@ async function main() {
           allergies: 'None',
           foodRestrictions: 'None',
           typicalMealFrequency: 3,
+          startingWeightKg: 92,
+          targetWeightKg: 84,
+          programmeStartDate: new Date(Date.now() - 7 * 86400000),
+          programmeDurationWeeks: 12,
+          averageDailySteps: 5200,
           bmr: 1859,
           tdee: 2230,
           dailyCalories: 1784,
@@ -213,6 +231,11 @@ async function main() {
           allergies: 'Peanuts',
           foodRestrictions: 'No pork/alcohol',
           typicalMealFrequency: 3,
+          startingWeightKg: 70,
+          targetWeightKg: 64,
+          programmeStartDate: new Date(Date.now() - 5 * 86400000),
+          programmeDurationWeeks: 12,
+          averageDailySteps: 6800,
           bmr: 1475,
           tdee: 2286,
           dailyCalories: 1828,
@@ -246,12 +269,17 @@ async function main() {
       proteinTargetG: 187,
       carbsTargetG: 229,
       fatTargetG: 64,
+      durationDays: 7,
+      guidelinesIncluded: true,
       items: {
         create: [
           {
+            dayNumber: 1,
             mealType: 'BREAKFAST',
+            mealLabel: 'Meal 1',
             foodName: 'Oatmeal with Boiled Eggs & Banana',
             portion: '1 cup cooked oats + 3 boiled eggs + 1 banana',
+            quantity: '1 cup cooked oats + 3 boiled eggs + 1 banana',
             calories: 450,
             proteinG: 28,
             carbsG: 45,
@@ -259,9 +287,12 @@ async function main() {
             culturalAlternative: 'Moi Moi (2 wraps) with 2 eggs',
           },
           {
+            dayNumber: 1,
             mealType: 'LUNCH',
+            mealLabel: 'Meal 2',
             foodName: 'Jollof Rice with Grilled Chicken Breast & Dodo',
             portion: '1.5 cups Jollof + 1 large chicken breast + 4 slices plantain',
+            quantity: '1.5 cups Jollof + 1 large chicken breast + 4 slices plantain',
             calories: 680,
             proteinG: 52,
             carbsG: 75,
@@ -269,9 +300,12 @@ async function main() {
             culturalAlternative: 'Boiled Yam with Egg & Garden Egg Sauce',
           },
           {
+            dayNumber: 1,
             mealType: 'DINNER',
+            mealLabel: 'Meal 3',
             foodName: 'Efo Riro (Spinach Stew) with Tilapia & Small Oat Swallow',
             portion: '1 bowl Efo Riro + 1 medium Tilapia + 1 small wrap Oat swallow',
+            quantity: '1 bowl Efo Riro + 1 medium Tilapia + 1 small wrap Oat swallow',
             calories: 580,
             proteinG: 48,
             carbsG: 55,
@@ -279,9 +313,12 @@ async function main() {
             culturalAlternative: 'Okra Soup with Assorted Lean Beef',
           },
           {
+            dayNumber: 1,
             mealType: 'SNACK',
+            mealLabel: 'Snack',
             foodName: 'Greek Yogurt with Crushed Almonds',
             portion: '200g yogurt + 15g almonds',
+            quantity: '200g yogurt + 15g almonds',
             calories: 250,
             proteinG: 24,
             carbsG: 12,
@@ -308,10 +345,10 @@ async function main() {
             orderIndex: 1,
             exercises: {
               create: [
-                { name: 'Barbell Incline Bench Press', sets: 4, reps: '8-10', restSeconds: 90, tempo: '3-0-1', notes: 'Focus on slow negative descent', orderIndex: 1 },
-                { name: 'Dumbbell Seated Shoulder Press', sets: 3, reps: '10-12', restSeconds: 60, tempo: '2-0-1', notes: 'Keep elbows slightly in front', orderIndex: 2 },
-                { name: 'Cable Chest Flyes', sets: 3, reps: '12-15', restSeconds: 60, tempo: '2-1-1', notes: 'Squeeze chest at peak contraction', orderIndex: 3 },
-                { name: 'Triceps Rope Pushdowns', sets: 4, reps: '12-15', restSeconds: 45, tempo: '2-0-1', notes: 'Lock elbows to ribs', orderIndex: 4 },
+                { name: 'Barbell Incline Bench Press', sets: 4, reps: '8-10', restSeconds: 90, tempo: '3-0-1', notes: 'Focus on slow negative descent', coachNotes: 'Focus on slow negative descent', rpe: 8, rir: 2, progressionGuidance: 'Add 2.5 kg (or 1-2 reps) once every set reaches the top of the rep range at RPE 8 or lower.', orderIndex: 1 },
+                { name: 'Dumbbell Seated Shoulder Press', sets: 3, reps: '10-12', restSeconds: 60, tempo: '2-0-1', notes: 'Keep elbows slightly in front', coachNotes: 'Keep elbows slightly in front', rpe: 8, rir: 2, progressionGuidance: 'Add 2.5 kg (or 1-2 reps) once every set reaches the top of the rep range at RPE 8 or lower.', orderIndex: 2 },
+                { name: 'Cable Chest Flyes', sets: 3, reps: '12-15', restSeconds: 60, tempo: '2-1-1', notes: 'Squeeze chest at peak contraction', coachNotes: 'Squeeze chest at peak contraction', rpe: 8, rir: 2, progressionGuidance: 'Add 2.5 kg (or 1-2 reps) once every set reaches the top of the rep range at RPE 8 or lower.', orderIndex: 3 },
+                { name: 'Triceps Rope Pushdowns', sets: 4, reps: '12-15', restSeconds: 45, tempo: '2-0-1', notes: 'Lock elbows to ribs', coachNotes: 'Lock elbows to ribs', rpe: 8, rir: 2, progressionGuidance: 'Add 2.5 kg (or 1-2 reps) once every set reaches the top of the rep range at RPE 8 or lower.', orderIndex: 4 },
               ],
             },
           },
@@ -321,10 +358,10 @@ async function main() {
             orderIndex: 2,
             exercises: {
               create: [
-                { name: 'Lat Pulldowns (Wide Grip)', sets: 4, reps: '10-12', restSeconds: 75, tempo: '2-0-1', notes: 'Drive with elbows down into pockets', orderIndex: 1 },
-                { name: 'Seated Cable Rows', sets: 3, reps: '10-12', restSeconds: 60, tempo: '2-1-1', notes: 'Hold 1s at torso', orderIndex: 2 },
-                { name: 'Standing Barbell Bicep Curls', sets: 3, reps: '12-15', restSeconds: 60, tempo: '2-0-1', notes: 'Strict form, no swinging', orderIndex: 3 },
-                { name: 'Hammer Curls', sets: 3, reps: '12-15', restSeconds: 45, tempo: '2-0-1', notes: 'Target brachialis', orderIndex: 4 },
+                { name: 'Lat Pulldowns (Wide Grip)', sets: 4, reps: '10-12', restSeconds: 75, tempo: '2-0-1', notes: 'Drive with elbows down into pockets', coachNotes: 'Drive with elbows down into pockets', rpe: 8, rir: 2, progressionGuidance: 'Add 2.5 kg (or 1-2 reps) once every set reaches the top of the rep range at RPE 8 or lower.', orderIndex: 1 },
+                { name: 'Seated Cable Rows', sets: 3, reps: '10-12', restSeconds: 60, tempo: '2-1-1', notes: 'Hold 1s at torso', coachNotes: 'Hold 1s at torso', rpe: 8, rir: 2, progressionGuidance: 'Add 2.5 kg (or 1-2 reps) once every set reaches the top of the rep range at RPE 8 or lower.', orderIndex: 2 },
+                { name: 'Standing Barbell Bicep Curls', sets: 3, reps: '12-15', restSeconds: 60, tempo: '2-0-1', notes: 'Strict form, no swinging', coachNotes: 'Strict form, no swinging', rpe: 8, rir: 2, progressionGuidance: 'Add 2.5 kg (or 1-2 reps) once every set reaches the top of the rep range at RPE 8 or lower.', orderIndex: 3 },
+                { name: 'Hammer Curls', sets: 3, reps: '12-15', restSeconds: 45, tempo: '2-0-1', notes: 'Target brachialis', coachNotes: 'Target brachialis', rpe: 8, rir: 2, progressionGuidance: 'Add 2.5 kg (or 1-2 reps) once every set reaches the top of the rep range at RPE 8 or lower.', orderIndex: 4 },
               ],
             },
           },
@@ -334,10 +371,10 @@ async function main() {
             orderIndex: 3,
             exercises: {
               create: [
-                { name: 'Barbell Back Squats', sets: 4, reps: '8-10', restSeconds: 120, tempo: '3-0-1', notes: 'Hit parallel depth', orderIndex: 1 },
-                { name: 'Romanian Deadlifts (Dumbbell)', sets: 3, reps: '10-12', restSeconds: 90, tempo: '3-1-1', notes: 'Push hips back for hamstring stretch', orderIndex: 2 },
-                { name: 'Walking Lunges', sets: 3, reps: '12 per leg', restSeconds: 60, tempo: '2-0-1', notes: 'Keep torso upright', orderIndex: 3 },
-                { name: 'Hanging Leg Raises', sets: 3, reps: '15-20', restSeconds: 45, tempo: '2-0-2', notes: 'Control the swing', orderIndex: 4 },
+                { name: 'Barbell Back Squats', sets: 4, reps: '8-10', restSeconds: 120, tempo: '3-0-1', notes: 'Hit parallel depth', coachNotes: 'Hit parallel depth', rpe: 8, rir: 2, progressionGuidance: 'Add 2.5 kg (or 1-2 reps) once every set reaches the top of the rep range at RPE 8 or lower.', orderIndex: 1 },
+                { name: 'Romanian Deadlifts (Dumbbell)', sets: 3, reps: '10-12', restSeconds: 90, tempo: '3-1-1', notes: 'Push hips back for hamstring stretch', coachNotes: 'Push hips back for hamstring stretch', rpe: 8, rir: 2, progressionGuidance: 'Add 2.5 kg (or 1-2 reps) once every set reaches the top of the rep range at RPE 8 or lower.', orderIndex: 2 },
+                { name: 'Walking Lunges', sets: 3, reps: '12 per leg', restSeconds: 60, tempo: '2-0-1', notes: 'Keep torso upright', coachNotes: 'Keep torso upright', rpe: 8, rir: 2, progressionGuidance: 'Add 2.5 kg (or 1-2 reps) once every set reaches the top of the rep range at RPE 8 or lower.', orderIndex: 3 },
+                { name: 'Hanging Leg Raises', sets: 3, reps: '15-20', restSeconds: 45, tempo: '2-0-2', notes: 'Control the swing', coachNotes: 'Control the swing', rpe: 8, rir: 2, progressionGuidance: 'Add 2.5 kg (or 1-2 reps) once every set reaches the top of the rep range at RPE 8 or lower.', orderIndex: 4 },
               ],
             },
           },
@@ -347,9 +384,9 @@ async function main() {
             orderIndex: 4,
             exercises: {
               create: [
-                { name: 'Kettlebell Swings', sets: 4, reps: '20', restSeconds: 60, tempo: '1-0-1', notes: 'Explosive hip hinge', orderIndex: 1 },
-                { name: 'Dumbbell Thrusters', sets: 3, reps: '12', restSeconds: 60, tempo: '2-0-1', notes: 'Fluid squat-to-press motion', orderIndex: 2 },
-                { name: 'Plank Hold', sets: 3, reps: '60s hold', restSeconds: 45, tempo: 'Hold', notes: 'Engage glutes and core', orderIndex: 3 },
+                { name: 'Kettlebell Swings', sets: 4, reps: '20', restSeconds: 60, tempo: '1-0-1', notes: 'Explosive hip hinge', coachNotes: 'Explosive hip hinge', rpe: 8, rir: 2, progressionGuidance: 'Add 2.5 kg (or 1-2 reps) once every set reaches the top of the rep range at RPE 8 or lower.', orderIndex: 1 },
+                { name: 'Dumbbell Thrusters', sets: 3, reps: '12', restSeconds: 60, tempo: '2-0-1', notes: 'Fluid squat-to-press motion', coachNotes: 'Fluid squat-to-press motion', rpe: 8, rir: 2, progressionGuidance: 'Add 2.5 kg (or 1-2 reps) once every set reaches the top of the rep range at RPE 8 or lower.', orderIndex: 2 },
+                { name: 'Plank Hold', sets: 3, reps: '60s hold', restSeconds: 45, tempo: 'Hold', notes: 'Engage glutes and core', coachNotes: 'Engage glutes and core', rpe: 8, rir: 2, progressionGuidance: 'Add 2.5 kg (or 1-2 reps) once every set reaches the top of the rep range at RPE 8 or lower.', orderIndex: 3 },
               ],
             },
           },
@@ -374,9 +411,9 @@ async function main() {
             orderIndex: 1,
             exercises: {
               create: [
-                { name: 'Goblet Squats', sets: 3, reps: '12', restSeconds: 60, notes: 'Hold dumbbell at chest', orderIndex: 1 },
-                { name: 'Dumbbell Floor Press', sets: 3, reps: '12', restSeconds: 60, notes: 'Control descent', orderIndex: 2 },
-                { name: 'Dumbbell Bent-over Rows', sets: 3, reps: '12', restSeconds: 60, notes: 'Keep spine neutral', orderIndex: 3 },
+                { name: 'Goblet Squats', sets: 3, reps: '12', restSeconds: 60, notes: 'Hold dumbbell at chest', coachNotes: 'Hold dumbbell at chest', rpe: 8, rir: 2, progressionGuidance: 'Add 2.5 kg (or 1-2 reps) once every set reaches the top of the rep range at RPE 8 or lower.', orderIndex: 1 },
+                { name: 'Dumbbell Floor Press', sets: 3, reps: '12', restSeconds: 60, notes: 'Control descent', coachNotes: 'Control descent', rpe: 8, rir: 2, progressionGuidance: 'Add 2.5 kg (or 1-2 reps) once every set reaches the top of the rep range at RPE 8 or lower.', orderIndex: 2 },
+                { name: 'Dumbbell Bent-over Rows', sets: 3, reps: '12', restSeconds: 60, notes: 'Keep spine neutral', coachNotes: 'Keep spine neutral', rpe: 8, rir: 2, progressionGuidance: 'Add 2.5 kg (or 1-2 reps) once every set reaches the top of the rep range at RPE 8 or lower.', orderIndex: 3 },
               ],
             },
           },
@@ -386,9 +423,9 @@ async function main() {
             orderIndex: 2,
             exercises: {
               create: [
-                { name: 'Dumbbell Romanian Deadlifts', sets: 3, reps: '12', restSeconds: 60, notes: 'Feel the hamstrings', orderIndex: 1 },
-                { name: 'Overhead Dumbbell Press', sets: 3, reps: '10', restSeconds: 60, notes: 'Press straight overhead', orderIndex: 2 },
-                { name: 'Glute Bridges', sets: 3, reps: '15', restSeconds: 45, notes: 'Pause 2s at top', orderIndex: 3 },
+                { name: 'Dumbbell Romanian Deadlifts', sets: 3, reps: '12', restSeconds: 60, notes: 'Feel the hamstrings', coachNotes: 'Feel the hamstrings', rpe: 8, rir: 2, progressionGuidance: 'Add 2.5 kg (or 1-2 reps) once every set reaches the top of the rep range at RPE 8 or lower.', orderIndex: 1 },
+                { name: 'Overhead Dumbbell Press', sets: 3, reps: '10', restSeconds: 60, notes: 'Press straight overhead', coachNotes: 'Press straight overhead', rpe: 8, rir: 2, progressionGuidance: 'Add 2.5 kg (or 1-2 reps) once every set reaches the top of the rep range at RPE 8 or lower.', orderIndex: 2 },
+                { name: 'Glute Bridges', sets: 3, reps: '15', restSeconds: 45, notes: 'Pause 2s at top', coachNotes: 'Pause 2s at top', rpe: 8, rir: 2, progressionGuidance: 'Add 2.5 kg (or 1-2 reps) once every set reaches the top of the rep range at RPE 8 or lower.', orderIndex: 3 },
               ],
             },
           },
@@ -494,6 +531,13 @@ async function main() {
       difficultyLevel: 'Moderate',
       challenges: 'Felt a bit hungry on Wednesday evening before bed.',
       generalFeedback: 'Overall feeling lighter, clothes fit much better! Strength on bench press is holding steady.',
+      averageDailySteps: 8400,
+      trainingSessionsCompleted: 4,
+      trainingSessionsPlanned: 4,
+      hungerLevel: 3,
+      stressLevel: 2,
+      wins: 'Hit every session, and trousers that were tight in week 1 now fit comfortably.',
+      helpNeeded: 'A higher-protein breakfast option that is not eggs every day.',
       status: 'PENDING_REVIEW',
       aiTrendsSummary: 'Weight down -0.8kg this week (85.0kg -> 84.2kg). Waist down -1cm. Adherence is strong.',
     },
@@ -524,6 +568,7 @@ async function main() {
         beforePhotoUrl: null,
         afterPhotoUrl: null,
         verifiedClient: true,
+        consentGiven: false,
         featured: true,
       },
       {
@@ -538,6 +583,7 @@ async function main() {
         beforePhotoUrl: null,
         afterPhotoUrl: null,
         verifiedClient: true,
+        consentGiven: false,
         featured: true,
       },
       {
@@ -552,9 +598,42 @@ async function main() {
         beforePhotoUrl: null,
         afterPhotoUrl: null,
         verifiedClient: true,
+        consentGiven: false,
         featured: true,
       },
     ],
+  });
+
+  // Sample published progress report for Chidi (weeks 1-3)
+  await prisma.progressReport.create({
+    data: {
+      userId: clientChidi.id,
+      coachId: coach.id,
+      periodStart: new Date(Date.now() - 21 * 86400000),
+      periodEnd: new Date(),
+      startingWeightKg: 86.5,
+      currentWeightKg: 84.2,
+      waistCm: 87,
+      averageSteps: 8400,
+      trainingConsistency: 92,
+      nutritionAdherence: 85,
+      hunger: 3,
+      energy: 4,
+      sleep: 4,
+      strengthPerformance: 'Incline bench up from 60 kg to 65 kg for 8. Squat holding at 100 kg with better depth.',
+      challenges: 'Evening hunger on two or three nights a week, mostly Wednesday and Friday.',
+      wins: 'Every planned session completed. Waist down 2.5 cm. Clothes noticeably looser.',
+      coachAssessment:
+        'Three weeks in and the trend is exactly where we want it: about 0.75 kg a week with strength holding or improving, which tells us the loss is coming from fat rather than muscle. Nutrition adherence of 85 percent is good and realistic. Evening hunger is the one thing to solve so it does not turn into unplanned snacking.',
+      nextAdjustments:
+        'Keep calories at 2,288 kcal. Move 30 g of carbohydrate from Meal 1 to Meal 3 to blunt evening hunger. Keep steps at 8,500. Add one top set on incline bench at RPE 8.5. Review again after week 4; if the weekly average stalls for two weeks, reduce by 100 kcal.',
+      publishedAt: new Date(),
+    },
+  });
+
+  // Nutrition guidelines (brief section 13), in the brief's order
+  await prisma.nutritionGuideline.createMany({
+    data: NUTRITION_GUIDELINES.map((g, i) => ({ ...g, orderIndex: i + 1, active: true })),
   });
 
   console.log('✅ Seed data successfully created with full realistic clients, trial user, and testimonials!');
