@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { AdminAppShell } from '@/components/admin/AdminAppShell';
+import { DownloadPdfButton } from '@/components/brand/DownloadPdfButton';
 import {
   Plus,
   Trash2,
@@ -280,8 +281,9 @@ export default function AdminTrainingBuilderPage() {
                 <p className="text-[var(--text-muted)]">
                   Client: <strong className="text-[var(--text-heading)]">{p.user?.firstName} {p.user?.lastName}</strong>
                 </p>
-                <div className="text-xs text-[var(--text-muted)] pt-2 border-t border-[var(--border-subtle)]">
-                  {p.workouts?.length || 0} Training Days Included
+                <div className="text-xs text-[var(--text-muted)] pt-2 border-t border-[var(--border-subtle)] flex items-center justify-between gap-2">
+                  <span>{p.workouts?.length || 0} training days</span>
+                  <DownloadPdfButton href={`/print/workout-programme/${p.id}`} />
                 </div>
               </div>
             ))}

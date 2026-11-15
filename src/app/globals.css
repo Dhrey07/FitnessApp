@@ -65,7 +65,8 @@
   --color-brand-dark: var(--brand-green-900);
 }
 
-html.light {
+html.light,
+.theme-light {
   --brand: var(--brand-green-900);
   --brand-hover: var(--brand-green-700);
   --brand-strong: var(--brand-green-900);
@@ -528,10 +529,62 @@ textarea.field-input {
   min-height: 80px;
 }
 
-/* Print: documents are always light, with the E monogram watermark */
+/* ------------------------------------------------------------------
+   Print documents (src/app/print/*): A4 sheets, light theme, E watermark
+   ------------------------------------------------------------------ */
+.print-root {
+  background: #E9E7E1;
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+.print-sheet {
+  position: relative;
+  width: 210mm;
+  min-height: 297mm;
+  margin: 10mm auto;
+  padding: 16mm 18mm;
+  background: #FFFFFF;
+  box-shadow: 0 2px 16px rgba(22, 26, 24, 0.12);
+  display: flex;
+  flex-direction: column;
+  break-after: page;
+  page-break-after: always;
+}
+.print-sheet:last-child { break-after: auto; page-break-after: auto; }
+.print-watermark {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 110mm;
+  height: 110mm;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 0;
+}
+.print-header, .print-body, .print-footer { position: relative; z-index: 1; }
+.print-body { flex: 1; }
+.print-sheet table { border-collapse: collapse; }
+.print-sheet h1, .print-sheet h2, .print-sheet h3 { font-family: var(--font-display); }
+.avoid-break { break-inside: avoid; page-break-inside: avoid; }
+
+@page {
+  size: A4;
+  margin: 14mm 16mm;
+  @bottom-right { content: counter(page) " / " counter(pages); font-size: 9pt; color: #6B7370; }
+}
+
 @media print {
-  html, body {
-    background: #FFFFFF !important;
-    color: var(--brand-charcoal) !important;
+  html, body { background: #FFFFFF !important; min-height: 0 !important; height: auto !important; overflow: visible !important; max-width: none !important; }
+  .print-root { background: #FFFFFF; min-height: 0 !important; }
+  .print-toolbar { display: none !important; }
+  .print-sheet {
+    width: auto;
+    min-height: 258mm;
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
   }
+  a { text-decoration: none; color: inherit; }
 }

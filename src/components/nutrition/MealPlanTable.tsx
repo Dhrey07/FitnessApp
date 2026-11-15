@@ -17,6 +17,7 @@ export interface MealPlanItemLike {
 }
 
 export interface MealPlanLike {
+  id?: string;
   title: string;
   dailyCalorieTarget: number;
   proteinTargetG: number;
@@ -74,20 +75,20 @@ export function MealPlanDayTable({ plan, day, compact = false }: { plan: MealPla
                   {it.notes && <span className="block text-xs text-ink-muted">{it.notes}</span>}
                 </td>
                 <td className="py-2.5 pr-3 text-ink-secondary">{it.quantity || it.portion}</td>
-                <td className="py-2.5 pr-3 text-right font-semibold text-ink">{Math.round(it.calories)}</td>
-                <td className="py-2.5 pr-3 text-right text-ink-secondary">{Math.round(it.proteinG)} g</td>
-                <td className="py-2.5 pr-3 text-right text-ink-secondary">{Math.round(it.carbsG)} g</td>
-                <td className="py-2.5 text-right text-ink-secondary">{Math.round(it.fatG)} g</td>
+                <td className="py-2.5 pr-3 text-right font-semibold text-ink whitespace-nowrap">{Math.round(it.calories)}</td>
+                <td className="py-2.5 pr-3 text-right text-ink-secondary whitespace-nowrap">{Math.round(it.proteinG)} g</td>
+                <td className="py-2.5 pr-3 text-right text-ink-secondary whitespace-nowrap">{Math.round(it.carbsG)} g</td>
+                <td className="py-2.5 text-right text-ink-secondary whitespace-nowrap">{Math.round(it.fatG)} g</td>
               </tr>
             ))}
           </tbody>
           <tfoot>
             <tr className="border-t-2 border-[var(--accent)] font-semibold text-ink">
               <td className="pt-2.5" colSpan={3}>Daily total · target {Math.round(plan.dailyCalorieTarget).toLocaleString()} kcal</td>
-              <td className="pt-2.5 text-right">{Math.round(totals.calories).toLocaleString()}</td>
-              <td className="pt-2.5 text-right">{Math.round(totals.proteinG)} g</td>
-              <td className="pt-2.5 text-right">{Math.round(totals.carbsG)} g</td>
-              <td className="pt-2.5 text-right">{Math.round(totals.fatG)} g</td>
+              <td className="pt-2.5 text-right whitespace-nowrap">{Math.round(totals.calories).toLocaleString()}</td>
+              <td className="pt-2.5 text-right whitespace-nowrap">{Math.round(totals.proteinG)} g</td>
+              <td className="pt-2.5 text-right whitespace-nowrap">{Math.round(totals.carbsG)} g</td>
+              <td className="pt-2.5 text-right whitespace-nowrap">{Math.round(totals.fatG)} g</td>
             </tr>
             <tr className="text-xs text-ink-muted">
               <td colSpan={3} className="pt-1">Targets: {plan.proteinTargetG} g protein · {plan.carbsTargetG} g carbohydrate · {plan.fatTargetG} g fat</td>

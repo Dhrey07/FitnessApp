@@ -99,6 +99,9 @@ export default function AdminClientDetailPage({ params }: { params: Promise<{ id
         <Link href={`/admin/clients/${clientId}/meal-plan`} className="btn-secondary text-xs py-2 px-4">
           Meal plan builder
         </Link>
+        <Link href={`/admin/clients/${clientId}/reports`} className="btn-secondary text-xs py-2 px-4">
+          Progress reports
+        </Link>
         <a
           href={`https://wa.me/2348012345678?text=${encodeURIComponent(
             `Hello ${client?.firstName}, Coach Eric here, reviewing your ERICONET profile.`

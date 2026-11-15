@@ -9,6 +9,7 @@ import {
   ClipboardList,
   Dumbbell,
   Calendar,
+  FileText,
   Quote,
   LogOut,
   Menu,
@@ -50,6 +51,7 @@ export function AdminAppShell({ title, subtitle, children }: AdminAppShellProps)
     { href: '/admin/nutrition-review', label: 'Nutrition Review', icon: ClipboardList },
     { href: '/admin/training', label: 'Training Builder', icon: Dumbbell },
     { href: '/admin/check-ins', label: 'Check-ins', icon: Calendar },
+    { href: '/admin/reports', label: 'Reports', icon: FileText },
     { href: '/admin/testimonials', label: 'Testimonials', icon: Quote },
   ];
 

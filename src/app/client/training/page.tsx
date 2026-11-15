@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { ClientAppShell } from '@/components/client/ClientAppShell';
+import { DownloadPdfButton } from '@/components/brand/DownloadPdfButton';
 import {
   Dumbbell,
   CheckCircle2,
@@ -183,6 +184,7 @@ export default function TrainingClientPage() {
               <h2 className="text-xl font-extrabold text-[var(--text-heading)]">
                 {workoutPlan?.title || '4-Day Hypertrophy & Fat Burn Routine'}
               </h2>
+              {workoutPlan?.id && <div className="mt-2"><DownloadPdfButton href={`/print/workout-programme/${workoutPlan.id}`} label="Download programme PDF" /></div>}
               <p className="text-xs text-[var(--text-muted)]">
                 Goal: <strong className="text-brand">{workoutPlan?.goal?.replace('_', ' ') || 'FAT LOSS'}</strong> • Home & Gym Accessible • 45 min/session
               </p>

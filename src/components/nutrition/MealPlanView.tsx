@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { MealPlanDayTable, planDays, type MealPlanLike } from './MealPlanTable';
+import { DownloadPdfButton } from '@/components/brand/DownloadPdfButton';
 
 /** Client-side "My meal plan": loads the active plan and shows it day by day. */
 export function MealPlanView({ userId }: { userId: string }) {
@@ -51,6 +52,7 @@ export function MealPlanView({ userId }: { userId: string }) {
           <p className="label-xs text-brand">My meal plan</p>
           <h3 className="font-display font-bold text-ink text-base mt-0.5">{plan.title}</h3>
           <p className="text-xs text-ink-muted mt-0.5">{days.length} day{days.length === 1 ? '' : 's'}</p>
+          {plan.id && <div className="mt-2"><DownloadPdfButton href={`/print/meal-plan/${plan.id}`} /></div>}
         </div>
         {[
           ['Calories', `${Math.round(plan.dailyCalorieTarget).toLocaleString()} kcal`],

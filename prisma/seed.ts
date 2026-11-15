@@ -635,6 +635,33 @@ async function main() {
     },
   });
 
+  // Sample published progress report for Aminat (Private Coaching tier, muscle gain)
+  await prisma.progressReport.create({
+    data: {
+      userId: clientAminat.id,
+      coachId: coach.id,
+      periodStart: new Date(Date.now() - 42 * 86400000),
+      periodEnd: new Date(Date.now() - 1 * 86400000),
+      startingWeightKg: 60,
+      currentWeightKg: 62,
+      waistCm: 70,
+      averageSteps: 9500,
+      trainingConsistency: 96,
+      nutritionAdherence: 90,
+      hunger: 2,
+      energy: 4,
+      sleep: 4,
+      strengthPerformance: 'Hip thrust from 80 kg to 100 kg for 8. Pull-ups from 3 to 6 strict reps.',
+      challenges: 'Eating enough on long clinic days; two weeks under the protein target.',
+      wins: 'Six weeks without a missed session. Visible change in shoulders and glutes in photos.',
+      coachAssessment:
+        'Two kilograms in six weeks with waist unchanged is exactly the lean gain rate we planned, and strength is climbing in step. Protein was the only soft spot, on the days where meals were skipped at work.',
+      nextAdjustments:
+        'Add 150 kcal, all from carbohydrate around training. Pack a yoghurt and groundnut snack for clinic days so protein never drops below 120 g. Keep training block as is for four more weeks, then re-test pull-ups.',
+      publishedAt: new Date(Date.now() - 1 * 86400000),
+    },
+  });
+
   // Nutrition guidelines (brief section 13), in the brief's order
   await prisma.nutritionGuideline.createMany({
     data: NUTRITION_GUIDELINES.map((g, i) => ({ ...g, orderIndex: i + 1, active: true })),

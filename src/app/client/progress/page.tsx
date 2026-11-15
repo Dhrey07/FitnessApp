@@ -19,6 +19,7 @@ import {
   CartesianGrid,
 } from 'recharts';
 import { PhotoPlaceholder } from '@/components/brand/PhotoPlaceholder';
+import { ProgressReportsList } from '@/components/reports/ProgressReportsList';
 
 export default function ProgressClientPage() {
   const [user, setUser] = useState<any>(null);
@@ -258,6 +259,8 @@ export default function ProgressClientPage() {
         </div>
 
       </div>
+
+      <ProgressReportsList />
     </ClientAppShell>
   );
 }

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { AdminAppShell } from '@/components/admin/AdminAppShell';
 import {
   Calendar,
@@ -219,6 +220,13 @@ export default function AdminCheckInsPage() {
                     className="field-input resize-none text-xs"
                   />
                 </div>
+
+                <Link
+                  href={`/admin/clients/${selectedCheckIn.userId}/reports/new?checkInId=${selectedCheckIn.id}`}
+                  className="btn-secondary text-xs w-full justify-center py-2.5"
+                >
+                  Create progress report from this check-in
+                </Link>
 
                 <button
                   type="submit"

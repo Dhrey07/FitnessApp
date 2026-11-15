@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { ArrowLeft, Plus, Trash2, Copy, CheckCircle2, AlertCircle } from 'lucide-react';
 import { AdminAppShell } from '@/components/admin/AdminAppShell';
 import { dayTotals, type MealPlanItemLike } from '@/components/nutrition/MealPlanTable';
+import { DownloadPdfButton } from '@/components/brand/DownloadPdfButton';
 
 const LABELS = ['Meal 1', 'Snack', 'Meal 2', 'Meal 3'];
 const LABEL_TO_TYPE: Record<string, string> = { 'Meal 1': 'BREAKFAST', Snack: 'SNACK', 'Meal 2': 'LUNCH', 'Meal 3': 'DINNER' };
@@ -25,6 +26,7 @@ export default function MealPlanBuilderPage({ params }: { params: Promise<{ id: 
   const [day, setDay] = useState(0);
   const [saving, setSaving] = useState(false);
   const [msg, setMsg] = useState<{ kind: 'ok' | 'err'; text: string } | null>(null);
+  const [planId, setPlanId] = useState<string | null>(null);
 
   useEffect(() => {
     (async () => {
@@ -37,6 +39,7 @@ export default function MealPlanBuilderPage({ params }: { params: Promise<{ id: 
         const pData = await pRes.json();
         const existing = pData.mealPlan;
         if (existing) {
+          setPlanId(existing.id);
           setTitle(existing.title);
           setTargets({
             dailyCalorieTarget: String(existing.dailyCalorieTarget), proteinTargetG: String(existing.proteinTargetG),
@@ -95,6 +98,7 @@ export default function MealPlanBuilderPage({ params }: { params: Promise<{ id: 
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Could not save');
+      setPlanId(data.mealPlan?.id || null);
       setMsg({ kind: 'ok', text: 'Meal plan published to the client.' });
     } catch (e: any) {
       setMsg({ kind: 'err', text: e.message || 'Could not save' });
@@ -108,9 +112,12 @@ export default function MealPlanBuilderPage({ params }: { params: Promise<{ id: 
       title={client ? `Meal plan: ${client.firstName} ${client.lastName}` : 'Meal plan'}
       subtitle="Day by day, with exact quantities. Totals are checked against the client's targets as you type."
     >
-      <Link href={`/admin/clients/${clientId}`} className="text-xs text-brand hover:underline inline-flex items-center gap-1.5 font-semibold">
-        <ArrowLeft size={14} /> Back to client profile
-      </Link>
+      <div className="flex items-center justify-between gap-3">
+        <Link href={`/admin/clients/${clientId}`} className="text-xs text-brand hover:underline inline-flex items-center gap-1.5 font-semibold">
+          <ArrowLeft size={14} /> Back to client profile
+        </Link>
+        {planId && <DownloadPdfButton href={`/print/meal-plan/${planId}`} label="Download published PDF" />}
+      </div>
 
       {msg && (
         <div className={`p-4 rounded-xl text-xs flex items-center gap-2 border ${msg.kind === 'ok' ? 'bg-status-approved/15 border-status-approved/40 text-status-approved' : 'bg-status-rejected/15 border-status-rejected/40 text-status-rejected'}`}>

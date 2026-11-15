@@ -262,6 +262,9 @@ export default function CheckInClientPage() {
         </form>
 
         <aside className="lg:col-span-5 space-y-4">
+          <p className="text-xs text-ink-muted">
+            Prefer paper or WhatsApp? <a href="/print/check-in-form" target="_blank" rel="noopener noreferrer" className="text-brand font-semibold hover:underline">Print a blank check-in form</a>.
+          </p>
           <div className="flex items-center justify-between">
             <h3 className="section-title text-sm">Previous check-ins</h3>
             <span className="text-xs text-ink-muted">{history.length ? `Last ${history.length}` : ''}</span>
