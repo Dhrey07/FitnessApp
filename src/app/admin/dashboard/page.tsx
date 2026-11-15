@@ -12,6 +12,7 @@ import {
   ArrowRight,
   CheckCircle2,
 } from 'lucide-react';
+import { planTierLabel } from '@/lib/services/entitlements';
 
 export default function AdminDashboardPage() {
   const [metrics, setMetrics] = useState<any>(null);
@@ -67,7 +68,7 @@ export default function AdminDashboardPage() {
             <Users size={15} className="text-[var(--text-muted)]" />
           </div>
           <p className="text-2xl font-black text-[var(--text-heading)]">{m.totalClients}</p>
-          <p className="text-xs text-[var(--text-muted)]">Enrolled athletes</p>
+          <p className="text-xs text-[var(--text-muted)]">Active and trial clients</p>
         </div>
 
         {/* Active Subscriptions / Paid */}
@@ -105,7 +106,7 @@ export default function AdminDashboardPage() {
       {/* SECONDARY ACTION STRIP */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full">
         
-        <Link href="/admin/check-ins" className="surface p-5 flex items-center justify-between border-l-4 border-l-cyan-500 hover:border-[var(--border-active)] transition-all">
+        <Link href="/admin/check-ins" className="surface p-5 flex items-center justify-between border-l-4 border-l-[var(--brand)] hover:border-[var(--border-active)] transition-all">
           <div className="space-y-1">
             <span className="label-xs text-brand">Action Required</span>
             <h3 className="font-bold text-[var(--text-heading)] text-sm">Sunday Check-Ins Due</h3>
@@ -116,7 +117,7 @@ export default function AdminDashboardPage() {
           </span>
         </Link>
 
-        <Link href="/admin/nutrition-review" className="surface p-5 flex items-center justify-between border-l-4 border-l-emerald-500 hover:border-[var(--border-active)] transition-all">
+        <Link href="/admin/nutrition-review" className="surface p-5 flex items-center justify-between border-l-4 border-l-[var(--status-approved)] hover:border-[var(--border-active)] transition-all">
           <div className="space-y-1">
             <span className="label-xs text-status-approved">Action Required</span>
             <h3 className="font-bold text-[var(--text-heading)] text-sm">Nutrition review</h3>
@@ -127,7 +128,7 @@ export default function AdminDashboardPage() {
           </span>
         </Link>
 
-        <Link href="/admin/clients" className="surface p-5 flex items-center justify-between border-l-4 border-l-purple-500 hover:border-[var(--border-active)] transition-all">
+        <Link href="/admin/clients" className="surface p-5 flex items-center justify-between border-l-4 border-l-[var(--accent)] hover:border-[var(--border-active)] transition-all">
           <div className="space-y-1">
             <span className="label-xs text-brand">Growth</span>
             <h3 className="font-bold text-[var(--text-heading)] text-sm">New Signups This Week</h3>
@@ -166,7 +167,7 @@ export default function AdminDashboardPage() {
                   </div>
                   <div>
                     <p className="font-bold text-[var(--text-heading)] text-sm">{item.clientName}</p>
-                    <p className="text-xs text-[var(--text-muted)]">{item.clientEmail} • {item.planTier} Tier</p>
+                    <p className="text-xs text-[var(--text-muted)]">{item.clientEmail} • {planTierLabel(item.planTier)}</p>
                   </div>
                 </div>
 

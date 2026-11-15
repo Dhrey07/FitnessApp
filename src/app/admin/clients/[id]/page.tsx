@@ -3,10 +3,13 @@
 import React, { useState, useEffect, use } from 'react';
 import Link from 'next/link';
 import { AdminAppShell } from '@/components/admin/AdminAppShell';
+import { BRAND } from '@/lib/brand';
+import { whatsappLink } from '@/lib/whatsapp';
 import {
   ArrowLeft,
   MessageCircle,
 } from 'lucide-react';
+import { planTierLabel } from '@/lib/services/entitlements';
 
 export default function AdminClientDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = use(params);
@@ -71,7 +74,7 @@ export default function AdminClientDetailPage({ params }: { params: Promise<{ id
         <div className="surface p-8 text-center space-y-4">
           <p className="text-sm text-[var(--text-muted)]">Client profile could not be loaded.</p>
           <Link href="/admin/clients" className="btn-brand text-xs inline-flex">
-            <ArrowLeft size={14} /> Back to Roster
+            <ArrowLeft size={14} /> Back to clients
           </Link>
         </div>
       </AdminAppShell>
@@ -92,7 +95,7 @@ export default function AdminClientDetailPage({ params }: { params: Promise<{ id
       {/* Top Breadcrumb & Action Strip */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <Link href="/admin/clients" className="text-xs text-brand hover:underline flex items-center gap-1.5 font-bold">
-          <ArrowLeft size={14} /> Back to Clients Roster
+          <ArrowLeft size={14} /> Back to clients
         </Link>
 
         <div className="flex items-center gap-2 self-start sm:self-auto">
@@ -102,16 +105,16 @@ export default function AdminClientDetailPage({ params }: { params: Promise<{ id
         <Link href={`/admin/clients/${clientId}/reports`} className="btn-secondary text-xs py-2 px-4">
           Progress reports
         </Link>
-        <a
-          href={`https://wa.me/2348012345678?text=${encodeURIComponent(
-            `Hello ${client?.firstName}, Coach Eric here, reviewing your ERICONET profile.`
-          )}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="btn-brand text-xs py-2 px-4 bg-status-approved hover:brightness-95 text-brand-on-strong font-black self-start sm:self-auto"
-        >
-          <MessageCircle size={15} /> Message on WhatsApp
-        </a>
+        {whatsappLink(client?.phone) && (
+          <a
+            href={whatsappLink(client?.phone, `Hello ${client?.firstName}, ${BRAND.coachName} here, reviewing your ${BRAND.shortName} profile.`)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-brand text-xs py-2 px-4 font-black self-start sm:self-auto"
+          >
+            <MessageCircle size={15} /> Message on WhatsApp
+          </a>
+        )}
         </div>
       </div>
 
@@ -132,7 +135,7 @@ export default function AdminClientDetailPage({ params }: { params: Promise<{ id
                   sub.planTier === 'DIAMOND' ? 'badge-tier-diamond' :
                   'bg-paper text-ink-secondary'
                 }`}>
-                  {sub.isTrial ? '14-Day Free Trial' : `${sub.planTier} Tier`}
+                  {sub.isTrial ? '14-day free trial' : planTierLabel(sub.planTier)}
                 </span>
                 <span className="text-xs text-[var(--text-muted)]">{p.sex} • Age {p.age}</span>
               </div>

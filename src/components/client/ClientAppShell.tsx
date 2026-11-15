@@ -20,7 +20,7 @@ import {
   Settings,
 } from 'lucide-react';
 import { TrialBanner } from './TrialBanner';
-import { TrialInfo } from '@/lib/services/entitlements';
+import { TrialInfo, planTierLabel } from '@/lib/services/entitlements';
 import { ThemeToggle } from '@/components/theme/ThemeToggle';
 import { Logo } from '@/components/brand/Logo';
 import { NotificationCenter } from '@/components/layout/NotificationCenter';
@@ -127,7 +127,7 @@ export function ClientAppShell({ title, subtitle, children }: ClientAppShellProp
                 sub.planTier === 'DIAMOND' ? 'badge-tier-diamond' :
                 'bg-paper text-ink-secondary'
               }`}>
-                {sub.planTier}
+                {planTierLabel(sub.planTier)}
               </span>
             )}
 

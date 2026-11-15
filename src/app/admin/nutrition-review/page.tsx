@@ -214,7 +214,7 @@ export default function AdminNutritionReviewPage() {
                     type="button"
                     disabled={submitting}
                     onClick={() => handleReviewMeal('APPROVE')}
-                    className="btn-brand text-xs justify-center py-3 bg-status-approved hover:brightness-95 text-brand-on-strong font-black"
+                    className="btn-brand text-xs justify-center py-3 font-black"
                   >
                     <CheckCircle2 size={14} /> Approve AI Output
                   </button>

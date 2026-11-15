@@ -282,7 +282,7 @@ export default function OnboardingPage() {
               <span className="label-xs text-brand">Step 02 • Physical Baseline</span>
               <h2 className="page-title text-2xl mt-1">Your Body Measurements</h2>
               <p className="text-xs text-[var(--text-muted)] mt-1">
-                These measurements allow our Mifflin-St Jeor engine to calculate your exact Basal Metabolic Rate and body mass index.
+                These measurements let us calculate your basal metabolic rate and body mass index with the Mifflin-St Jeor equation.
               </p>
             </div>
 

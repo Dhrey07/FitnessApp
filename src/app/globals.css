@@ -50,9 +50,9 @@
 
   /* Status (desaturated to sit with the palette) */
   --status-pending: #D59A2E;
-  --status-approved: #4FA37C;
-  --status-modified: #7A9CC9;
-  --status-rejected: #D16060;
+  --status-approved: #5AB088;
+  --status-modified: #8AAAD4;
+  --status-rejected: #E88585;
 
   --radius-sm: 8px;
   --radius-md: 12px;
@@ -90,13 +90,13 @@ html.light,
 
   --text-primary: var(--brand-charcoal);
   --text-secondary: #474D4A;
-  --text-muted: var(--brand-stone-500);
+  --text-muted: #5F6764; /* stone-500 darkened one step so 12px muted text clears 4.5:1 on off-white */
   --text-heading: var(--brand-charcoal);
 
-  --status-pending: #B7791F;
-  --status-approved: #2F7D5B;
-  --status-modified: #4A6FA5;
-  --status-rejected: #B23A3A;
+  --status-pending: #85570F;
+  --status-approved: #276B4E;
+  --status-modified: #3F6397;
+  --status-rejected: #A83434;
 
   --color-brand: var(--brand);
   --color-brand-hover: var(--brand-hover);
@@ -395,7 +395,7 @@ html.light,
   /* Tier badges: champagne is the only "premium" accent; no gradients */
   .badge-tier-gold {
     background: var(--accent-soft);
-    color: var(--accent);
+    color: var(--text-primary); /* champagne stays on the border and tint; badge text is 12px so it is never champagne */
     border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
   }
 

@@ -53,7 +53,8 @@ Deep green carries trust and discipline; charcoal and off-white carry the premiu
 
 **Rules**
 - Green is an accent, not a wash. Backgrounds are off-white, white or charcoal. Green covers at most about 10% of any screen. At most one green primary button per viewport.
-- Champagne covers at most about 2% of a screen and is never used for text under 16 px. On light backgrounds the UI uses a darkened champagne (`#A98747`) for text so it meets 4.5:1.
+- Champagne covers at most about 2% of a screen and is never used for text under 16 px. On light backgrounds the UI uses a darkened champagne (`#A98747`) for large accent text; small text on a champagne tint (the Signature tier badge) is charcoal, with champagne on the border and tint only.
+- Contrast. Every text token clears 4.5:1 on every background it sits on, in both themes. Where a raw palette value falls short the semantic variable carries an adjusted value: light muted text is `#5F6764` (stone darkened one step), light status colours are `#85570F` pending, `#276B4E` approved, `#3F6397` modified and `#A83434` rejected; dark status colours are `#D59A2E`, `#5AB088`, `#8AAAD4` and `#E88585`. These clear 4.5:1 both on flat surfaces and as badge text on their own 15% tint. Raw palette tokens stay unchanged for logo and print work.
 - No gradients. Flat fills only.
 - Status colours (pending `#B7791F`, approved `#2F7D5B`, modified `#4A6FA5`, rejected `#B23A3A`) are desaturated to sit with the palette.
 - Charts: primary line deep green, secondary line champagne, grid charcoal at 8% opacity.

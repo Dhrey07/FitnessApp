@@ -9,6 +9,7 @@ import {
   CheckCircle2,
   ArrowRight,
 } from 'lucide-react';
+import { planTierLabel } from '@/lib/services/entitlements';
 
 export default function AdminTrainingBuilderPage() {
   const [clients, setClients] = useState<any[]>([]);
@@ -150,7 +151,7 @@ export default function AdminTrainingBuilderPage() {
                 >
                   {clients.map((c) => (
                     <option key={c.id} value={c.id}>
-                      {c.firstName} {c.lastName} ({c.subscriptions?.[0]?.planTier || 'FREE'})
+                      {c.firstName} {c.lastName} ({planTierLabel(c.subscriptions?.[0]?.planTier)})
                     </option>
                   ))}
                 </select>
@@ -220,17 +221,17 @@ export default function AdminTrainingBuilderPage() {
                               <Trash2 size={14} />
                             </button>
                           </div>
-                          <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
+                          <div className="grid grid-cols-3 xl:grid-cols-6 gap-2">
                             {[
                               ['sets', 'Sets', 'number'],
                               ['reps', 'Reps', 'text'],
-                              ['restSeconds', 'Rest (s)', 'number'],
+                              ['restSeconds', 'Rest (sec)', 'number'],
                               ['tempo', 'Tempo', 'text'],
                               ['rpe', 'RPE', 'number'],
                               ['rir', 'RIR', 'number'],
                             ].map(([field, label, type]) => (
                               <label key={field} className="block">
-                                <span className="label-xs text-ink-muted block mb-1">{label}</span>
+                                <span className="label-xs text-ink-muted block mb-1 whitespace-nowrap">{label}</span>
                                 <input
                                   type={type}
                                   step={field === 'rpe' ? '0.5' : '1'}

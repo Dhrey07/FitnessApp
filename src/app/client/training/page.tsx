@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { ClientAppShell } from '@/components/client/ClientAppShell';
 import { DownloadPdfButton } from '@/components/brand/DownloadPdfButton';
 import {
-  Dumbbell,
+  ClipboardList,
   CheckCircle2,
   Lock,
   ArrowRight,
@@ -152,7 +152,7 @@ export default function TrainingClientPage() {
                 }`}
               >
                 <div>
-                  <span className="label-xs text-brand">{plan.tier}</span>
+                  <span className="label-xs text-brand">{plan.badge ?? 'Plan'}</span>
                   <h3 className="font-extrabold text-[var(--text-heading)] text-base mt-1">{plan.name}</h3>
                   <p className="text-xl font-black text-[var(--text-heading)] mt-1">₦{plan.priceNgn.toLocaleString()}</p>
                   <p className="text-xs text-[var(--text-muted)] mt-1">{plan.tagline}</p>
@@ -164,7 +164,7 @@ export default function TrainingClientPage() {
                     plan.tier === 'GOLD' ? 'btn-brand font-bold' : 'btn-secondary font-bold'
                   }`}
                 >
-                  Activate {plan.tier} <ArrowRight size={13} />
+                  Choose {plan.name} <ArrowRight size={13} />
                 </Link>
               </div>
             ))}
@@ -379,7 +379,7 @@ export default function TrainingClientPage() {
                   </form>
                 ) : (
                   <div className="p-8 text-center bg-paper rounded-xl border border-[var(--border-subtle)] text-[var(--text-muted)] text-xs space-y-2">
-                    <Dumbbell size={24} className="mx-auto text-ink-muted" />
+                    <ClipboardList size={24} className="mx-auto text-ink-muted" />
                     <p>Click any exercise on the left to input your sets, reps, and weights used.</p>
                   </div>
                 )}

@@ -57,7 +57,7 @@ export default function ClientProfilePage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Failed to upgrade');
 
-      setSuccessMsg(`Successfully upgraded to ${data.subscription?.planTier} Tier! All features are active.`);
+      setSuccessMsg(`You are now on ${PLAN_DETAILS[data.subscription?.planTier as PlanTier]?.name ?? data.subscription?.planTier}. All features are active.`);
       fetchProfile();
     } catch (err: any) {
       setErrorMsg(err.message || 'Something went wrong');

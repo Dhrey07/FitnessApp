@@ -3,6 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { AdminAppShell } from '@/components/admin/AdminAppShell';
+import { BRAND } from '@/lib/brand';
+import { whatsappLink } from '@/lib/whatsapp';
 import {
   Users,
   Search,
@@ -10,6 +12,7 @@ import {
   ArrowRight,
   MessageCircle,
 } from 'lucide-react';
+import { planTierLabel } from '@/lib/services/entitlements';
 
 export default function AdminClientsPage() {
   const [clients, setClients] = useState<any[]>([]);
@@ -39,8 +42,8 @@ export default function AdminClientsPage() {
 
   return (
     <AdminAppShell
-      title="Client Transformations Roster"
-      subtitle="Complete database of enrolled athletes, trial users, and active coaching subscribers."
+      title="Clients"
+      subtitle="Everyone on a plan or trial, with their goal, tier and check-in status."
     >
       {/* Search & Filter Toolbar */}
       <div className="surface p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border border-[var(--border-subtle)]">
@@ -62,11 +65,11 @@ export default function AdminClientsPage() {
             onChange={(e) => setTierFilter(e.target.value)}
             className="field-input text-xs py-2 w-auto"
           >
-            <option value="">All Tiers & Statuses</option>
+            <option value="">All tiers</option>
             <option value="FREE">Starter (free)</option>
-            <option value="SILVER">Silver Tier (₦15k)</option>
-            <option value="GOLD">Gold Tier (₦25k)</option>
-            <option value="DIAMOND">Diamond VIP (₦40k)</option>
+            <option value="SILVER">Essential (₦15k)</option>
+            <option value="GOLD">Signature (₦25k)</option>
+            <option value="DIAMOND">Private Coaching (₦40k)</option>
           </select>
         </div>
       </div>
@@ -120,7 +123,7 @@ export default function AdminClientsPage() {
                         sub.planTier === 'DIAMOND' ? 'badge-tier-diamond' :
                         'bg-paper text-ink-secondary'
                       }`}>
-                        {isTrial ? '14-Day Free Trial' : `${sub.planTier} Tier`}
+                        {isTrial ? '14-day free trial' : planTierLabel(sub.planTier)}
                       </span>
                       <p className="text-xs text-[var(--text-muted)]">{sub.status}</p>
                     </div>
@@ -134,17 +137,17 @@ export default function AdminClientsPage() {
 
                   <td className="p-4 text-right">
                     <div className="flex items-center justify-end gap-2">
-                      <a
-                        href={`https://wa.me/2348012345678?text=${encodeURIComponent(
-                          `Hello ${client.firstName}, Coach Eric here, checking in on your progress.`
-                        )}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="p-2 rounded-lg bg-status-approved/15 text-status-approved hover:bg-status-approved/25 transition-colors"
-                        title="WhatsApp Client"
-                      >
-                        <MessageCircle size={15} />
-                      </a>
+                      {whatsappLink(client.phone) && (
+                        <a
+                          href={whatsappLink(client.phone, `Hello ${client.firstName}, ${BRAND.coachName} here, checking in on your progress.`)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="p-2 rounded-lg bg-status-approved/15 text-status-approved hover:bg-status-approved/25 transition-colors"
+                          title="Message on WhatsApp"
+                        >
+                          <MessageCircle size={15} />
+                        </a>
+                      )}
                       <Link
                         href={`/admin/clients/${client.id}`}
                         className="btn-secondary text-xs py-1.5 px-3"

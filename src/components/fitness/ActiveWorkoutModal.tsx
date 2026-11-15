@@ -240,7 +240,7 @@ export function ActiveWorkoutModal({
           <button
             type="button"
             onClick={handleFinish}
-            className="btn-brand text-xs px-6 bg-status-approved hover:brightness-95 text-brand-on-strong font-black"
+            className="btn-brand text-xs px-6 font-black"
           >
             Finish Workout Session
           </button>

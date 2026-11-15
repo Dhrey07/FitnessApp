@@ -22,7 +22,7 @@ export async function GET() {
 
     return NextResponse.json({ queue });
   } catch (error) {
-    console.error('Error fetching food police queue:', error);
+    console.error('Error fetching nutrition review queue:', error);
     return NextResponse.json({ error: 'Failed to fetch queue' }, { status: 500 });
   }
 }

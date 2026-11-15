@@ -178,6 +178,12 @@ export function hasTrainingAccess(subscription?: {
 /**
  * Checks if a plan tier has permission to access a specific feature key.
  */
+/** Human-readable plan name for a tier key (Starter, Essential, Signature, Private Coaching). */
+export function planTierLabel(tier: string | null | undefined): string {
+  if (!tier) return 'Starter';
+  return PLAN_DETAILS[tier as PlanTier]?.name ?? tier;
+}
+
 export function hasFeatureEntitlement(planTier: PlanTier, feature: FeatureKey): boolean {
   const plan = PLAN_DETAILS[planTier] || PLAN_DETAILS.FREE;
   return plan.features.includes(feature);

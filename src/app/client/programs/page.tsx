@@ -46,7 +46,7 @@ export default function ProgramsClientPage() {
       tagline: 'Master fundamental movement patterns (squats, pushups, hinges, planks) with zero gym equipment.',
       category: 'FOUNDATION',
       isPremium: false,
-      features: ['Zero equipment required', 'Joint-friendly tempo work', 'Included free for all registered athletes'],
+      features: ['Zero equipment required', 'Joint-friendly tempo work', 'Included free for every registered client'],
     },
   ];
 
@@ -95,7 +95,7 @@ export default function ProgramsClientPage() {
               <div className="flex items-center justify-between">
                 <span className="label-xs text-brand">{prog.category}</span>
                 <span className={`badge text-xs${prog.isPremium ? 'badge-trial' : 'badge-approved'}`}>
-                  {prog.isPremium ? 'PREMIUM TIER' : 'FREE TIER'}
+                  {prog.isPremium ? 'Signature and above' : 'Included free'}
                 </span>
               </div>
 

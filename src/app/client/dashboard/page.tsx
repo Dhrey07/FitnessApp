@@ -87,14 +87,14 @@ export default function ClientDashboardPage() {
 
   return (
     <ClientAppShell
-      title={`${greetingTime()}, ${user?.firstName || 'Athlete'}`}
+      title={`${greetingTime()}, ${user?.firstName || 'there'}`}
       subtitle="Here is your personal fitness focus and daily blueprint for today."
     >
       {/* 3 CORE PILLARS COMMAND CENTER */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch w-full">
         
         {/* PILLAR 1: WHAT SHOULD I DO TODAY? (Fitness) */}
-        <div className="surface p-6 sm:p-7 flex flex-col justify-between space-y-6 border-l-4 border-l-sky-400 surface-hover">
+        <div className="surface p-6 sm:p-7 flex flex-col justify-between space-y-6 border-l-4 border-l-[var(--brand)] surface-hover">
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <span className="label-xs text-brand">Focus 01 • Training</span>
@@ -126,11 +126,11 @@ export default function ClientDashboardPage() {
         </div>
 
         {/* PILLAR 2: WHAT SHOULD I EAT? (Nutrition log) */}
-        <div className="surface p-6 sm:p-7 flex flex-col justify-between space-y-6 border-l-4 border-l-cyan-400 surface-hover">
+        <div className="surface p-6 sm:p-7 flex flex-col justify-between space-y-6 border-l-4 border-l-[var(--status-approved)] surface-hover">
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <span className="label-xs text-brand">Focus 02 • Nutrition</span>
-              <span className="badge badge-approved text-xs">100% FREE TIER</span>
+              <span className="badge badge-approved text-xs">Included free</span>
             </div>
 
             <div>
@@ -185,7 +185,7 @@ export default function ClientDashboardPage() {
         </div>
 
         {/* PILLAR 3: AM I MAKING PROGRESS? (Progress & Coaching) */}
-        <div className="surface p-6 sm:p-7 flex flex-col justify-between space-y-6 border-l-4 border-l-blue-400 surface-hover">
+        <div className="surface p-6 sm:p-7 flex flex-col justify-between space-y-6 border-l-4 border-l-[var(--accent)] surface-hover">
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <span className="label-xs text-brand">Focus 03 • Progress</span>
