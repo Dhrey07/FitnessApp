@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import {
-  Flame,
   ArrowRight,
   ArrowLeft,
   CheckCircle2,
@@ -13,6 +12,7 @@ import {
   Scale,
   ShieldCheck,
 } from 'lucide-react';
+import { Logo } from '@/components/brand/Logo';
 import {
   calculateNutritionProfile,
   FitnessGoal,
@@ -142,19 +142,7 @@ export default function OnboardingPage() {
     <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)] flex flex-col justify-between p-4 sm:p-8 transition-colors duration-200">
       {/* Top Header */}
       <div className="max-w-3xl mx-auto w-full flex items-center justify-between py-4 border-b border-[var(--border-subtle)]">
-        <Link href="/" className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-sky-400 to-blue-600 flex items-center justify-center text-slate-950 font-black shadow-sm">
-            <Flame size={18} className="fill-slate-950 stroke-none" />
-          </div>
-          <div>
-            <span className="font-extrabold text-[var(--text-heading)] text-base tracking-tight block leading-tight">
-              FITNESS POLICE
-            </span>
-            <span className="text-[10px] text-sky-400 font-bold uppercase tracking-wider block">
-              Assessment Engine
-            </span>
-          </div>
-        </Link>
+        <Logo variant="horizontal" size={34} />
 
         <div className="flex items-center gap-3">
           <ThemeToggle variant="icon" />
@@ -176,7 +164,7 @@ export default function OnboardingPage() {
       {/* Progress Bar */}
       <div className="max-w-3xl mx-auto w-full my-4 bg-slate-900/60 dark:bg-slate-900 light:bg-slate-200 h-1.5 rounded-full overflow-hidden border border-[var(--border-subtle)]">
         <div
-          className="h-full bg-gradient-to-r from-sky-400 to-blue-500 transition-all duration-300"
+          className="h-full bg-[var(--brand)] transition-all duration-300"
           style={{ width: `${(step / 7) * 100}%` }}
         />
       </div>

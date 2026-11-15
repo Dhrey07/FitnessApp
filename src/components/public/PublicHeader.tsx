@@ -2,7 +2,8 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { ArrowRight, Menu, X, Flame } from 'lucide-react';
+import { ArrowRight, Menu, X } from 'lucide-react';
+import { Logo } from '@/components/brand/Logo';
 import { ThemeToggle } from '@/components/theme/ThemeToggle';
 
 export function PublicHeader() {
@@ -13,19 +14,7 @@ export function PublicHeader() {
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-2">
         
         {/* Brand Logo */}
-        <Link href="/" className="flex items-center gap-2.5 group shrink-0">
-          <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-br from-sky-400 to-blue-600 flex items-center justify-center text-slate-950 font-black shadow-md shadow-sky-400/20 group-hover:scale-105 transition-transform shrink-0">
-            <Flame className="w-4 h-4 sm:w-5 sm:h-5 fill-slate-950 stroke-none" />
-          </div>
-          <div className="hidden sm:block">
-            <span className="font-extrabold text-[var(--text-heading)] text-sm tracking-tight block leading-tight">
-              FITNESS POLICE
-            </span>
-            <span className="text-[10px] text-sky-400 font-bold uppercase tracking-wider block hidden sm:block">
-              Coaching & Nutrition
-            </span>
-          </div>
-        </Link>
+        <Logo variant="horizontal" size={36} responsive />
 
         {/* Desktop Navigation Links */}
         <nav className="hidden lg:flex items-center gap-7 text-xs font-semibold text-[var(--text-secondary)]">

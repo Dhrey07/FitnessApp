@@ -3,7 +3,8 @@
 import React, { useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { Flame, Lock, Mail, ArrowRight, AlertCircle, Eye, EyeOff } from 'lucide-react';
+import { Lock, Mail, ArrowRight, AlertCircle, Eye, EyeOff } from 'lucide-react';
+import { Logo } from '@/components/brand/Logo';
 import { ThemeToggle } from '@/components/theme/ThemeToggle';
 
 function LoginFormContent() {
@@ -53,12 +54,7 @@ function LoginFormContent() {
     <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)] flex flex-col justify-between p-4 sm:p-8 transition-colors duration-200">
       {/* Top Header */}
       <div className="max-w-md mx-auto w-full flex items-center justify-between py-4 border-b border-[var(--border-subtle)]">
-        <Link href="/" className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-sky-400 to-blue-600 flex items-center justify-center text-slate-950 font-black shadow-sm">
-            <Flame size={18} className="fill-slate-950 stroke-none" />
-          </div>
-          <span className="font-extrabold text-[var(--text-heading)] text-base tracking-tight">FITNESS POLICE</span>
-        </Link>
+        <Logo variant="horizontal" size={34} />
         <div className="flex items-center gap-3">
           <ThemeToggle variant="icon" />
           <Link href="/" className="text-xs text-[var(--text-muted)] hover:text-[var(--text-heading)] font-semibold">

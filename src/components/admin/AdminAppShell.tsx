@@ -14,9 +14,10 @@ import {
   Menu,
   X,
   UserCheck,
-  Flame,
 } from 'lucide-react';
 import { ThemeToggle } from '@/components/theme/ThemeToggle';
+import { Logo } from '@/components/brand/Logo';
+import { BRAND } from '@/lib/brand';
 
 interface AdminAppShellProps {
   title: string;
@@ -72,24 +73,10 @@ export function AdminAppShell({ title, subtitle, children }: AdminAppShellProps)
               {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
             </button>
 
-            <Link href="/admin/dashboard" className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center text-white font-black shadow-sm shrink-0">
-                <UserCheck size={16} />
-              </div>
-              <div className="hidden sm:block">
-                <div className="flex items-center gap-1.5">
-                  <span className="font-extrabold text-[var(--text-heading)] text-sm tracking-tight leading-tight">
-                    COACH OS
-                  </span>
-                  <span className="text-[9px] bg-purple-500/20 text-purple-400 border border-purple-400/30 px-1.5 py-0.5 rounded font-bold uppercase">
-                    Admin
-                  </span>
-                </div>
-                <span className="text-[10px] text-[var(--text-muted)] font-medium hidden md:block">
-                  Fitness Police Operating Console
-                </span>
-              </div>
-            </Link>
+            <div className="flex items-center gap-2.5 min-w-0">
+              <Logo variant="horizontal" size={32} href="/admin/dashboard" responsive />
+              <span className="badge badge-trial hidden md:inline-flex">Coach</span>
+            </div>
           </div>
 
           {/* Right actions */}
@@ -102,7 +89,7 @@ export function AdminAppShell({ title, subtitle, children }: AdminAppShellProps)
                 alt="Oga Eric"
                 className="w-6 h-6 rounded-full object-cover border border-purple-400/40 shrink-0"
               />
-              <span className="text-xs font-bold text-[var(--text-heading)] hidden sm:inline">Oga Eric</span>
+              <span className="text-xs font-bold text-[var(--text-heading)] hidden sm:inline">{BRAND.coachName}</span>
               <button
                 onClick={handleLogout}
                 title="Log Out"

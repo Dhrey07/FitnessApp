@@ -22,6 +22,7 @@ import {
 import { TrialBanner } from './TrialBanner';
 import { TrialInfo } from '@/lib/services/entitlements';
 import { ThemeToggle } from '@/components/theme/ThemeToggle';
+import { Logo } from '@/components/brand/Logo';
 import { NotificationCenter } from '@/components/layout/NotificationCenter';
 
 interface ClientAppShellProps {
@@ -108,14 +109,7 @@ export function ClientAppShell({ title, subtitle, children }: ClientAppShellProp
               {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
             </button>
 
-            <Link href="/client/dashboard" className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-sky-400 to-blue-600 flex items-center justify-center text-slate-950 font-black shadow-sm shrink-0">
-                <Flame size={16} className="fill-slate-950 stroke-none" />
-              </div>
-              <span className="font-extrabold text-[var(--text-heading)] text-sm tracking-tight hidden sm:block">
-                FITNESS POLICE
-              </span>
-            </Link>
+            <Logo variant="horizontal" size={32} href="/client/dashboard" responsive />
           </div>
 
           {/* User Status, Notification Bell, Theme Switcher & Profile */}

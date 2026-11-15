@@ -1,6 +1,8 @@
 import React from 'react';
 import Link from 'next/link';
-import { Flame, ShieldCheck } from 'lucide-react';
+import { ShieldCheck } from 'lucide-react';
+import { Logo } from '@/components/brand/Logo';
+import { BRAND } from '@/lib/brand';
 
 export function PublicFooter() {
   return (
@@ -11,17 +13,12 @@ export function PublicFooter() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           
           <div className="space-y-3 md:col-span-2 max-w-sm">
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-sky-400 to-blue-600 flex items-center justify-center text-slate-950 font-black shadow-sm">
-                <Flame className="w-4 h-4 fill-slate-950 stroke-none" />
-              </div>
-              <span className="font-extrabold text-white text-base tracking-tight">FITNESS POLICE</span>
-            </div>
+            <Logo variant="horizontal" tone="white" size={36} showTagline />
             <p className="text-slate-400 leading-relaxed text-xs">
               Human-in-the-Loop fitness transformation platform combining Mifflin-St Jeor metabolic engines, cultural nutrition logging, and personalized coaching.
             </p>
             <div className="flex items-center gap-2 text-[11px] text-sky-400 font-semibold pt-1">
-              <ShieldCheck size={14} /> Head Coach: Oga Eric
+              <ShieldCheck size={14} /> Head Coach: {BRAND.coachName}
             </div>
           </div>
 

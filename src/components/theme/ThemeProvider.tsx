@@ -13,15 +13,16 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-const STORAGE_KEY = 'fitness_app_theme';
+const STORAGE_KEY = 'ericonet_theme';
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>('system');
-  const [resolvedTheme, setResolvedTheme] = useState<'dark' | 'light'>('dark');
+  const [theme, setThemeState] = useState<Theme>('light');
+  const [resolvedTheme, setResolvedTheme] = useState<'dark' | 'light'>('light');
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const savedTheme = (localStorage.getItem(STORAGE_KEY) as Theme) || 'system';
+    // Light is the brand default; 'system' is still available from the toggle.
+    const savedTheme = (localStorage.getItem(STORAGE_KEY) as Theme) || 'light';
     setThemeState(savedTheme);
     setMounted(true);
   }, []);
@@ -32,7 +33,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
     const applyTheme = () => {
-      let active: 'dark' | 'light' = 'dark';
+      let active: 'dark' | 'light' = 'light';
       if (theme === 'system') {
         active = mediaQuery.matches ? 'dark' : 'light';
       } else {
