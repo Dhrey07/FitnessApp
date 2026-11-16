@@ -30,8 +30,8 @@ export default async function WorkoutProgrammePrintPage({ params }: { params: Pr
         <PrintSheet key={w.id} footerLeft={client} docTitle="Training programme">
           {i === 0 && (
             <div className="mb-6">
-              <p className="label-xs text-[var(--brand-green-900)]">Training programme</p>
-              <h1 className="text-[20pt] font-extrabold leading-tight mt-1">{plan.title}</h1>
+              <p className="t-overline !text-[var(--brand-green-900)]">Training programme</p>
+              <h1 className="font-display text-[20pt] font-bold leading-[1.1] tracking-[-0.02em] mt-1">{plan.title}</h1>
               <p className="text-[10pt] text-[var(--brand-stone-500)] mt-1">
                 {client} · {goalLabel(plan.goal)} · {plan.durationWeeks} weeks · {plan.workouts.length} days a week{p?.trainingEnvironment ? ` · ${p.trainingEnvironment.toLowerCase()}` : ''}
               </p>

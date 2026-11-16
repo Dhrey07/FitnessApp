@@ -1,7 +1,8 @@
 import React from 'react';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
-import { Button, Photo } from '@/components/ui';
+import { Button } from '@/components/ui/Button';
+import { Photo } from '@/components/ui/Photo';
 import { resolvePhoto } from '@/lib/photos';
 
 /**

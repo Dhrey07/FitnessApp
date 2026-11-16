@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from '@/components/ui';
+import { Button } from '@/components/ui/Button';
 import { BRAND } from '@/lib/brand';
 import { whatsappLink } from '@/lib/whatsapp';
 

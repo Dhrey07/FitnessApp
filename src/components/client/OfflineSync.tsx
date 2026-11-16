@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { flushQueue, listQueued, QUEUE_EVENT } from '@/lib/offlineQueue';
-import { toast } from '@/components/ui';
+import { toast } from '@/components/ui/Toast';
 
 /**
  * Replays queued meal and set logs when the phone comes back online and

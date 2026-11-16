@@ -1,6 +1,6 @@
 import React from 'react';
 import { prisma } from '@/lib/db';
-import { Photo } from '@/components/ui';
+import { Photo } from '@/components/ui/Photo';
 import { resolvePhoto, type PhotoSlot } from '@/lib/photos';
 
 interface Story {

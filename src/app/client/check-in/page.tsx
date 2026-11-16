@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { ClientAppShell } from '@/components/client/ClientAppShell';
-import { Button, EmptyState } from '@/components/ui';
+import { Button } from '@/components/ui/Button';
+import { EmptyState } from '@/components/ui/EmptyState';
 import { checkInWindow, entitlementsOf, getCheckIns, requireClient, shellUserOf } from '@/lib/client/data';
 import { CheckInFlow, type PastCheckIn } from './CheckInFlow';
 

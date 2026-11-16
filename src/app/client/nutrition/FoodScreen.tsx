@@ -3,29 +3,19 @@
 import React, { useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Plus, X } from 'lucide-react';
-import {
-  Button,
-  Composer,
-  EmptyState,
-  Field,
-  HeroStat,
-  ListRow,
-  ListRows,
-  Pill,
-  ProgressBar,
-  Section,
-  Segmented,
-  Sheet,
-  Stat,
-  StatRow,
-  Tab,
-  TabPanel,
-  Tabs,
-  TabsList,
-  TextArea,
-  toast,
-  type ComposerMode,
-} from '@/components/ui';
+import { Button } from '@/components/ui/Button';
+import { Composer, type ComposerMode } from '@/components/ui/Composer';
+import { EmptyState } from '@/components/ui/EmptyState';
+import { Field, TextArea } from '@/components/ui/Field';
+import { HeroStat, Stat, StatRow } from '@/components/ui/Stat';
+import { ListRow, ListRows } from '@/components/ui/ListRow';
+import { Pill } from '@/components/ui/Pill';
+import { ProgressBar } from '@/components/ui/ProgressBar';
+import { Section } from '@/components/ui/Section';
+import { Segmented } from '@/components/ui/Segmented';
+import { Sheet } from '@/components/ui/Sheet';
+import { Tab, TabPanel, Tabs, TabsList } from '@/components/ui/Tabs';
+import { toast } from '@/components/ui/Toast';
 import { MealPlanView } from '@/components/nutrition/MealPlanView';
 import type { MealPlanLike } from '@/components/nutrition/MealPlanTable';
 import type { Meal } from '@/lib/client/data';

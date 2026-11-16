@@ -3,7 +3,12 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
-import { Button, IconButton, RestTimer, Sheet, Stat, StatRow, Stepper, toast } from '@/components/ui';
+import { Button, IconButton } from '@/components/ui/Button';
+import { RestTimer } from '@/components/ui/RestTimer';
+import { Sheet } from '@/components/ui/Sheet';
+import { Stat, StatRow } from '@/components/ui/Stat';
+import { Stepper } from '@/components/ui/Stepper';
+import { toast } from '@/components/ui/Toast';
 import { sendOrQueue } from '@/lib/offlineQueue';
 import { haptic } from '@/lib/haptics';
 import { cn } from '@/lib/cn';

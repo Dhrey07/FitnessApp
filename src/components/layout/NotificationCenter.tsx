@@ -3,7 +3,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Bell } from 'lucide-react';
-import { Button, EmptyState, IconButton, ListRow, ListRows, Sheet } from '@/components/ui';
+import { Button, IconButton } from '@/components/ui/Button';
+import { EmptyState } from '@/components/ui/EmptyState';
+import { ListRow, ListRows } from '@/components/ui/ListRow';
+import { Sheet } from '@/components/ui/Sheet';
 
 interface NotificationItem {
   id: string;

@@ -1,9 +1,12 @@
 import type { Metadata } from 'next';
+import { ViewTransition } from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ChevronLeft, MessageCircle } from 'lucide-react';
 import { AdminAppShell } from '@/components/admin/AdminAppShell';
-import { Avatar, Button, Pill } from '@/components/ui';
+import { Avatar } from '@/components/ui/Avatar';
+import { Button } from '@/components/ui/Button';
+import { Pill } from '@/components/ui/Pill';
 import { prisma } from '@/lib/db';
 import { whatsappLink } from '@/lib/whatsapp';
 import { BRAND } from '@/lib/brand';
@@ -118,7 +121,12 @@ export default async function ClientDetailPage({ params }: { params: Promise<{ i
           <Link href="/admin/clients" aria-label="All clients" className="md:hidden focus-ring -ml-2 h-10 w-10 rounded-full flex items-center justify-center text-ink-secondary">
             <ChevronLeft size={22} />
           </Link>
-          <Avatar name={name} src={c.avatarUrl} size="lg" />
+          <ViewTransition name={`client-avatar-${c.id}`} share="morph" default="none">
+            <span className="hidden md:inline-flex"><Avatar name={name} src={c.avatarUrl} size="lg" /></span>
+          </ViewTransition>
+          <ViewTransition name={`client-avatar-m-${c.id}`} share="morph" default="none">
+            <span className="md:hidden inline-flex"><Avatar name={name} src={c.avatarUrl} size="lg" /></span>
+          </ViewTransition>
           <div className="min-w-0 flex-1">
             <h1 className="t-h2 truncate">{name}</h1>
             <div className="flex items-center gap-2 mt-1 flex-wrap">

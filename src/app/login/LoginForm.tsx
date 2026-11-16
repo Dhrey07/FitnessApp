@@ -4,7 +4,9 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Eye, EyeOff } from 'lucide-react';
-import { Button, Field, ListRow, ListRows } from '@/components/ui';
+import { Button } from '@/components/ui/Button';
+import { Field } from '@/components/ui/Field';
+import { ListRow, ListRows } from '@/components/ui/ListRow';
 import { BRAND } from '@/lib/brand';
 
 /** Demo accounts appear only when explicitly enabled for local development. */

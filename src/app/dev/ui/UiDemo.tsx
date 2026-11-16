@@ -2,50 +2,34 @@
 
 import * as React from 'react';
 import { Home, Utensils, Activity, TrendingUp, Calendar, BookOpen, Settings, Bell, Download, Trash2 } from 'lucide-react';
-import {
-  AppShell,
-  LargeTitle,
-  Section,
-  Panel,
-  Button,
-  IconButton,
-  ListRow,
-  ListRows,
-  Pill,
-  Avatar,
-  HeroStat,
-  Stat,
-  StatRow,
-  Sparkline,
-  Skeleton,
-  SkeletonRow,
-  EmptyState,
-  Field,
-  TextArea,
-  Segmented,
-  Scale,
-  Slider,
-  Stepper,
-  Sheet,
-  toast,
-  Banner,
-  Quote,
-  Document,
-  DocumentRow,
-  Table,
-  LineChart,
-  BarsChart,
-  ProgressBar,
-  Tabs,
-  TabsList,
-  Tab,
-  TabPanel,
-  Menu,
-  RestTimer,
-  Composer,
-  type ComposerMode,
-  type NavItem,
-} from '@/components/ui';
+import { AppShell, type NavItem } from '@/components/ui/AppShell';
+import { LargeTitle } from '@/components/ui/LargeTitle';
+import { Section } from '@/components/ui/Section';
+import { Panel } from '@/components/ui/Panel';
+import { Button, IconButton } from '@/components/ui/Button';
+import { ListRow, ListRows } from '@/components/ui/ListRow';
+import { Pill } from '@/components/ui/Pill';
+import { Avatar } from '@/components/ui/Avatar';
+import { HeroStat, Stat, StatRow } from '@/components/ui/Stat';
+import { Sparkline } from '@/components/ui/Sparkline';
+import { Skeleton, SkeletonRow } from '@/components/ui/Skeleton';
+import { EmptyState } from '@/components/ui/EmptyState';
+import { Field, TextArea } from '@/components/ui/Field';
+import { Segmented } from '@/components/ui/Segmented';
+import { Scale } from '@/components/ui/Scale';
+import { Slider } from '@/components/ui/Slider';
+import { Stepper } from '@/components/ui/Stepper';
+import { Sheet } from '@/components/ui/Sheet';
+import { toast } from '@/components/ui/Toast';
+import { Banner, Quote } from '@/components/ui/Banner';
+import { Document, DocumentRow } from '@/components/ui/Document';
+import { Table } from '@/components/ui/Table';
+import { LineChart, BarsChart } from '@/components/ui/Chart';
+import { ProgressBar } from '@/components/ui/ProgressBar';
+import { Tabs, TabsList, Tab, TabPanel } from '@/components/ui/Tabs';
+import { Menu } from '@/components/ui/Menu';
+import { RestTimer } from '@/components/ui/RestTimer';
+import { Composer, type ComposerMode } from '@/components/ui/Composer';
 
 const NAV: NavItem[] = [
   { href: '/dev/ui', label: 'Today', icon: Home, exact: true },

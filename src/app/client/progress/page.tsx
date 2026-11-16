@@ -1,6 +1,11 @@
 import type { Metadata } from 'next';
 import { ClientAppShell } from '@/components/client/ClientAppShell';
-import { ListRow, ListRows, Pill, Section, Stat, StatRow, EmptyState, Button } from '@/components/ui';
+import { ListRow, ListRows } from '@/components/ui/ListRow';
+import { Pill } from '@/components/ui/Pill';
+import { Section } from '@/components/ui/Section';
+import { Stat, StatRow } from '@/components/ui/Stat';
+import { EmptyState } from '@/components/ui/EmptyState';
+import { Button } from '@/components/ui/Button';
 import { ProgressReportsList, type ClientReport } from '@/components/reports/ProgressReportsList';
 import { prisma } from '@/lib/db';
 import { entitlementsOf, getCheckIns, programmeWeek, requireClient, shellUserOf } from '@/lib/client/data';

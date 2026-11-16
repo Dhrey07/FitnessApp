@@ -13,7 +13,7 @@ const variants: Record<Variant, string> = {
   primary: 'bg-brand-strong text-brand-on-strong hover:bg-[var(--brand-strong-hover)]',
   secondary: 'bg-transparent text-ink border border-[var(--border-input)] hover:border-line-active hover:bg-[var(--bg-card-hover)]',
   ghost: 'bg-transparent text-ink-secondary hover:text-ink hover:bg-[var(--bg-card-hover)]',
-  destructive: 'bg-status-rejected text-white hover:brightness-95',
+  destructive: 'bg-status-rejected text-[var(--bg-primary)] hover:brightness-95',
 };
 
 const sizes: Record<Size, string> = {

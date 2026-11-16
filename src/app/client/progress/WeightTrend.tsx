@@ -1,7 +1,9 @@
 'use client';
 
 import React, { useMemo, useState } from 'react';
-import { LineChart, Segmented, EmptyState } from '@/components/ui';
+import { LineChart } from '@/components/ui/Chart';
+import { Segmented } from '@/components/ui/Segmented';
+import { EmptyState } from '@/components/ui/EmptyState';
 
 export interface TrendPoint {
   date: string;

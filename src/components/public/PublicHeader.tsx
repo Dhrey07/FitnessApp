@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Menu, X } from 'lucide-react';
 import { ThemeToggle } from '@/components/theme/ThemeToggle';
 import { Logo } from '@/components/brand/Logo';
-import { Button } from '@/components/ui';
+import { Button } from '@/components/ui/Button';
 import { cn } from '@/lib/cn';
 
 const NAV = [

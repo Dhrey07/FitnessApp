@@ -3,26 +3,18 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Download } from 'lucide-react';
-import {
-  Button,
-  EmptyState,
-  Field,
-  LineChart,
-  ListRow,
-  ListRows,
-  Menu,
-  Panel,
-  Pill,
-  Section,
-  SelectField,
-  Stat,
-  StatRow,
-  Tab,
-  TabPanel,
-  Tabs,
-  TabsList,
-  toast,
-} from '@/components/ui';
+import { Button } from '@/components/ui/Button';
+import { EmptyState } from '@/components/ui/EmptyState';
+import { Field, SelectField } from '@/components/ui/Field';
+import { LineChart } from '@/components/ui/Chart';
+import { ListRow, ListRows } from '@/components/ui/ListRow';
+import { Menu } from '@/components/ui/Menu';
+import { Panel } from '@/components/ui/Panel';
+import { Pill } from '@/components/ui/Pill';
+import { Section } from '@/components/ui/Section';
+import { Stat, StatRow } from '@/components/ui/Stat';
+import { Tab, TabPanel, Tabs, TabsList } from '@/components/ui/Tabs';
+import { toast } from '@/components/ui/Toast';
 
 export interface ClientFile {
   id: string;

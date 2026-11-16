@@ -9,7 +9,9 @@ Brand rules live in [docs/brand-guide.md](docs/brand-guide.md). The rebrand plan
 ## Stack
 
 - Next.js 16 (app router, webpack build), React 19, TypeScript
-- Tailwind CSS v4 with brand tokens defined in `src/app/globals.css`
+- Tailwind CSS v4 with brand tokens and type roles defined in `src/app/globals.css`
+- A small component library in `src/components/ui` (app shell, sheets, steppers, charts, documents). Pages use these, not ad hoc styles
+- `motion`, `vaul`, Radix dialog, tabs and dropdown menu, and `sonner` for toasts
 - Prisma 5 with SQLite (`prisma/dev.db`)
 - Cookie session auth (no external provider)
 - Bricolage Grotesque and Inter Tight via `next/font`
@@ -111,6 +113,16 @@ Pages are A4 with 14 mm top and bottom margins. To render one headlessly:
 ```
 
 The session-gated routes need the `fp_session_email` cookie, so render those from the signed-in browser.
+
+## Design system
+
+The interface follows `docs/ericonet-ui-rebuild-prompt.md`. In short: one primary thing per screen, rows and hairlines instead of cards, numbers typeset rather than badged, photography as the brand, and phones designed first.
+
+- **Components:** import from `@/components/ui`. Run the dev server and open `/dev/ui` for every component in light and dark, and `/dev/type` for the type specimen that chose the fonts. Both pages are local only.
+- **Photos:** each photo slot in `public/photos` ships an art-directed placeholder (`hero-desktop.placeholder.svg` and so on). Drop a real file with the same slot name (for example `public/photos/hero-desktop.jpg`) and it is used automatically. Slots: `hero-mobile`, `hero-desktop`, `coach`, `plate`, `movement`, `result-1-before` to `result-3-after`, `login`, `onboarding`.
+- **Coach copy:** the coach section on the home page reads from `src/content/coach.ts`.
+- **Offline:** meal and set logs queue on the phone when offline and sync on reconnect (`src/lib/offlineQueue.ts`).
+- **Install:** the app ships a web manifest and icons, so "Add to home screen" opens it full screen.
 
 ## Database changes
 

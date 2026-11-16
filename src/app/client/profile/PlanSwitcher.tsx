@@ -3,7 +3,10 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Check } from 'lucide-react';
-import { Button, Pill, Sheet, toast } from '@/components/ui';
+import { Button } from '@/components/ui/Button';
+import { Pill } from '@/components/ui/Pill';
+import { Sheet } from '@/components/ui/Sheet';
+import { toast } from '@/components/ui/Toast';
 import { PLAN_DETAILS, type PlanTier } from '@/lib/services/entitlements';
 import { cn } from '@/lib/cn';
 

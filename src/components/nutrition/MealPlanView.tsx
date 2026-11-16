@@ -3,7 +3,13 @@
 import React, { useState } from 'react';
 import { Download } from 'lucide-react';
 import { dayTotals, planDays, type MealPlanLike } from './MealPlanTable';
-import { Button, Document, DocumentRow, EmptyState, Menu, ProgressBar, Segmented, StatRow, Stat } from '@/components/ui';
+import { Button } from '@/components/ui/Button';
+import { Document, DocumentRow } from '@/components/ui/Document';
+import { EmptyState } from '@/components/ui/EmptyState';
+import { Menu } from '@/components/ui/Menu';
+import { ProgressBar } from '@/components/ui/ProgressBar';
+import { Segmented } from '@/components/ui/Segmented';
+import { StatRow, Stat } from '@/components/ui/Stat';
 import { BRAND } from '@/lib/brand';
 
 /**

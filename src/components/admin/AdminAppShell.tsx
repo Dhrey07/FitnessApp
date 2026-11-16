@@ -4,7 +4,8 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 import { Home, Users, Calendar, ClipboardList, Activity, FileText, Quote } from 'lucide-react';
 import { BRAND } from '@/lib/brand';
-import { AppShell, LargeTitle, type NavItem } from '@/components/ui';
+import { AppShell, type NavItem } from '@/components/ui/AppShell';
+import { LargeTitle } from '@/components/ui/LargeTitle';
 
 interface AdminAppShellProps {
   title: React.ReactNode;
@@ -19,7 +20,7 @@ interface AdminAppShellProps {
   children: React.ReactNode;
 }
 
-const NAV: NavItem[] = [
+export const COACH_NAV: NavItem[] = [
   { href: '/admin/dashboard', label: 'Today', icon: Home, exact: true },
   { href: '/admin/clients', label: 'Clients', icon: Users },
   { href: '/admin/check-ins', label: 'Check-ins', icon: Calendar },
@@ -41,7 +42,7 @@ export function AdminAppShell({ title, subtitle, meta, action, back, rail, hideT
   };
 
   return (
-    <AppShell nav={NAV} homeHref="/admin/dashboard" role="Coach" user={{ name: BRAND.coachName, detail: 'Head coach' }} onSignOut={handleSignOut} rail={rail}>
+    <AppShell nav={COACH_NAV} homeHref="/admin/dashboard" role="Coach" user={{ name: BRAND.coachName, detail: 'Head coach' }} onSignOut={handleSignOut} rail={rail}>
       {!hideTitle && <LargeTitle title={title} description={subtitle} meta={meta} action={action} back={back} />}
       {children}
     </AppShell>

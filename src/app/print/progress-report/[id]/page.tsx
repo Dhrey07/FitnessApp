@@ -42,8 +42,8 @@ export default async function ProgressReportPrintPage({ params }: { params: Prom
       <PrintSheet footerLeft={client} docTitle="Progress report">
         <div className="space-y-6">
           <div>
-            <p className="label-xs text-[var(--brand-green-900)]">Progress report</p>
-            <h1 className="text-[22pt] font-extrabold leading-tight mt-1">{client}</h1>
+            <p className="t-overline !text-[var(--brand-green-900)]">Progress report</p>
+            <h1 className="font-display text-[22pt] font-bold leading-[1.1] tracking-[-0.02em] mt-1">{client}</h1>
             <p className="text-[10.5pt] text-[var(--brand-stone-500)] mt-1">{fmt(r.periodStart)} to {fmt(r.periodEnd)}{target ? ` · target weight ${target} kg` : ''}</p>
             <div className="h-px w-16 bg-[var(--brand-champagne)] mt-3" />
           </div>
@@ -52,7 +52,7 @@ export default async function ProgressReportPrintPage({ params }: { params: Prom
             {[['Weight change', `${delta > 0 ? '+' : ''}${delta} kg`], ['Waist', `${r.waistCm} cm`], ['Training', `${r.trainingConsistency}%`]].map(([k, v]) => (
               <div key={k} className="rounded-xl border border-line p-3">
                 <p className="text-[8.5pt] uppercase tracking-wider text-[var(--brand-stone-500)]">{k}</p>
-                <p className="text-[16pt] font-extrabold">{v}</p>
+                <p className="font-display text-[16pt] font-bold tnum">{v}</p>
               </div>
             ))}
           </div>

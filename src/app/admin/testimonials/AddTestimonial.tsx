@@ -3,7 +3,10 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Plus } from 'lucide-react';
-import { Button, Field, Sheet, TextArea, toast } from '@/components/ui';
+import { Button } from '@/components/ui/Button';
+import { Field, TextArea } from '@/components/ui/Field';
+import { Sheet } from '@/components/ui/Sheet';
+import { toast } from '@/components/ui/Toast';
 
 const EMPTY = { name: '', age: '', location: '', goalAchieved: '', startingWeightKg: '', endingWeightKg: '', durationWeeks: '12', quote: '', beforePhotoUrl: '', afterPhotoUrl: '', consentGiven: false };
 

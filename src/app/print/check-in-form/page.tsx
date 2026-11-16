@@ -28,7 +28,7 @@ export default function CheckInFormPrintPage() {
       <PrintToolbar title="Weekly check-in form" />
       <PrintSheet footerLeft="Weekly check-in" docTitle="Weekly check-in">
         <div className="mb-3">
-          <h1 className="text-[16pt] font-extrabold">Weekly check-in</h1>
+          <h1 className="font-display text-[16pt] font-bold tracking-[-0.01em]">Weekly check-in</h1>
           <p className="text-[9.5pt] text-[var(--brand-stone-500)] mt-1">Fill in once a week, on the same day, and send a photo of this page to {BRAND.coachName} on WhatsApp or enter the numbers in the app.</p>
           <div className="grid grid-cols-2 gap-4 mt-2 text-[10pt]">
             <p>Name: <span className="inline-block w-48 border-b border-[var(--brand-charcoal)] align-bottom" /></p>

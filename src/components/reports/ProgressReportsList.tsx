@@ -1,6 +1,9 @@
 import React from 'react';
 import { Download } from 'lucide-react';
-import { Button, Document, DocumentRow, EmptyState, Menu } from '@/components/ui';
+import { Button } from '@/components/ui/Button';
+import { Document, DocumentRow } from '@/components/ui/Document';
+import { EmptyState } from '@/components/ui/EmptyState';
+import { Menu } from '@/components/ui/Menu';
 
 export interface ClientReport {
   id: string;

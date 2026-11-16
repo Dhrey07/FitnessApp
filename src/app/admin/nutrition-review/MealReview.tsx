@@ -3,7 +3,16 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ChevronLeft } from 'lucide-react';
-import { Avatar, Button, EmptyState, Field, IconButton, LargeTitle, ListRow, ListRows, Pill, Segmented, Stat, StatRow, TextArea, toast } from '@/components/ui';
+import { Avatar } from '@/components/ui/Avatar';
+import { Button, IconButton } from '@/components/ui/Button';
+import { EmptyState } from '@/components/ui/EmptyState';
+import { Field, TextArea } from '@/components/ui/Field';
+import { LargeTitle } from '@/components/ui/LargeTitle';
+import { ListRow, ListRows } from '@/components/ui/ListRow';
+import { Pill } from '@/components/ui/Pill';
+import { Segmented } from '@/components/ui/Segmented';
+import { Stat, StatRow } from '@/components/ui/Stat';
+import { toast } from '@/components/ui/Toast';
 import { useIsDesktop } from '@/lib/useMediaQuery';
 import { cn } from '@/lib/cn';
 

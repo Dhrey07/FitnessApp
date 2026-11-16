@@ -52,7 +52,7 @@ export function MealPlanDayTable({ plan, day, compact = false }: { plan: MealPla
       <div className="overflow-x-auto">
         <table className={`w-full ${compact ? 'text-xs' : 'text-sm'}`}>
           <thead>
-            <tr className="label-xs text-ink-muted text-left">
+            <tr className="t-caption text-left">
               <th className="py-2 pr-3 font-bold">Meal</th>
               <th className="py-2 pr-3 font-bold">Food</th>
               <th className="py-2 pr-3 font-bold">Quantity</th>

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ClientAppShell } from '@/components/client/ClientAppShell';
-import { EmptyState } from '@/components/ui';
+import { EmptyState } from '@/components/ui/EmptyState';
 import { prisma } from '@/lib/db';
 import { BRAND } from '@/lib/brand';
 import { requireClient, shellUserOf } from '@/lib/client/data';

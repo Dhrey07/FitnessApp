@@ -175,251 +175,6 @@ html.light,
   }
 }
 
-@layer components {
-  /* Typography Hierarchy */
-  .page-title {
-    font-family: var(--font-display);
-    font-size: 1.5rem;
-    font-weight: 800;
-    letter-spacing: -0.025em;
-    color: var(--text-heading);
-    line-height: 1.2;
-  }
-
-  .section-title {
-    font-family: var(--font-display);
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--text-heading);
-    letter-spacing: -0.015em;
-  }
-
-  .card-title {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: var(--text-heading);
-  }
-
-  /* Minimum UI text is 12px (brand rule: no tiny text) */
-  .label-xs {
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-  }
-
-  .label-sm {
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: var(--text-secondary);
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-  }
-
-  /* Structural Surfaces & Cards */
-  .surface {
-    background-color: var(--bg-surface);
-    border-radius: 1rem;
-    border: 1px solid var(--border-subtle);
-    box-shadow: 0 1px 3px rgba(22, 26, 24, 0.05);
-    transition: background-color 0.2s ease, border-color 0.2s ease;
-  }
-
-  .surface-hover {
-    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .surface-hover:hover {
-    border-color: var(--border-active);
-    background-color: var(--bg-card-hover);
-    transform: translateY(-1px);
-  }
-
-  .glass-panel {
-    background-color: var(--bg-header);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border-bottom: 1px solid var(--border-subtle);
-  }
-
-  /* Buttons */
-  .btn-brand {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    background-color: var(--brand-strong);
-    color: var(--brand-on-strong);
-    font-weight: 700;
-    font-size: 0.8125rem;
-    border-radius: 0.625rem;
-    padding: 0.625rem 1.25rem;
-    transition: all 0.15s ease;
-    cursor: pointer;
-    border: none;
-    text-decoration: none;
-    white-space: nowrap;
-    line-height: 1;
-  }
-
-  .btn-brand:hover {
-    background-color: var(--brand-strong-hover);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 14px rgba(11, 61, 46, 0.25);
-  }
-
-  .btn-brand:active {
-    transform: translateY(0) scale(0.98);
-  }
-
-  .btn-secondary {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    background-color: var(--bg-surface);
-    color: var(--text-primary);
-    font-weight: 600;
-    font-size: 0.8125rem;
-    border-radius: 0.625rem;
-    padding: 0.625rem 1.25rem;
-    transition: all 0.15s ease;
-    cursor: pointer;
-    border: 1px solid var(--border-input);
-    text-decoration: none;
-    white-space: nowrap;
-    line-height: 1;
-  }
-
-  .btn-secondary:hover {
-    background-color: var(--bg-card-hover);
-    border-color: var(--border-active);
-  }
-
-  .btn-danger {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    background-color: var(--status-rejected);
-    color: white;
-    font-weight: 600;
-    font-size: 0.8125rem;
-    border-radius: 0.625rem;
-    padding: 0.625rem 1.25rem;
-    transition: all 0.15s ease;
-    cursor: pointer;
-    border: none;
-    white-space: nowrap;
-  }
-
-  .btn-danger:hover {
-    filter: brightness(0.92);
-  }
-
-  /* Form Fields */
-  .field-label {
-    display: block;
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: var(--text-secondary);
-    margin-bottom: 0.375rem;
-    letter-spacing: 0.02em;
-    text-transform: uppercase;
-  }
-
-  .field-input {
-    width: 100%;
-    padding: 0.625rem 0.875rem;
-    font-size: 0.875rem;
-    color: var(--text-primary);
-    background-color: var(--bg-input);
-    border: 1px solid var(--border-input);
-    border-radius: 0.625rem;
-    transition: all 0.15s ease;
-    outline: none;
-  }
-
-  .field-input:focus {
-    border-color: var(--brand);
-    box-shadow: 0 0 0 3px var(--brand-soft);
-  }
-
-  .field-input::placeholder {
-    color: var(--text-muted);
-  }
-
-  /* Badges & Status */
-  .badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.375rem;
-    padding: 0.25rem 0.625rem;
-    border-radius: 9999px;
-    font-size: 0.75rem;
-    font-weight: 700;
-    line-height: 1;
-    white-space: nowrap;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-  }
-
-  .badge-pending {
-    background: color-mix(in srgb, var(--status-pending) 14%, transparent);
-    color: var(--status-pending);
-    border: 1px solid color-mix(in srgb, var(--status-pending) 35%, transparent);
-  }
-
-  .badge-approved {
-    background: color-mix(in srgb, var(--status-approved) 14%, transparent);
-    color: var(--status-approved);
-    border: 1px solid color-mix(in srgb, var(--status-approved) 35%, transparent);
-  }
-
-  .badge-rejected {
-    background: color-mix(in srgb, var(--status-rejected) 14%, transparent);
-    color: var(--status-rejected);
-    border: 1px solid color-mix(in srgb, var(--status-rejected) 35%, transparent);
-  }
-
-  .badge-modified {
-    background: color-mix(in srgb, var(--status-modified) 14%, transparent);
-    color: var(--status-modified);
-    border: 1px solid color-mix(in srgb, var(--status-modified) 35%, transparent);
-  }
-
-  .badge-trial {
-    background: var(--brand-soft);
-    color: var(--brand);
-    border: 1px solid var(--border-active);
-  }
-
-  /* Tier badges: champagne is the only "premium" accent; no gradients */
-  .badge-tier-gold {
-    background: var(--accent-soft);
-    color: var(--text-primary); /* champagne stays on the border and tint; badge text is 12px so it is never champagne */
-    border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
-  }
-
-  .badge-tier-diamond {
-    background: var(--brand-soft);
-    color: var(--brand);
-    border: 1px solid var(--border-active);
-  }
-
-  /* Skeleton Loading State */
-  .skeleton {
-    background-color: rgba(246, 244, 239, 0.08);
-    border-radius: 0.5rem;
-    animation: pulse-shimmer 1.5s ease-in-out infinite;
-  }
-
-  html.light .skeleton {
-    background-color: rgba(22, 26, 24, 0.08);
-  }
-}
-
 @layer utilities {
   .scrollbar-hidden {
     -ms-overflow-style: none;
@@ -428,84 +183,6 @@ html.light,
   .scrollbar-hidden::-webkit-scrollbar {
     display: none;
   }
-}
-
-/* Animations */
-@keyframes fade-in {
-  from { opacity: 0; transform: translateY(6px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes pulse-shimmer {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
-}
-
-@keyframes slide-in-right {
-  from { transform: translateX(-100%); opacity: 0; }
-  to { transform: translateX(0); opacity: 1; }
-}
-
-@keyframes pulse-dot {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.6; transform: scale(0.85); }
-}
-
-.animate-fade-in {
-  animation: fade-in 0.25s ease-out forwards;
-}
-
-.animate-pulse-shimmer {
-  animation: pulse-shimmer 1.5s ease-in-out infinite;
-}
-
-.animate-slide-in-right {
-  animation: slide-in-right 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-.animate-pulse-dot {
-  animation: pulse-dot 2s ease-in-out infinite;
-}
-
-/* Safe area for mobile bottom nav */
-.safe-area-bottom {
-  padding-bottom: env(safe-area-inset-bottom, 0px);
-}
-
-/* Minimum touch target size */
-.touch-target {
-  min-height: 44px;
-  min-width: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Select element styling */
-select.field-input {
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236B7370' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
-  background-position: right 0.625rem center;
-  background-repeat: no-repeat;
-  background-size: 1.25em;
-  padding-right: 2.5rem;
-}
-
-/* Disabled states */
-.btn-brand:disabled,
-.btn-brand[disabled] {
-  opacity: 0.5;
-  cursor: not-allowed;
-  pointer-events: none;
-  transform: none !important;
-  box-shadow: none !important;
-}
-
-.btn-secondary:disabled,
-.btn-secondary[disabled] {
-  opacity: 0.5;
-  cursor: not-allowed;
-  pointer-events: none;
 }
 
 /* Focus-visible for keyboard accessibility */
@@ -524,12 +201,6 @@ a:focus:not(:focus-visible) {
 html, body {
   max-width: 100vw;
   overflow-x: clip;
-}
-
-/* Textarea resize constraint */
-textarea.field-input {
-  resize: vertical;
-  min-height: 80px;
 }
 
 /* ------------------------------------------------------------------
@@ -594,8 +265,8 @@ textarea.field-input {
 
 /* ============================================================
    UI v2 — tokens and primitives for the rebuilt interface.
-   Type roles, surfaces, elevation and motion. Legacy classes
-   above stay until every page has moved to src/components/ui.
+   Type roles, surfaces, elevation and motion. Components live in
+   src/components/ui; there are no legacy component classes left.
    ============================================================ */
 :root {
   --radius-sm: 6px;
@@ -668,10 +339,10 @@ textarea.field-input {
 
 /* Motion */
 @keyframes v2-enter { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@keyframes v2-fade { from { opacity: 0; } to { opacity: 1; } }
 .motion-enter { animation: v2-enter var(--dur-3) var(--ease-enter) both; }
 @media (prefers-reduced-motion: reduce) {
   .motion-enter { animation-name: v2-fade; }
-  @keyframes v2-fade { from { opacity: 0; } to { opacity: 1; } }
   *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
 }
 
@@ -700,4 +371,20 @@ select:-webkit-autofill {
   -webkit-box-shadow: 0 0 0 1000px var(--bg-input) inset;
   box-shadow: 0 0 0 1000px var(--bg-input) inset;
   transition: background-color 9999s ease-out 0s;
+}
+
+/* View transitions (React <ViewTransition>): content arrives up, leaves fast. */
+::view-transition-old(.page-exit) {
+  animation: var(--dur-1) var(--ease-exit) both v2-fade reverse;
+}
+::view-transition-new(.page-enter) {
+  animation:
+    var(--dur-2) var(--ease-enter) var(--dur-1) both v2-fade,
+    var(--dur-3) var(--ease-enter) both vt-rise;
+}
+@keyframes vt-rise { from { transform: translateY(8px); } to { transform: none; } }
+/* The client avatar travels from the list into the client file. */
+::view-transition-group(.morph) { animation-duration: 320ms; animation-timing-function: var(--ease-enter); }
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
 }

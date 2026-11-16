@@ -1,5 +1,5 @@
 import React from 'react';
-import { Photo } from '@/components/ui';
+import { Photo } from '@/components/ui/Photo';
 import { resolvePhoto } from '@/lib/photos';
 import { COACH } from '@/content/coach';
 

@@ -2,7 +2,12 @@
 
 import React, { useState } from 'react';
 import { Check, Download } from 'lucide-react';
-import { Button, EmptyState, ListRow, ListRows, Menu, Pill, Section } from '@/components/ui';
+import { Button } from '@/components/ui/Button';
+import { EmptyState } from '@/components/ui/EmptyState';
+import { ListRow, ListRows } from '@/components/ui/ListRow';
+import { Menu } from '@/components/ui/Menu';
+import { Pill } from '@/components/ui/Pill';
+import { Section } from '@/components/ui/Section';
 import { BRAND } from '@/lib/brand';
 import { SessionLogger } from './SessionLogger';
 

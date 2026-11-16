@@ -1,9 +1,14 @@
 'use client';
 
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, ViewTransition } from 'react';
 import Link from 'next/link';
 import { Search } from 'lucide-react';
-import { Avatar, EmptyState, Field, Pill, SelectField, Sparkline, Table } from '@/components/ui';
+import { Avatar } from '@/components/ui/Avatar';
+import { EmptyState } from '@/components/ui/EmptyState';
+import { Field, SelectField } from '@/components/ui/Field';
+import { Pill } from '@/components/ui/Pill';
+import { Sparkline } from '@/components/ui/Sparkline';
+import { Table } from '@/components/ui/Table';
 import type { ClientSummary } from '@/lib/coach/data';
 
 const GOAL: Record<string, string> = {
@@ -59,7 +64,9 @@ export function ClientsTable({ clients }: { clients: ClientSummary[] }) {
             header: 'Client',
             cell: (c) => (
               <Link href={`/admin/clients/${c.id}`} className="flex items-center gap-3 font-medium hover:text-brand">
-                <Avatar name={c.name} size="sm" src={c.avatarUrl} />
+                <ViewTransition name={`client-avatar-${c.id}`} share="morph" default="none">
+                  <Avatar name={c.name} size="sm" src={c.avatarUrl} />
+                </ViewTransition>
                 <span className="min-w-0">
                   <span className="block truncate">{c.name}</span>
                   <span className="block t-caption truncate">{c.goal ? GOAL[c.goal] ?? c.goal : c.email}</span>
@@ -83,7 +90,11 @@ export function ClientsTable({ clients }: { clients: ClientSummary[] }) {
         ]}
         mobile={(c) => ({
           href: `/admin/clients/${c.id}`,
-          leading: <Avatar name={c.name} size="sm" src={c.avatarUrl} />,
+          leading: (
+            <ViewTransition name={`client-avatar-m-${c.id}`} share="morph" default="none">
+              <Avatar name={c.name} size="sm" src={c.avatarUrl} />
+            </ViewTransition>
+          ),
           title: c.name,
           subtitle: `${c.plan} · check-in ${rel(c.lastCheckIn)}${c.weightKg != null ? ` · ${c.weightKg} kg` : ''}`,
           trailing: c.pendingCheckIn ? <Pill tone="pending">To review</Pill> : c.weights.length > 1 ? <Sparkline data={c.weights} width={48} height={16} /> : undefined,

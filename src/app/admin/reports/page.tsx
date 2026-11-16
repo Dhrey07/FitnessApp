@@ -1,7 +1,12 @@
 import type { Metadata } from 'next';
 import { Download } from 'lucide-react';
 import { AdminAppShell } from '@/components/admin/AdminAppShell';
-import { Avatar, EmptyState, ListRow, ListRows, Menu, Pill, Section } from '@/components/ui';
+import { Avatar } from '@/components/ui/Avatar';
+import { EmptyState } from '@/components/ui/EmptyState';
+import { ListRow, ListRows } from '@/components/ui/ListRow';
+import { Menu } from '@/components/ui/Menu';
+import { Pill } from '@/components/ui/Pill';
+import { Section } from '@/components/ui/Section';
 import { prisma } from '@/lib/db';
 import { requireCoach } from '@/lib/coach/data';
 

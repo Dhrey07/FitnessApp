@@ -1,6 +1,9 @@
 import type { Metadata } from 'next';
 import { ClientAppShell } from '@/components/client/ClientAppShell';
-import { Avatar, ListRow, ListRows, Section, Stat, StatRow } from '@/components/ui';
+import { Avatar } from '@/components/ui/Avatar';
+import { ListRow, ListRows } from '@/components/ui/ListRow';
+import { Section } from '@/components/ui/Section';
+import { Stat, StatRow } from '@/components/ui/Stat';
 import { ThemeToggle } from '@/components/theme/ThemeToggle';
 import { entitlementsOf, requireClient, shellUserOf, subscriptionOf } from '@/lib/client/data';
 import { PlanSwitcher } from './PlanSwitcher';

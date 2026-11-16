@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { ViewTransition } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { LogOut, MoreHorizontal, type LucideIcon } from 'lucide-react';
@@ -119,10 +120,12 @@ export function AppShell({ nav, homeHref, user, onSignOut, rail, above, role, ex
       {/* Content */}
       <div className="flex-1 min-w-0 flex">
         <main className={cn('flex-1 min-w-0 px-4 md:px-10 pb-6 md:py-8 tabbar-clear md:pb-8', contentClassName)}>
-          <div className="mx-auto w-full max-w-[960px] space-y-6">
-            {above}
-            {children}
-          </div>
+          <ViewTransition enter="page-enter" exit="page-exit" default="none">
+            <div className="mx-auto w-full max-w-[960px] space-y-6">
+              {above}
+              {children}
+            </div>
+          </ViewTransition>
         </main>
         {rail && (
           <aside className="hidden xl:block w-80 shrink-0 border-l border-[var(--border-subtle)] px-6 py-8 sticky top-0 h-dvh overflow-y-auto">

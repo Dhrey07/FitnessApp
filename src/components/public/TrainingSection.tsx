@@ -1,5 +1,6 @@
 import React from 'react';
-import { Button, Photo } from '@/components/ui';
+import { Button } from '@/components/ui/Button';
+import { Photo } from '@/components/ui/Photo';
 import { resolvePhoto } from '@/lib/photos';
 
 const SAMPLE = [
@@ -36,7 +37,7 @@ export function TrainingSection() {
             <ol className="divide-y divide-[rgba(246,244,239,0.12)]">
               {SAMPLE.map((r, i) => (
                 <li key={r.ex} className="grid grid-cols-[2ch_1fr_auto] gap-4 py-4 items-baseline">
-                  <span className="text-xs tnum text-[rgba(246,244,239,0.5)]">{i + 1}</span>
+                  <span className="text-xs tnum text-[rgba(246,244,239,0.65)]">{i + 1}</span>
                   <div className="min-w-0">
                     <p className="text-base font-medium">{r.ex}</p>
                     <p className="text-sm text-[rgba(246,244,239,0.65)] tnum">{r.tempo} tempo · rest {r.rest}</p>

@@ -2,7 +2,9 @@
 
 import React, { useState } from 'react';
 import { Logo } from '@/components/brand/Logo';
-import { Button, Pill, toast } from '@/components/ui';
+import { Button } from '@/components/ui/Button';
+import { Pill } from '@/components/ui/Pill';
+import { toast } from '@/components/ui/Toast';
 import { BRAND } from '@/lib/brand';
 import { cn } from '@/lib/cn';
 

@@ -1,5 +1,7 @@
 import React from 'react';
-import { Button, Document, DocumentRow, Photo } from '@/components/ui';
+import { Button } from '@/components/ui/Button';
+import { Document, DocumentRow } from '@/components/ui/Document';
+import { Photo } from '@/components/ui/Photo';
 import { resolvePhoto } from '@/lib/photos';
 
 const SAMPLE_DAY = [

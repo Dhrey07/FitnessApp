@@ -3,7 +3,8 @@
 import React, { useState } from 'react';
 import { Check, Minus } from 'lucide-react';
 import { PLAN_DETAILS, type FeatureKey, type PlanTier } from '@/lib/services/entitlements';
-import { Button, Segmented } from '@/components/ui';
+import { Button } from '@/components/ui/Button';
+import { Segmented } from '@/components/ui/Segmented';
 import { cn } from '@/lib/cn';
 
 const PLANS = [PLAN_DETAILS.FREE, PLAN_DETAILS.SILVER, PLAN_DETAILS.GOLD, PLAN_DETAILS.DIAMOND];

@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import { ClientAppShell } from '@/components/client/ClientAppShell';
-import { ListRow, ListRows, Pill, Section } from '@/components/ui';
+import { ListRow, ListRows } from '@/components/ui/ListRow';
+import { Pill } from '@/components/ui/Pill';
+import { Section } from '@/components/ui/Section';
 import { requireClient, shellUserOf } from '@/lib/client/data';
 import { BRAND } from '@/lib/brand';
 

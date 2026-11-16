@@ -2,7 +2,7 @@ import * as React from 'react';
 import Link from 'next/link';
 import { Logo } from '@/components/brand/Logo';
 import { ThemeToggle } from '@/components/theme/ThemeToggle';
-import { Photo } from '@/components/ui';
+import { Photo } from '@/components/ui/Photo';
 import { resolvePhoto, type PhotoSlot } from '@/lib/photos';
 import { BRAND } from '@/lib/brand';
 

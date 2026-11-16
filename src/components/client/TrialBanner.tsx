@@ -1,6 +1,7 @@
 import React from 'react';
 import { TrialInfo } from '@/lib/services/entitlements';
-import { Banner, Button } from '@/components/ui';
+import { Banner } from '@/components/ui/Banner';
+import { Button } from '@/components/ui/Button';
 
 /** One quiet inset line about the trial. Hidden when there is no trial. */
 export function TrialBanner({ trialInfo }: { trialInfo?: TrialInfo }) {

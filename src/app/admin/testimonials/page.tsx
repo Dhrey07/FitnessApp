@@ -1,6 +1,9 @@
 import type { Metadata } from 'next';
 import { AdminAppShell } from '@/components/admin/AdminAppShell';
-import { EmptyState, ListRow, ListRows, Pill, Section } from '@/components/ui';
+import { EmptyState } from '@/components/ui/EmptyState';
+import { ListRow, ListRows } from '@/components/ui/ListRow';
+import { Pill } from '@/components/ui/Pill';
+import { Section } from '@/components/ui/Section';
 import { prisma } from '@/lib/db';
 import { requireCoach } from '@/lib/coach/data';
 import { AddTestimonial } from './AddTestimonial';

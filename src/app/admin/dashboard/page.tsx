@@ -1,7 +1,12 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { AdminAppShell } from '@/components/admin/AdminAppShell';
-import { Avatar, Button, EmptyState, ListRow, ListRows, Section, Stat, StatRow } from '@/components/ui';
+import { Avatar } from '@/components/ui/Avatar';
+import { Button } from '@/components/ui/Button';
+import { EmptyState } from '@/components/ui/EmptyState';
+import { ListRow, ListRows } from '@/components/ui/ListRow';
+import { Section } from '@/components/ui/Section';
+import { Stat, StatRow } from '@/components/ui/Stat';
 import { whatsappLink } from '@/lib/whatsapp';
 import { BRAND } from '@/lib/brand';
 import { daysSince, getBusinessStats, getClientsOverview, getPendingCheckIns, getPendingMeals, relDay, requireCoach } from '@/lib/coach/data';

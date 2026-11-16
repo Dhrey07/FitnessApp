@@ -1,6 +1,6 @@
 import React from 'react';
 import { BRAND } from '@/lib/brand';
-import { Document, DocumentRow } from '@/components/ui';
+import { Document, DocumentRow } from '@/components/ui/Document';
 
 const STEPS = [
   { title: 'Assessment', text: 'Five minutes on goal, measurements, training setup and the foods you eat.' },

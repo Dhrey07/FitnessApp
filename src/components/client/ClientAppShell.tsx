@@ -7,7 +7,8 @@ import { TrialBanner } from './TrialBanner';
 import { OfflineSync } from './OfflineSync';
 import { TrialInfo, planTierLabel } from '@/lib/services/entitlements';
 import { NotificationCenter } from '@/components/layout/NotificationCenter';
-import { AppShell, LargeTitle, type NavItem } from '@/components/ui';
+import { AppShell, type NavItem } from '@/components/ui/AppShell';
+import { LargeTitle } from '@/components/ui/LargeTitle';
 
 export interface ClientShellUser {
   name: string;
@@ -35,7 +36,7 @@ interface ClientAppShellProps {
   children: React.ReactNode;
 }
 
-const NAV: NavItem[] = [
+export const CLIENT_NAV: NavItem[] = [
   { href: '/client/dashboard', label: 'Today', icon: Home, exact: true },
   { href: '/client/nutrition', label: 'Food', icon: Utensils },
   { href: '/client/training', label: 'Train', icon: Activity },
@@ -89,7 +90,7 @@ export function ClientAppShell({ title, subtitle, meta, action, back, rail, user
 
   return (
     <AppShell
-      nav={NAV}
+      nav={CLIENT_NAV}
       homeHref="/client/dashboard"
       user={user ? { name: user.name, email: user.email, avatarUrl: user.avatarUrl, detail: user.detail } : undefined}
       onSignOut={handleSignOut}

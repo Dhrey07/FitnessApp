@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ChevronLeft, Download } from 'lucide-react';
 import { AdminAppShell } from '@/components/admin/AdminAppShell';
-import { Menu } from '@/components/ui';
+import { Menu } from '@/components/ui/Menu';
 import { toValues } from '@/lib/reportValues';
 import { prisma } from '@/lib/db';
 import { requireCoach } from '@/lib/coach/data';

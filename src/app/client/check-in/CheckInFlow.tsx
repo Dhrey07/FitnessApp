@@ -2,7 +2,14 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Button, Field, Scale, Slider, Sparkline, TextArea, ListRow, ListRows, Pill, Section } from '@/components/ui';
+import { Button } from '@/components/ui/Button';
+import { Field, TextArea } from '@/components/ui/Field';
+import { Scale } from '@/components/ui/Scale';
+import { Slider } from '@/components/ui/Slider';
+import { Sparkline } from '@/components/ui/Sparkline';
+import { ListRow, ListRows } from '@/components/ui/ListRow';
+import { Pill } from '@/components/ui/Pill';
+import { Section } from '@/components/ui/Section';
 import { useIsDesktop } from '@/lib/useMediaQuery';
 import { BRAND } from '@/lib/brand';
 import { whatsappLink } from '@/lib/whatsapp';

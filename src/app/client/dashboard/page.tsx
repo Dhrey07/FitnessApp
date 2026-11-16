@@ -2,7 +2,11 @@ import React from 'react';
 import type { Metadata } from 'next';
 import { Calendar, Play, Utensils } from 'lucide-react';
 import { ClientAppShell } from '@/components/client/ClientAppShell';
-import { HeroStat, ListRow, ListRows, Pill, Quote, Section } from '@/components/ui';
+import { HeroStat } from '@/components/ui/Stat';
+import { ListRow, ListRows } from '@/components/ui/ListRow';
+import { Pill } from '@/components/ui/Pill';
+import { Quote } from '@/components/ui/Banner';
+import { Section } from '@/components/ui/Section';
 import { BRAND } from '@/lib/brand';
 import {
   checkInWindow,

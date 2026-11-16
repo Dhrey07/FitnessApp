@@ -20,7 +20,7 @@ export function PrintSheet({ children, footerLeft, docTitle, className = '' }: S
       <header className="print-header flex items-center justify-between gap-4 pb-3 border-b border-[var(--brand-champagne)]">
         <Logo variant="horizontal" tone="green" size={30} href={null} />
         <div className="text-right">
-          {docTitle && <p className="font-display font-bold text-[var(--brand-charcoal)] text-sm">{docTitle}</p>}
+          {docTitle && <p className="font-display font-semibold text-[var(--brand-charcoal)] text-sm">{docTitle}</p>}
           <p className="text-xs text-[var(--brand-stone-500)]">{BRAND.tagline}</p>
         </div>
       </header>
@@ -38,8 +38,8 @@ export function PrintCover({ kicker, title, subtitle, rows, footerLeft }: { kick
     <PrintSheet footerLeft={footerLeft}>
       <div className="flex flex-col justify-center h-full gap-8 py-10">
         <div className="space-y-3">
-          <p className="label-xs text-[var(--brand-green-900)]">{kicker}</p>
-          <h1 className="text-[28pt] font-extrabold leading-tight text-[var(--brand-charcoal)]">{title}</h1>
+          <p className="t-overline !text-[var(--brand-green-900)]">{kicker}</p>
+          <h1 className="font-display text-[28pt] font-bold leading-[1.05] tracking-[-0.02em] text-[var(--brand-charcoal)]">{title}</h1>
           {subtitle && <p className="text-[12pt] text-[var(--brand-stone-500)]">{subtitle}</p>}
           <div className="h-px w-16 bg-[var(--brand-champagne)]" />
         </div>
