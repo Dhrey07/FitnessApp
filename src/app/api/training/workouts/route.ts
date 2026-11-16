@@ -1,14 +1,15 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
+import { resolveActingUser } from '@/lib/auth';
 import { hasFeatureEntitlement } from '@/lib/services/entitlements';
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-  const userId = searchParams.get('userId');
-
-  if (!userId) {
-    return NextResponse.json({ error: 'Missing userId' }, { status: 400 });
+  const acting = await resolveActingUser(searchParams.get('userId'));
+  if (!acting.userId) {
+    return NextResponse.json({ error: acting.status === 401 ? 'Not signed in' : 'Forbidden' }, { status: acting.status });
   }
+  const userId = acting.userId;
 
   try {
     const user = await prisma.user.findUnique({
@@ -58,10 +59,15 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { userId, workoutId, setsCompleted, repsCompleted, weightUsedKg, notes } = body;
+    const { workoutId, setsCompleted, repsCompleted, weightUsedKg, notes, setDetail, adherenceScore, completedAt } = body;
+    const acting = await resolveActingUser(body.userId);
+    if (!acting.userId) {
+      return NextResponse.json({ error: acting.status === 401 ? 'Not signed in' : 'Forbidden' }, { status: acting.status });
+    }
+    const userId = acting.userId;
 
-    if (!userId || !workoutId) {
-      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+    if (!workoutId) {
+      return NextResponse.json({ error: 'Missing workoutId' }, { status: 400 });
     }
 
     const workoutLog = await prisma.workoutLog.create({
@@ -72,7 +78,10 @@ export async function POST(request: Request) {
         repsCompleted: String(repsCompleted || '10'),
         weightUsedKg: Number(weightUsedKg) || 0,
         notes: notes || null,
-        adherenceScore: 100,
+        setDetail: setDetail ? (typeof setDetail === 'string' ? setDetail : JSON.stringify(setDetail)) : null,
+        adherenceScore: Number.isFinite(Number(adherenceScore)) ? Math.max(0, Math.min(100, Math.round(Number(adherenceScore)))) : 100,
+        // Logs queued offline carry the time they were done.
+        ...(completedAt && !Number.isNaN(Date.parse(completedAt)) ? { completedAt: new Date(completedAt) } : {}),
       },
     });
 

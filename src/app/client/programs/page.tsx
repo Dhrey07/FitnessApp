@@ -1,137 +1,46 @@
-'use client';
-
-import React, { useState } from 'react';
-import Link from 'next/link';
+import type { Metadata } from 'next';
 import { ClientAppShell } from '@/components/client/ClientAppShell';
-import { Layers, Dumbbell, Clock, Calendar, CheckCircle2, ArrowRight, ShieldCheck, Flame } from 'lucide-react';
+import { ListRow, ListRows, Pill, Section } from '@/components/ui';
+import { requireClient, shellUserOf } from '@/lib/client/data';
+import { BRAND } from '@/lib/brand';
 
-export default function ProgramsClientPage() {
-  const [selectedCategory, setSelectedCategory] = useState<string>('ALL');
+export const metadata: Metadata = { title: 'Plans' };
+export const dynamic = 'force-dynamic';
 
-  const programs = [
-    {
-      id: '1',
-      title: '12-Week Lean Muscle Recomposition',
-      goal: 'FAT_LOSS_AND_MUSCLE',
-      durationWeeks: 12,
-      daysPerWeek: 4,
-      difficulty: 'INTERMEDIATE',
-      equipment: 'Dumbbells, Barbells, Cable Machines',
-      tagline: 'Scientific progressive overload program calibrated for fat loss while maintaining or building muscle.',
-      category: 'HYPERTROPHY',
-      isPremium: true,
-      features: ['Upper/Lower 4-Day Split', 'Auto-calculated RPE progression', 'Weekly macro adjustments'],
-    },
-    {
-      id: '2',
-      title: '8-Week Metabolic Conditioning & Shred',
-      goal: 'FAT_LOSS',
-      durationWeeks: 8,
-      daysPerWeek: 5,
-      difficulty: 'ADVANCED',
-      equipment: 'Dumbbells & Resistance Bands',
-      tagline: 'High-density superset workouts designed for rapid calorie expenditure and cardiovascular fitness.',
-      category: 'FAT_LOSS',
-      isPremium: true,
-      features: ['HIIT & Resistance Supersets', 'Home or Gym accessible', 'Custom heart rate zone cues'],
-    },
-    {
-      id: '3',
-      title: '4-Week Home Bodyweight Foundation',
-      goal: 'STRENGTH_BASELINE',
-      durationWeeks: 4,
-      daysPerWeek: 3,
-      difficulty: 'BEGINNER',
-      equipment: 'No Equipment Needed',
-      tagline: 'Master fundamental movement patterns (squats, pushups, hinges, planks) with zero gym equipment.',
-      category: 'FOUNDATION',
-      isPremium: false,
-      features: ['Zero equipment required', 'Joint-friendly tempo work', 'Included free for every registered client'],
-    },
-  ];
+const PROGRAMMES = [
+  { id: 'recomp-12', title: '12-week lean recomposition', meta: '12 weeks · 4 days · intermediate', equipment: 'Dumbbells, barbell, cables', note: 'Upper and lower split with RPE-based progression and weekly calorie adjustments.', included: false },
+  { id: 'conditioning-8', title: '8-week conditioning', meta: '8 weeks · 5 days · advanced', equipment: 'Dumbbells and bands', note: 'Supersets and intervals for fitness and a higher weekly energy burn. Home or gym.', included: false },
+  { id: 'foundation-4', title: '4-week bodyweight foundation', meta: '4 weeks · 3 days · new to training', equipment: 'No equipment', note: 'Squats, push-ups, hinges and planks with joint-friendly tempo work.', included: true },
+];
 
-  const filteredPrograms = selectedCategory === 'ALL'
-    ? programs
-    : programs.filter((p) => p.category === selectedCategory);
-
+/** The programme library. Your own programme lives under Train. */
+export default async function PlansPage() {
+  const me = await requireClient();
   return (
-    <ClientAppShell
-      title="Training Programs Library"
-      subtitle="Explore structured multi-week fitness routines engineered for specific body composition goals."
-    >
-      {/* Category Filter Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 surface p-4 border border-[var(--border-subtle)]">
-        <div className="flex items-center gap-2">
-          <Layers size={18} className="text-brand" />
-          <span className="text-xs font-bold text-[var(--text-heading)]">Filter Programs:</span>
-        </div>
-
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0">
-          {['ALL', 'HYPERTROPHY', 'FAT_LOSS', 'FOUNDATION'].map((cat) => (
-            <button
-              key={cat}
-              type="button"
-              onClick={() => setSelectedCategory(cat)}
-              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
-                selectedCategory === cat
-                  ? 'bg-brand-strong text-brand-on-strong shadow-sm'
-                  : 'text-[var(--text-muted)] hover:text-[var(--text-heading)]'
-              }`}
-            >
-              {cat.replace('_', ' ')}
-            </button>
+    <ClientAppShell user={shellUserOf(me)} title="Plans" subtitle={`Programmes ${BRAND.coachName} builds from. Your own programme, adjusted for you, is under Train.`}>
+      <Section first>
+        <ListRows className="hairline">
+          {PROGRAMMES.map((p) => (
+            <ListRow
+              key={p.id}
+              href="/client/training"
+              title={p.title}
+              subtitle={`${p.meta} · ${p.equipment}`}
+              trailing={p.included ? <Pill tone="approved">Included</Pill> : <Pill>Signature</Pill>}
+            />
           ))}
-        </div>
-      </div>
-
-      {/* Program Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
-        {filteredPrograms.map((prog) => (
-          <div
-            key={prog.id}
-            className="surface p-6 flex flex-col justify-between space-y-5 border border-[var(--border-subtle)] surface-hover"
-          >
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="label-xs text-brand">{prog.category}</span>
-                <span className={`badge text-xs${prog.isPremium ? 'badge-trial' : 'badge-approved'}`}>
-                  {prog.isPremium ? 'Signature and above' : 'Included free'}
-                </span>
-              </div>
-
-              <div>
-                <h3 className="text-lg font-extrabold text-[var(--text-heading)] leading-snug">{prog.title}</h3>
-                <p className="text-xs text-[var(--text-muted)] mt-1">{prog.tagline}</p>
-              </div>
-
-              <div className="grid grid-cols-2 gap-2 text-xs text-[var(--text-muted)] pt-2 border-t border-[var(--border-subtle)]">
-                <span>Duration: <strong className="text-[var(--text-heading)]">{prog.durationWeeks} Weeks</strong></span>
-                <span>Frequency: <strong className="text-[var(--text-heading)]">{prog.daysPerWeek} Days / Wk</strong></span>
-                <span>Level: <strong className="text-[var(--text-heading)]">{prog.difficulty}</strong></span>
-                <span className="truncate">Setup: <strong className="text-[var(--text-heading)]">{prog.equipment.split(',')[0]}</strong></span>
-              </div>
-
-              <ul className="space-y-1.5 pt-2 border-t border-[var(--border-subtle)] text-xs text-[var(--text-secondary)]">
-                {prog.features.map((feat, i) => (
-                  <li key={i} className="flex items-start gap-1.5">
-                    <CheckCircle2 size={13} className="text-brand shrink-0 mt-0.5" />
-                    <span>{feat}</span>
-                  </li>
-                ))}
-              </ul>
+        </ListRows>
+      </Section>
+      <Section title="What each one is for">
+        <dl className="space-y-5">
+          {PROGRAMMES.map((p) => (
+            <div key={p.id}>
+              <dt className="t-ui">{p.title}</dt>
+              <dd className="t-body-sm mt-1 max-w-[60ch]">{p.note}</dd>
             </div>
-
-            <div className="pt-2 border-t border-[var(--border-subtle)]">
-              <Link
-                href="/client/training"
-                className="btn-brand text-xs w-full justify-center py-2.5 font-bold shadow-md"
-              >
-                View Workout Schedule <ArrowRight size={13} />
-              </Link>
-            </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </dl>
+      </Section>
     </ClientAppShell>
   );
 }

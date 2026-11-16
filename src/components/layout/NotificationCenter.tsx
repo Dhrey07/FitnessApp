@@ -1,202 +1,102 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
-import { Bell, Check, CheckCheck, Sparkles, ShieldCheck, Dumbbell, Clock, X } from 'lucide-react';
-import Link from 'next/link';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { Bell } from 'lucide-react';
+import { Button, EmptyState, IconButton, ListRow, ListRows, Sheet } from '@/components/ui';
 
 interface NotificationItem {
   id: string;
   title: string;
   message: string;
-  category: 'COACH' | 'WORKOUT' | 'TRIAL' | 'NUTRITION';
-  timestamp: string;
+  link: string | null;
   read: boolean;
-  link?: string;
+  createdAt: string;
 }
 
+function ago(d: string) {
+  const mins = Math.floor((Date.now() - new Date(d).getTime()) / 60000);
+  if (mins < 60) return mins <= 1 ? 'just now' : `${mins} min ago`;
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return `${hrs} h ago`;
+  const days = Math.floor(hrs / 24);
+  return days === 1 ? 'yesterday' : `${days} days ago`;
+}
+
+/** Bell with an unread dot; opens a sheet of the user's real notifications. */
 export function NotificationCenter() {
-  const [notifications, setNotifications] = useState<NotificationItem[]>([
-    {
-      id: '1',
-      title: 'Coach Eric reviewed your log',
-      message: 'Great pacing on your push workout! Keep plantain to 4 slices maximum post-workout.',
-      category: 'COACH',
-      timestamp: '2 hours ago',
-      read: false,
-      link: '/client/check-in',
-    },
-    {
-      id: '2',
-      title: 'Today’s Workout Focus Ready',
-      message: 'Upper Body Hypertrophy & Fat Burn session is ready to log.',
-      category: 'WORKOUT',
-      timestamp: '5 hours ago',
-      read: false,
-      link: '/client/training',
-    },
-    {
-      id: '3',
-      title: 'Trial Access Milestone',
-      message: 'You are on Day 4 of your 14-day free trial. All features unlocked.',
-      category: 'TRIAL',
-      timestamp: '1 day ago',
-      read: true,
-      link: '/client/profile#membership',
-    },
-    {
-      id: '4',
-      title: 'Meal Log Approved',
-      message: 'Your Jollof Rice & Grilled Chicken Lunch has been verified by Coach Eric.',
-      category: 'NUTRITION',
-      timestamp: '2 days ago',
-      read: true,
-      link: '/client/nutrition',
-    },
-  ]);
+  const router = useRouter();
+  const [open, setOpen] = useState(false);
+  const [items, setItems] = useState<NotificationItem[] | null>(null);
+  const [unread, setUnread] = useState(0);
 
-  const [isOpen, setIsOpen] = useState(false);
-  const panelRef = useRef<HTMLDivElement>(null);
-
-  const unreadCount = notifications.filter((n) => !n.read).length;
-
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (panelRef.current && !panelRef.current.contains(e.target as Node)) {
-        setIsOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+  const load = useCallback(async () => {
+    try {
+      const res = await fetch('/api/notifications');
+      if (!res.ok) return;
+      const data = await res.json();
+      setItems(data.notifications);
+      setUnread(data.unread);
+    } catch {
+      /* offline: keep what we have */
+    }
   }, []);
 
-  const markAsRead = (id: string) => {
-    setNotifications((prev) =>
-      prev.map((n) => (n.id === id ? { ...n, read: true } : n))
-    );
+  useEffect(() => {
+    load();
+  }, [load]);
+
+  const markAll = async () => {
+    setUnread(0);
+    setItems((xs) => xs?.map((n) => ({ ...n, read: true })) ?? xs);
+    await fetch('/api/notifications', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' }).catch(() => undefined);
   };
 
-  const markAllAsRead = () => {
-    setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
-  };
-
-  const getCategoryIcon = (category: NotificationItem['category']) => {
-    switch (category) {
-      case 'COACH':
-        return <ShieldCheck size={14} className="text-brand" />;
-      case 'WORKOUT':
-        return <Dumbbell size={14} className="text-brand" />;
-      case 'TRIAL':
-        return <Sparkles size={14} className="text-status-pending" />;
-      case 'NUTRITION':
-        return <Check size={14} className="text-status-approved" />;
+  const openItem = async (n: NotificationItem) => {
+    if (!n.read) {
+      setUnread((u) => Math.max(0, u - 1));
+      setItems((xs) => xs?.map((x) => (x.id === n.id ? { ...x, read: true } : x)) ?? xs);
+      fetch('/api/notifications', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: n.id }) }).catch(() => undefined);
+    }
+    if (n.link) {
+      setOpen(false);
+      router.push(n.link);
     }
   };
 
   return (
-    <div className="relative" ref={panelRef}>
-      <button
-        type="button"
-        onClick={() => setIsOpen(!isOpen)}
+    <>
+      <span className="relative inline-flex">
+        <IconButton label={unread ? `Notifications, ${unread} unread` : 'Notifications'} onClick={() => setOpen(true)}>
+          <Bell size={20} />
+        </IconButton>
+        {unread > 0 && <span aria-hidden className="pointer-events-none absolute top-2 right-2 h-2 w-2 rounded-full bg-brand ring-2 ring-[var(--bg-primary)]" />}
+      </span>
+      <Sheet
+        open={open}
+        onOpenChange={setOpen}
         title="Notifications"
-        className="relative p-2 rounded-xl bg-paper border border-line text-ink-secondary hover:text-[var(--text-heading)] transition-colors"
+        footer={unread > 0 ? <Button variant="secondary" full onClick={markAll}>Mark all as read</Button> : undefined}
       >
-        <Bell size={16} />
-        {unreadCount > 0 && (
-          <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-brand-strong text-brand-on-strong text-xs font-black flex items-center justify-center animate-pulse-shimmer">
-            {unreadCount}
-          </span>
+        {items === null ? (
+          <p className="t-body-sm py-6">Loading…</p>
+        ) : items.length === 0 ? (
+          <EmptyState message="Feedback from your coach, new plans and reports will show up here." />
+        ) : (
+          <ListRows>
+            {items.map((n) => (
+              <ListRow
+                key={n.id}
+                onClick={() => openItem(n)}
+                chevron={Boolean(n.link)}
+                leading={<span aria-hidden className={`h-2 w-2 rounded-full ${n.read ? 'bg-transparent' : 'bg-brand'}`} />}
+                title={<span className={n.read ? 'text-ink-secondary' : ''}>{n.title}</span>}
+                subtitle={`${n.message} · ${ago(n.createdAt)}`}
+              />
+            ))}
+          </ListRows>
         )}
-      </button>
-
-      {isOpen && (
-        <div className="absolute right-0 mt-2 w-[calc(100vw-2rem)] max-w-sm sm:w-96 bg-paper rounded-2xl border border-line shadow-2xl z-50 overflow-hidden text-xs">
-          
-          {/* Panel Header */}
-          <div className="p-3.5 border-b border-line flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <span className="font-bold text-[var(--text-heading)] text-ink-secondary">Notifications</span>
-              {unreadCount > 0 && (
-                <span className="bg-brand-soft text-brand px-2 py-0.5 rounded-full text-xs font-extrabold">
-                  {unreadCount} new
-                </span>
-              )}
-            </div>
-
-            <div className="flex items-center gap-2">
-              {unreadCount > 0 && (
-                <button
-                  type="button"
-                  onClick={markAllAsRead}
-                  className="text-xs text-brand hover:underline flex items-center gap-1 font-semibold"
-                >
-                  <CheckCheck size={12} /> Mark all read
-                </button>
-              )}
-              <button
-                type="button"
-                onClick={() => setIsOpen(false)}
-                className="text-ink-muted hover:text-[var(--text-heading)]"
-              >
-                <X size={14} />
-              </button>
-            </div>
-          </div>
-
-          {/* List of Notifications */}
-          <div className="max-h-80 overflow-y-auto divide-y divide-[var(--border-subtle)] divide-[var(--border-subtle)] divide-[var(--border-subtle)]">
-            {notifications.length > 0 ? (
-              notifications.map((n) => (
-                <div
-                  key={n.id}
-                  onClick={() => markAsRead(n.id)}
-                  className={`p-3.5 flex items-start gap-3 transition-colors cursor-pointer ${
-                    !n.read
-                      ? 'bg-brand-soft bg-brand-soft bg-brand-soft'
-                      : 'hover:bg-[var(--bg-card-hover)] hover:bg-[var(--bg-card-hover)] hover:bg-[var(--bg-card-hover)]'
-                  }`}
-                >
-                  <div className="p-2 rounded-xl bg-paper shrink-0">
-                    {getCategoryIcon(n.category)}
-                  </div>
-
-                  <div className="flex-1 space-y-1">
-                    <div className="flex items-baseline justify-between gap-2">
-                      <h4 className={`text-xs font-bold ${!n.read ? 'text-brand' : 'text-[var(--text-heading)] text-[var(--text-heading)] text-ink-secondary'}`}>
-                        {n.title}
-                      </h4>
-                      <span className="text-xs text-ink-muted shrink-0">{n.timestamp}</span>
-                    </div>
-
-                    <p className="text-xs text-ink-secondary text-ink-muted leading-snug">
-                      {n.message}
-                    </p>
-
-                    {n.link && (
-                      <Link
-                        href={n.link}
-                        onClick={() => setIsOpen(false)}
-                        className="inline-block text-xs font-bold text-brand hover:underline mt-1"
-                      >
-                        View Details →
-                      </Link>
-                    )}
-                  </div>
-                </div>
-              ))
-            ) : (
-              <div className="p-8 text-center text-ink-muted space-y-1">
-                <Bell size={24} className="mx-auto text-ink-muted" />
-                <p className="text-xs font-medium">You&apos;re all caught up!</p>
-              </div>
-            )}
-          </div>
-
-          {/* Panel Footer */}
-          <div className="p-2.5 bg-black/60 bg-paper border-t border-line text-center">
-            <span className="text-xs text-ink-muted">Notifications</span>
-          </div>
-        </div>
-      )}
-    </div>
+      </Sheet>
+    </>
   );
 }

@@ -1,7 +1,11 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
+import { isCoach } from '@/lib/printAuth';
 
 export async function GET() {
+  if (!(await isCoach())) {
+    return NextResponse.json({ error: 'Coach access only' }, { status: 403 });
+  }
   try {
     const queue = await prisma.foodSubmission.findMany({
       orderBy: { createdAt: 'desc' },

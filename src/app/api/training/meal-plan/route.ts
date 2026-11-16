@@ -1,14 +1,15 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
+import { resolveActingUser } from '@/lib/auth';
 import { hasFeatureEntitlement } from '@/lib/services/entitlements';
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-  const userId = searchParams.get('userId');
-
-  if (!userId) {
-    return NextResponse.json({ error: 'Missing userId' }, { status: 400 });
+  const acting = await resolveActingUser(searchParams.get('userId'));
+  if (!acting.userId) {
+    return NextResponse.json({ error: acting.status === 401 ? 'Not signed in' : 'Forbidden' }, { status: acting.status });
   }
+  const userId = acting.userId;
 
   try {
     const user = await prisma.user.findUnique({

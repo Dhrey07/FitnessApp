@@ -30,3 +30,21 @@ export async function getSessionUser() {
     return null;
   }
 }
+
+export function isCoachRole(role: string | null | undefined) {
+  return role === 'COACH' || role === 'ADMIN';
+}
+
+/**
+ * Resolves which user an API request acts on. Clients always act on
+ * themselves (any userId they send is ignored unless it is their own);
+ * coaches may act on a client by passing userId. Returns null when there
+ * is no session or a client asks for someone else.
+ */
+export async function resolveActingUser(requestedUserId?: string | null) {
+  const me = await getSessionUser();
+  if (!me) return { me: null, userId: null, status: 401 as const };
+  if (!requestedUserId || requestedUserId === me.id) return { me, userId: me.id, status: 200 as const };
+  if (isCoachRole(me.role)) return { me, userId: requestedUserId, status: 200 as const };
+  return { me, userId: null, status: 403 as const };
+}

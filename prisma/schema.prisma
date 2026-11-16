@@ -260,6 +260,8 @@ model WorkoutLog {
   repsCompleted  String
   weightUsedKg   Float
   notes          String?
+  /// JSON: [{ exerciseId, name, sets: [{ kg, reps }] }] recorded by the set logger
+  setDetail      String?
   adherenceScore Int      @default(100)
 }
 

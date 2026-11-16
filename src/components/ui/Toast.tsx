@@ -10,7 +10,9 @@ export function Toaster() {
     <Sonner
       position={desktop ? 'bottom-right' : 'bottom-center'}
       duration={4000}
-      offset={desktop ? 24 : 'calc(var(--tabbar-height) + 16px)'}
+      offset={24}
+      // Phones: clear the tab bar and the floating action button.
+      mobileOffset={{ bottom: 'calc(var(--tabbar-height) + env(safe-area-inset-bottom, 0px) + 84px)', left: 16, right: 16 }}
       toastOptions={{
         unstyled: true,
         classNames: {

@@ -1,89 +1,88 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
-import { MealPlanDayTable, planDays, type MealPlanLike } from './MealPlanTable';
-import { DownloadPdfButton } from '@/components/brand/DownloadPdfButton';
+import React, { useState } from 'react';
+import { Download } from 'lucide-react';
+import { dayTotals, planDays, type MealPlanLike } from './MealPlanTable';
+import { Button, Document, DocumentRow, EmptyState, Menu, ProgressBar, Segmented, StatRow, Stat } from '@/components/ui';
+import { BRAND } from '@/lib/brand';
 
-/** Client-side "My meal plan": loads the active plan and shows it day by day. */
-export function MealPlanView({ userId }: { userId: string }) {
-  const [plan, setPlan] = useState<MealPlanLike | null>(null);
+/**
+ * The client's meal plan as a Document with a day switcher and totals.
+ * The plan comes from the server; `state` covers the no-plan and
+ * upgrade cases.
+ */
+export function MealPlanView({ plan, state, clientName }: { plan: MealPlanLike | null; state: 'ready' | 'none' | 'upgrade'; clientName: string }) {
   const [day, setDay] = useState(1);
-  const [state, setState] = useState<'loading' | 'ready' | 'upgrade' | 'none' | 'error'>('loading');
 
-  useEffect(() => {
-    let cancelled = false;
-    (async () => {
-      try {
-        const res = await fetch(`/api/training/meal-plan?userId=${userId}`);
-        const data = await res.json();
-        if (cancelled) return;
-        if (res.status === 403 && data.requiresUpgrade) return setState('upgrade');
-        if (!res.ok) return setState('error');
-        if (!data.mealPlan) return setState('none');
-        setPlan(data.mealPlan);
-        setState('ready');
-      } catch {
-        if (!cancelled) setState('error');
-      }
-    })();
-    return () => { cancelled = true; };
-  }, [userId]);
-
-  if (state === 'loading') return <div className="surface p-6 text-sm text-ink-muted">Loading your meal plan…</div>;
   if (state === 'upgrade') {
     return (
-      <div className="surface p-6 space-y-3">
-        <p className="font-semibold text-ink">A personalised meal plan is part of the Signature and Private Coaching plans.</p>
-        <p className="text-sm text-ink-secondary">Your nutrition log stays free. When you upgrade, your coach builds a day-by-day plan with exact quantities around the foods you already eat.</p>
-        <Link href="/client/profile#membership" className="btn-brand text-sm inline-flex">See plans</Link>
-      </div>
+      <EmptyState
+        message="A personalised meal plan comes with the Signature and Private Coaching plans. Your coach builds it day by day around the foods you already eat."
+        action={<Button href="/client/profile#membership" size="sm">See plans</Button>}
+      />
     );
   }
-  if (state === 'none') return <div className="surface p-6 text-sm text-ink-muted">Your coach has not published a meal plan yet. You will get a notification when it is ready.</div>;
-  if (state === 'error' || !plan) return <div className="surface p-6 text-sm text-status-rejected">Could not load your meal plan. Please try again.</div>;
+  if (state === 'none' || !plan) {
+    return <EmptyState message={`${BRAND.coachName} has not published your meal plan yet. You will get a notification when it is ready.`} />;
+  }
 
   const days = planDays(plan);
+  const items = plan.items.filter((i) => i.dayNumber === day);
+  const totals = dayTotals(items);
 
   return (
-    <div className="space-y-5 w-full">
-      <div className="surface p-6 grid grid-cols-2 sm:grid-cols-5 gap-4 items-end">
-        <div className="col-span-2 sm:col-span-1">
-          <p className="label-xs text-brand">My meal plan</p>
-          <h3 className="font-display font-bold text-ink text-base mt-0.5">{plan.title}</h3>
-          <p className="text-xs text-ink-muted mt-0.5">{days.length} day{days.length === 1 ? '' : 's'}</p>
-          {plan.id && <div className="mt-2"><DownloadPdfButton href={`/print/meal-plan/${plan.id}`} /></div>}
-        </div>
-        {[
-          ['Calories', `${Math.round(plan.dailyCalorieTarget).toLocaleString()} kcal`],
-          ['Protein', `${plan.proteinTargetG} g`],
-          ['Carbohydrate', `${plan.carbsTargetG} g`],
-          ['Fat', `${plan.fatTargetG} g`],
-        ].map(([k, v]) => (
-          <div key={k} className="p-3 rounded-xl bg-paper border border-line">
-            <p className="text-xs text-ink-muted">{k}</p>
-            <p className="font-semibold text-ink">{v}</p>
+    <div className="space-y-6">
+      <StatRow>
+        <Stat label="Calories a day" value={Math.round(plan.dailyCalorieTarget)} unit="kcal" />
+        <Stat label="Protein" value={Math.round(plan.proteinTargetG)} unit="g" />
+        <Stat label="Carbohydrate" value={Math.round(plan.carbsTargetG)} unit="g" />
+        <Stat label="Fat" value={Math.round(plan.fatTargetG)} unit="g" />
+      </StatRow>
+
+      <div className="flex items-center justify-between gap-3">
+        {days.length > 1 ? (
+          <div className="flex-1 min-w-0 overflow-x-auto scrollbar-hidden">
+            <Segmented
+              label="Plan day"
+              size="sm"
+              value={String(day)}
+              onChange={(v) => setDay(Number(v))}
+              options={days.map((d) => ({ value: String(d), label: `Day ${d}` }))}
+              className="w-max md:w-max"
+            />
           </div>
-        ))}
+        ) : (
+          <span />
+        )}
+        {plan.id && (
+          <Menu items={[{ label: 'Download PDF', icon: <Download size={16} />, href: `/print/meal-plan/${plan.id}?autoprint=1` }]} label="Meal plan options" />
+        )}
       </div>
 
-      <div className="surface p-6 space-y-4">
-        <div className="flex flex-wrap gap-1.5" role="tablist" aria-label="Plan days">
-          {days.map((d) => (
-            <button
-              key={d}
-              role="tab"
-              aria-selected={day === d}
-              onClick={() => setDay(d)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold border ${day === d ? 'bg-brand-strong text-brand-on-strong border-transparent' : 'bg-surface text-ink-secondary border-line hover:border-line-active'}`}
-            >
-              Day {d}
-            </button>
-          ))}
-        </div>
-        <MealPlanDayTable plan={plan} day={day} />
-        {plan.notes && <p className="text-xs text-ink-muted border-t border-line pt-3">{plan.notes}</p>}
-      </div>
+      <Document
+        title={`${plan.title} · Day ${day} of ${days.length}`}
+        meta={<>{clientName}<br />{Math.round(plan.dailyCalorieTarget).toLocaleString()} kcal target</>}
+        footer={<span className="tnum">P {Math.round(totals.proteinG)} g · C {Math.round(totals.carbsG)} g · F {Math.round(totals.fatG)} g</span>}
+      >
+        {items.length === 0 && <p className="text-sm text-[#6B7370] py-3">No meals entered for this day yet.</p>}
+        {items.map((it, i) => (
+          <DocumentRow key={it.id ?? i} label={it.mealLabel || it.mealType} value={`${Math.round(it.calories)} kcal`}>
+            <span>
+              {it.foodName}
+              {(it.quantity || it.portion) && <span className="text-[#6B7370]"> · {it.quantity || it.portion}</span>}
+            </span>
+            {it.culturalAlternative && <span className="block text-xs text-[#6B7370] mt-0.5">Swap: {it.culturalAlternative}</span>}
+          </DocumentRow>
+        ))}
+        {items.length > 0 && (
+          <DocumentRow value={`${Math.round(totals.calories).toLocaleString()} kcal`}>
+            <span className="font-semibold">Daily total</span>
+          </DocumentRow>
+        )}
+      </Document>
+
+      <ProgressBar label="Day total against target" value={Math.round(totals.calories)} max={Math.round(plan.dailyCalorieTarget)} unit="kcal" />
+      {plan.notes && <p className="t-body-sm">{plan.notes}</p>}
     </div>
   );
 }

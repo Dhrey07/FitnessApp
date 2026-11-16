@@ -34,7 +34,10 @@ export function Stepper({
   const valueRef = React.useRef(value);
   valueRef.current = value;
 
-  const clamp = (v: number) => Math.min(max, Math.max(min, Number(v.toFixed(precision))));
+  // Round to the step's own precision (2.5 -> 1 decimal) so steps never drift.
+  const stepDecimals = (String(step).split('.')[1] ?? '').length;
+  const decimals = Math.max(precision, stepDecimals);
+  const clamp = (v: number) => Math.min(max, Math.max(min, Number(v.toFixed(decimals))));
   const bump = (dir: 1 | -1) => {
     const next = clamp(valueRef.current + dir * step);
     if (next !== valueRef.current) {
@@ -69,7 +72,7 @@ export function Stepper({
           <Minus size={20} />
         </button>
         <output className="flex-1 text-center t-stat text-[28px]" aria-live="polite">
-          {value.toFixed(precision)}
+          {value.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: decimals })}
           {unit && <span className="text-ink-muted text-sm font-medium ml-1">{unit}</span>}
         </output>
         <button type="button" aria-label={`Increase ${label}`} className={btn} onPointerDown={() => start(1)} onPointerUp={stop} onPointerLeave={stop} onPointerCancel={stop} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); bump(1); } }}>

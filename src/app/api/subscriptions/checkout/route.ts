@@ -1,14 +1,20 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
+import { resolveActingUser } from '@/lib/auth';
 import { PLAN_DETAILS, PlanTier } from '@/lib/services/entitlements';
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { userId, planTier } = body;
+    const { planTier } = body;
+    const acting = await resolveActingUser(body.userId);
+    if (!acting.userId) {
+      return NextResponse.json({ error: acting.status === 401 ? 'Not signed in' : 'Forbidden' }, { status: acting.status });
+    }
+    const userId = acting.userId;
 
-    if (!userId || !planTier) {
-      return NextResponse.json({ error: 'Missing userId or planTier' }, { status: 400 });
+    if (!planTier) {
+      return NextResponse.json({ error: 'Missing planTier' }, { status: 400 });
     }
 
     const plan = PLAN_DETAILS[planTier as PlanTier];

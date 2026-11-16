@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
 import { ProgressAnalysisService } from '@/lib/services/aiService';
 import { FitnessGoal } from '@/lib/services/nutritionEngine';
-import { getSessionUser } from '@/lib/auth';
+import { getSessionUser, resolveActingUser } from '@/lib/auth';
 
 /** A client's recent check-ins (own only); coaches may read any client's. */
 export async function GET(request: Request) {
@@ -25,7 +25,7 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
     const {
-      userId,
+      userId: requestedUserId,
       currentWeightKg,
       waistCm,
       energyLevel,
@@ -45,8 +45,13 @@ export async function POST(request: Request) {
       helpNeeded,
     } = body;
 
-    if (!userId || !currentWeightKg || !waistCm) {
-      return NextResponse.json({ error: 'Missing required fields (userId, currentWeightKg, waistCm)' }, { status: 400 });
+    const acting = await resolveActingUser(requestedUserId);
+    if (!acting.userId) {
+      return NextResponse.json({ error: acting.status === 401 ? 'Not signed in' : 'Forbidden' }, { status: acting.status });
+    }
+    const userId = acting.userId;
+    if (!currentWeightKg || !waistCm) {
+      return NextResponse.json({ error: 'Weight and waist are required.' }, { status: 400 });
     }
 
     const user = await prisma.user.findUnique({

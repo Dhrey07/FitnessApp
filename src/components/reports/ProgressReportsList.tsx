@@ -1,60 +1,59 @@
-'use client';
+import React from 'react';
+import { Download } from 'lucide-react';
+import { Button, Document, DocumentRow, EmptyState, Menu } from '@/components/ui';
 
-import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
-import { FileText } from 'lucide-react';
-import { DownloadPdfButton } from '@/components/brand/DownloadPdfButton';
+export interface ClientReport {
+  id: string;
+  periodStart: string;
+  periodEnd: string;
+  startingWeightKg: number;
+  currentWeightKg: number;
+  waistCm: number;
+  trainingConsistency: number;
+  nutritionAdherence: number;
+  coachAssessment: string;
+  nextAdjustments: string;
+}
 
-/** Client: published progress reports (a Private Coaching feature). */
-export function ProgressReportsList() {
-  const [state, setState] = useState<'loading' | 'ready' | 'upgrade' | 'error'>('loading');
-  const [reports, setReports] = useState<any[]>([]);
+const fmt = (d: string) => new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const res = await fetch('/api/progress-reports/mine');
-        const data = await res.json();
-        if (res.status === 403 && data.requiresUpgrade) return setState('upgrade');
-        if (!res.ok) return setState('error');
-        setReports(data.reports || []); setState('ready');
-      } catch { setState('error'); }
-    })();
-  }, []);
-
-  const fmt = (d: string) => new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+/** Published progress reports as Documents. Private Coaching only. */
+export function ProgressReportsList({ reports, entitled, clientName }: { reports: ClientReport[]; entitled: boolean; clientName: string }) {
+  if (!entitled) {
+    return (
+      <EmptyState
+        message="Monthly progress reports, with a written assessment and the next adjustments, come with Private Coaching."
+        action={<Button href="/client/profile#membership" size="sm" variant="secondary">See plans</Button>}
+      />
+    );
+  }
+  if (reports.length === 0) return <EmptyState message="Your coach publishes a progress report at the end of each month. It will appear here." />;
 
   return (
-    <section className="surface p-6 space-y-4 w-full">
-      <div>
-        <p className="label-xs text-brand">Progress reports</p>
-        <h3 className="section-title text-base mt-0.5">Your coach&apos;s written reports</h3>
-      </div>
-      {state === 'loading' && <p className="text-sm text-ink-muted">Loading…</p>}
-      {state === 'error' && <p className="text-sm text-status-rejected">Could not load reports.</p>}
-      {state === 'upgrade' && (
-        <div className="p-4 rounded-xl bg-paper border border-line text-sm text-ink-secondary space-y-2">
-          <p>Monthly progress reports, with a written coach assessment and the next adjustments, are part of Private Coaching.</p>
-          <Link href="/client/profile#membership" className="btn-secondary text-xs inline-flex">See plans</Link>
-        </div>
-      )}
-      {state === 'ready' && reports.length === 0 && <p className="text-sm text-ink-muted">No reports published yet.</p>}
-      {state === 'ready' && reports.map((r) => (
-        <article key={r.id} className="p-4 rounded-xl bg-paper border border-line space-y-3">
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <div className="flex items-center gap-2.5">
-              <span className="w-9 h-9 rounded-xl bg-brand-soft text-brand flex items-center justify-center"><FileText size={16} /></span>
-              <div>
-                <p className="font-semibold text-ink text-sm">{fmt(r.periodStart)} to {fmt(r.periodEnd)}</p>
-                <p className="text-xs text-ink-muted">{r.startingWeightKg} kg to {r.currentWeightKg} kg · waist {r.waistCm} cm</p>
-              </div>
+    <div className="space-y-6">
+      {reports.map((r) => {
+        const change = Math.round((r.currentWeightKg - r.startingWeightKg) * 10) / 10;
+        return (
+          <div key={r.id} className="space-y-2">
+            <div className="flex items-center justify-between gap-3">
+              <p className="t-ui">{fmt(r.periodStart)} to {fmt(r.periodEnd)}</p>
+              <Menu items={[{ label: 'Download PDF', icon: <Download size={16} />, href: `/print/progress-report/${r.id}?autoprint=1` }]} label="Report options" />
             </div>
-            <DownloadPdfButton href={`/print/progress-report/${r.id}`} />
+            <Document title="Progress report" subtitle={`${fmt(r.periodStart)} to ${fmt(r.periodEnd)}`} meta={<>{clientName}</>}>
+              <DocumentRow label="Weight" value={`${r.currentWeightKg} kg · ${change > 0 ? 'up' : 'down'} ${Math.abs(change)}`} />
+              <DocumentRow label="Waist" value={`${r.waistCm} cm`} />
+              <DocumentRow label="Training consistency" value={`${r.trainingConsistency}%`} />
+              <DocumentRow label="Nutrition adherence" value={`${r.nutritionAdherence}%`} />
+              <DocumentRow label="Coach assessment">
+                <p className="text-sm leading-relaxed mt-1">{r.coachAssessment}</p>
+              </DocumentRow>
+              <DocumentRow label="Next adjustments">
+                <p className="text-sm leading-relaxed mt-1">{r.nextAdjustments}</p>
+              </DocumentRow>
+            </Document>
           </div>
-          <p className="text-sm text-ink-secondary leading-relaxed"><span className="font-semibold text-ink">Assessment:</span> {r.coachAssessment}</p>
-          <p className="text-sm text-ink-secondary leading-relaxed"><span className="font-semibold text-ink">Next:</span> {r.nextAdjustments}</p>
-        </article>
-      ))}
-    </section>
+        );
+      })}
+    </div>
   );
 }

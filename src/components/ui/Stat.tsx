@@ -80,9 +80,9 @@ export function Stat({ label, value, unit, series, className }: { label: string;
  */
 export function StatRow({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
-    <div className={cn('flex overflow-x-auto scrollbar-hidden snap-x snap-mandatory -mx-4 px-4 md:mx-0 md:px-0 md:overflow-visible divide-x divide-[var(--border-subtle)]', className)}>
+    <div className={cn('flex overflow-x-auto scrollbar-hidden snap-x snap-mandatory scroll-px-4 -mx-4 px-4 md:mx-0 md:px-0 md:scroll-px-0 md:overflow-visible divide-x divide-[var(--border-subtle)]', className)}>
       {React.Children.map(children, (child) => (
-        <div className="snap-start shrink-0 min-w-[140px] md:min-w-0 md:flex-1 px-4 first:pl-0 last:pr-0">{child}</div>
+        <div className="snap-start shrink-0 min-w-[30%] flex-1 md:min-w-0 px-4 first:pl-0 last:pr-0">{child}</div>
       ))}
     </div>
   );

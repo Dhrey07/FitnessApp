@@ -4,11 +4,12 @@ import { prisma } from '@/lib/db';
 import { SESSION_COOKIE_NAME } from '@/lib/auth';
 import { calculateTrialInfo, hasTrainingAccess } from '@/lib/services/entitlements';
 
-export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
+export async function GET() {
   const cookieStore = await cookies();
-  const sessionEmail = cookieStore.get(SESSION_COOKIE_NAME)?.value;
-  const email = searchParams.get('email') || sessionEmail || 'chidi@example.com';
+  const email = cookieStore.get(SESSION_COOKIE_NAME)?.value;
+  if (!email) {
+    return NextResponse.json({ error: 'Not signed in' }, { status: 401 });
+  }
 
   try {
     const user = await prisma.user.findUnique({

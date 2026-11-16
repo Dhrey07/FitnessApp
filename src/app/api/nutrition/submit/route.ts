@@ -1,15 +1,21 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
+import { resolveActingUser } from '@/lib/auth';
 import { FoodAnalysisService } from '@/lib/services/aiService';
 import { FitnessGoal } from '@/lib/services/nutritionEngine';
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { userId, submissionType, rawInput, imageUrl, mealType } = body;
+    const { submissionType, rawInput, imageUrl, mealType } = body;
+    const acting = await resolveActingUser(body.userId);
+    if (!acting.userId) {
+      return NextResponse.json({ error: acting.status === 401 ? 'Not signed in' : 'Forbidden' }, { status: acting.status });
+    }
+    const userId = acting.userId;
 
-    if (!userId || !rawInput) {
-      return NextResponse.json({ error: 'Missing required fields (userId, rawInput)' }, { status: 400 });
+    if (!rawInput) {
+      return NextResponse.json({ error: 'Describe the meal or add a photo.' }, { status: 400 });
     }
 
     const user = await prisma.user.findUnique({
@@ -40,6 +46,8 @@ export async function POST(request: Request) {
         imageUrl: imageUrl || null,
         mealType: mealType || 'LUNCH',
         status: 'AWAITING_COACH',
+        // Meals queued offline carry the time they were eaten.
+        ...(body.loggedAt && !Number.isNaN(Date.parse(body.loggedAt)) ? { createdAt: new Date(body.loggedAt) } : {}),
         foodAnalysis: {
           create: {
             estimatedCalories: aiAnalysisResult.estimatedCalories,
