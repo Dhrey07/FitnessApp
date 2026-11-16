@@ -19,7 +19,6 @@
     "postcss": "^8.5.26",
     "react": "19.2.8",
     "react-dom": "19.2.8",
-    "recharts": "^2.13.3",
     "sonner": "^2.0.8",
     "tailwindcss": "^4.3.3",
     "vaul": "^1.1.2"

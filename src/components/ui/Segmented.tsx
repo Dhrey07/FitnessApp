@@ -45,6 +45,8 @@ export function Segmented<T extends string>({
     if (!track.current || typeof ResizeObserver === 'undefined') return;
     const ro = new ResizeObserver(measure);
     ro.observe(track.current);
+    // Buttons can change width without the track changing (flex-1 on phones, auto on desktop).
+    refs.current.forEach((el) => el && ro.observe(el));
     return () => ro.disconnect();
   }, [measure]);
 

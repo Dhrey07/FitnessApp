@@ -51,12 +51,7 @@ export function LoginForm() {
   };
 
   return (
-    <form onSubmit={submit} className="flex-1 md:flex-none flex flex-col pt-6 md:pt-0" noValidate>
-      <div className="space-y-2">
-        <h1 className="t-h1">Sign in</h1>
-        <p className="t-body-sm">Your programme, nutrition log and coach feedback.</p>
-      </div>
-
+    <form onSubmit={submit} className="flex-1 md:flex-none flex flex-col" noValidate>
       <div className="mt-8 space-y-5">
         <Field label="Email">
           <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="email" inputMode="email" enterKeyHint="next" required />

@@ -159,11 +159,13 @@ export function Logo({
     );
   }
 
-  const label = `${BRAND.legalName} home`;
+  // When the wordmark is visible it is the link's name; only the bare monogram needs a label.
+  const textAlwaysVisible = variant !== 'monogram' && !responsive;
+  const label = textAlwaysVisible ? undefined : `${BRAND.legalName} home`;
 
   if (href === null) {
     return (
-      <span className={`inline-flex items-center ${className}`} aria-label={BRAND.legalName}>
+      <span className={`inline-flex items-center ${className}`} aria-label={textAlwaysVisible ? undefined : BRAND.legalName} role={textAlwaysVisible ? undefined : 'img'}>
         {content}
       </span>
     );

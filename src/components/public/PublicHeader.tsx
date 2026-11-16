@@ -94,6 +94,8 @@ export function PublicHeader() {
         aria-modal="true"
         aria-label="Menu"
         aria-hidden={!open}
+        // inert keeps the closed menu's links out of the tab order.
+        inert={!open}
       >
         <div className="pub-container h-16 flex items-center justify-between">
           <Logo variant="horizontal" size={30} />

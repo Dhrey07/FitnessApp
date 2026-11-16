@@ -15,7 +15,7 @@ export function ProgressBar({ value, max, label, unit, className }: { value: num
           </span>
         </div>
       )}
-      <div className="h-0.5 w-full bg-[var(--border-subtle)] rounded-full overflow-hidden" role="progressbar" aria-valuenow={value} aria-valuemin={0} aria-valuemax={max}>
+      <div className="h-0.5 w-full bg-[var(--border-subtle)] rounded-full overflow-hidden" role="progressbar" aria-label={label ?? `${value.toLocaleString()} of ${max.toLocaleString()}${unit ? ` ${unit}` : ''}`} aria-valuenow={value} aria-valuemin={0} aria-valuemax={max}>
         <div className="h-full bg-brand rounded-full transition-[width] duration-[var(--dur-3)]" style={{ width: `${pct}%` }} />
       </div>
     </div>
