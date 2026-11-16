@@ -3,5 +3,5 @@
 <rect width="1200" height="1500" fill="#145A43" fill-opacity="0.18"/>
 <g fill="#F6F4EF" fill-opacity="0.06" transform="translate(422 658) scale(16.875)"><rect x="14" y="14" width="8" height="36" rx="2"/><rect x="26" y="14" width="24" height="8" rx="2"/><rect x="26" y="28" width="16" height="8" rx="2"/><rect x="26" y="42" width="24" height="8" rx="2"/></g>
 <g fill="#F6F4EF" fill-opacity="0.03" transform="translate(-378 -324) scale(10.125)"><rect x="14" y="14" width="8" height="36" rx="2"/><rect x="26" y="14" width="24" height="8" rx="2"/><rect x="26" y="28" width="16" height="8" rx="2"/><rect x="26" y="42" width="24" height="8" rx="2"/></g>
-<text x="60" y="250" font-family="Inter, Helvetica, Arial, sans-serif" font-size="21" letter-spacing="1" fill="#C9A86A">Hero · a client mid-session, natural light, Lagos</text>
+<text x="600" y="250" text-anchor="middle" font-family="Inter, Helvetica, Arial, sans-serif" font-size="21" letter-spacing="1" fill="#C9A86A">Hero · a client mid-session, natural light, Lagos</text>
 </svg>

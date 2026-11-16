@@ -62,6 +62,8 @@ export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   viewportFit: 'cover',
+  // Keep sticky bottom actions above the on-screen keyboard.
+  interactiveWidget: 'resizes-content',
   themeColor: [
     { media: '(prefers-color-scheme: light)', color: BRAND_COLORS.offwhite },
     { media: '(prefers-color-scheme: dark)', color: BRAND_COLORS.charcoal },

@@ -70,3 +70,31 @@ export function TextArea({ label, help, error, className, ...rest }: { label: Re
     </div>
   );
 }
+
+/** Native select styled like Field. Native keeps the platform picker on phones. */
+export function SelectField({
+  label,
+  help,
+  className,
+  children,
+  ...rest
+}: { label: React.ReactNode; help?: React.ReactNode; className?: string; children: React.ReactNode } & React.SelectHTMLAttributes<HTMLSelectElement>) {
+  const reactId = React.useId();
+  const id = rest.id ?? `s-${reactId}`;
+  return (
+    <div className={cn('space-y-1.5', className)}>
+      <label htmlFor={id} className="t-ui block">{label}</label>
+      <div className="relative">
+        <select
+          {...rest}
+          id={id}
+          className="focus-ring w-full h-12 pl-3 pr-10 appearance-none rounded-[var(--radius-sm)] border border-[var(--border-input)] bg-[var(--bg-input)] text-base text-ink outline-none transition-colors duration-[var(--dur-1)] focus:border-line-active"
+        >
+          {children}
+        </select>
+        <svg aria-hidden viewBox="0 0 16 16" className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-ink-muted" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"><path d="M4 6l4 4 4-4" /></svg>
+      </div>
+      {help && <p className="t-caption">{help}</p>}
+    </div>
+  );
+}

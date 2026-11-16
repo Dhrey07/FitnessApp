@@ -55,6 +55,7 @@ Create a `.env` file in the project root. All values are optional for local deve
 | `NEXT_PUBLIC_BRAND_EMAIL` | Contact email shown in the footer and print documents |
 | `NEXT_PUBLIC_BRAND_WHATSAPP` | Coach WhatsApp number in international format, digits only |
 | `NEXT_PUBLIC_BRAND_INSTAGRAM` | Instagram handle without the @ |
+| `NEXT_PUBLIC_SHOW_DEMO_ACCOUNTS` | `true` shows the seed accounts on the sign-in page. Local development only; leave unset in production |
 
 Brand strings (name, tagline, coach display name, sub-brand) are centralised in `src/lib/brand.ts`. Components import from there instead of hardcoding copy.
 
@@ -70,7 +71,7 @@ The seed creates one coach and four demo clients. Every account uses the passwor
 | Tunde | tunde@example.com | Essential (Silver) | Nutrition log and training |
 | Zainab | zainab@example.com | Starter (Free) | Nutrition log only |
 
-Re-running the seed resets all demo data. Record IDs change on every reseed.
+Re-running the seed resets all demo data. Record IDs change on every reseed. To list these accounts on the sign-in page, put `NEXT_PUBLIC_SHOW_DEMO_ACCOUNTS=true` in `.env.local`.
 
 ## Product areas
 

@@ -1,197 +1,22 @@
-'use client';
+import { Suspense } from 'react';
+import type { Metadata } from 'next';
+import { AuthLayout } from '@/components/auth/AuthLayout';
+import { LoginForm } from './LoginForm';
 
-import React, { useState, Suspense } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import Link from 'next/link';
-import { Lock, Mail, ArrowRight, AlertCircle, Eye, EyeOff } from 'lucide-react';
-import { Logo } from '@/components/brand/Logo';
-import { ThemeToggle } from '@/components/theme/ThemeToggle';
-import { BRAND } from '@/lib/brand';
-
-function LoginFormContent() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const defaultRole = searchParams.get('role');
-
-  const [email, setEmail] = useState(defaultRole === 'coach' ? 'coach@ericonet.fit' : 'chidi@example.com');
-  const [password, setPassword] = useState('password123');
-  const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [errorMsg, setErrorMsg] = useState('');
-
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setErrorMsg('');
-
-    try {
-      const res = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.error || 'Failed to log in');
-      }
-
-      router.push(data.redirectTo || '/client/dashboard');
-    } catch (err: any) {
-      setErrorMsg(err.message || 'Invalid credentials');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const setDemoCredentials = (demoEmail: string) => {
-    setEmail(demoEmail);
-    setPassword('password123');
-    setErrorMsg('');
-  };
-
-  return (
-    <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)] flex flex-col justify-between p-4 sm:p-8 transition-colors duration-200">
-      {/* Top Header */}
-      <div className="max-w-md mx-auto w-full flex items-center justify-between py-4 border-b border-[var(--border-subtle)]">
-        <Logo variant="horizontal" size={34} />
-        <div className="flex items-center gap-3">
-          <ThemeToggle variant="icon" />
-          <Link href="/" className="text-xs text-[var(--text-muted)] hover:text-[var(--text-heading)] font-semibold">
-            Back to Home
-          </Link>
-        </div>
-      </div>
-
-      {/* Login Card */}
-      <div className="max-w-md mx-auto w-full surface p-7 sm:p-9 space-y-6 my-auto border border-[var(--border-subtle)] shadow-xl">
-        <div>
-          <span className="label-xs text-brand">Account Access</span>
-          <h1 className="page-title text-2xl mt-1">Sign in</h1>
-          <p className="text-xs text-[var(--text-muted)] mt-1">
-            Access your training programme, nutrition log and coach reviews.
-          </p>
-        </div>
-
-        {errorMsg && (
-          <div className="p-3.5 rounded-xl bg-status-rejected/15 border border-status-rejected/40 text-status-rejected text-xs flex items-center gap-2 animate-fade-in">
-            <AlertCircle size={16} className="shrink-0" />
-            <span>{errorMsg}</span>
-          </div>
-        )}
-
-        <form onSubmit={handleLogin} className="space-y-4">
-          <div>
-            <label className="field-label">Email Address</label>
-            <div className="relative">
-              <Mail size={15} className="text-[var(--text-muted)] absolute left-3.5 top-1/2 -translate-y-1/2" />
-              <input
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@example.com"
-                className="field-input pl-10"
-              />
-            </div>
-          </div>
-
-          <div>
-            <div className="flex items-center justify-between mb-1">
-              <label className="field-label mb-0">Password</label>
-              <span className="text-xs text-[var(--text-muted)]">Default: password123</span>
-            </div>
-            <div className="relative">
-              <Lock size={15} className="text-[var(--text-muted)] absolute left-3.5 top-1/2 -translate-y-1/2" />
-              <input
-                type={showPassword ? 'text' : 'password'}
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                className="field-input pl-10 pr-10"
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[var(--text-heading)]"
-              >
-                {showPassword ? <EyeOff size={15} /> : <Eye size={15} />}
-              </button>
-            </div>
-          </div>
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="btn-brand text-xs w-full justify-center py-3 font-extrabold shadow-lg"
-          >
-            {loading ? 'Authenticating...' : 'Sign In'} <ArrowRight size={14} />
-          </button>
-        </form>
-
-        {/* Quick Testing Accounts */}
-        <div className="pt-4 border-t border-[var(--border-subtle)] space-y-2">
-          <p className="text-xs font-bold text-[var(--text-muted)] uppercase tracking-wider">
-            Demo accounts
-          </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
-            <button
-              type="button"
-              onClick={() => setDemoCredentials('chidi@example.com')}
-              className="p-2 rounded-lg surface hover:border-line-active text-left transition-colors"
-            >
-              <p className="font-bold text-[var(--text-heading)]">Chidi (Client)</p>
-              <p className="text-xs text-brand font-semibold">Signature member</p>
-            </button>
-            <button
-              type="button"
-              onClick={() => setDemoCredentials('zainab@example.com')}
-              className="p-2 rounded-lg surface hover:border-line-active text-left transition-colors"
-            >
-              <p className="font-bold text-[var(--text-heading)]">Zainab (Client)</p>
-              <p className="text-xs text-status-pending font-semibold">14-Day Trial (Day 5)</p>
-            </button>
-            <button
-              type="button"
-              onClick={() => setDemoCredentials('tunde@example.com')}
-              className="p-2 rounded-lg surface hover:border-line-active text-left transition-colors"
-            >
-              <p className="font-bold text-[var(--text-heading)]">Tunde (Client)</p>
-              <p className="text-xs text-[var(--text-muted)]">Starter (free)</p>
-            </button>
-            <button
-              type="button"
-              onClick={() => setDemoCredentials('coach@ericonet.fit')}
-              className="p-2 rounded-lg surface hover:border-line-active text-left transition-colors"
-            >
-              <p className="font-bold text-brand">{BRAND.coachName}</p>
-              <p className="text-xs text-brand font-semibold">Head coach</p>
-            </button>
-          </div>
-        </div>
-
-        {/* Footer Link */}
-        <div className="text-center text-xs text-[var(--text-muted)] pt-1">
-          Don&apos;t have an account yet?{' '}
-          <Link href="/onboarding" className="text-brand font-bold hover:underline">
-            Start 14-Day Free Trial
-          </Link>
-        </div>
-      </div>
-
-      <div className="text-center text-xs text-[var(--text-muted)] py-3">
-        {BRAND.legalName}
-      </div>
-    </div>
-  );
-}
+export const metadata: Metadata = { title: 'Sign in' };
 
 export default function LoginPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-heading)] flex items-center justify-center">Loading portal...</div>}>
-      <LoginFormContent />
-    </Suspense>
+    <AuthLayout
+      caption={
+        <p className="t-h2 text-[var(--brand-offwhite)] max-w-[16ch]" style={{ color: 'var(--brand-offwhite)' }}>
+          Nutrition. Training. Transformation.
+        </p>
+      }
+    >
+      <Suspense fallback={null}>
+        <LoginForm />
+      </Suspense>
+    </AuthLayout>
   );
 }
