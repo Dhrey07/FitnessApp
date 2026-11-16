@@ -1,7 +1,10 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
+import { isCoach } from '@/lib/printAuth';
 
 export async function GET(request: Request) {
+  const coach = await isCoach();
+  if (!coach) return NextResponse.json({ error: 'Coach access only' }, { status: 403 });
   const { searchParams } = new URL(request.url);
   const userId = searchParams.get('userId');
 
@@ -32,13 +35,19 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
+  const coach = await isCoach();
+  if (!coach) return NextResponse.json({ error: 'Coach access only' }, { status: 403 });
   try {
     const body = await request.json();
-    const { userId, coachId, title, goal, durationWeeks, workouts } = body;
+    const { userId, title, goal, durationWeeks, workouts } = body;
+    const coachId = coach.id;
 
     if (!userId || !title) {
       return NextResponse.json({ error: 'User ID and title are required' }, { status: 400 });
     }
+
+    // One active programme per client, like meal plans: retire the previous one.
+    await prisma.workoutPlan.updateMany({ where: { userId, active: true }, data: { active: false } });
 
     const plan = await prisma.workoutPlan.create({
       data: {
@@ -82,7 +91,7 @@ export async function POST(request: Request) {
       data: {
         userId,
         title: 'New training programme assigned',
-        message: `Your coach has assigned a new programme: "${title}". Open the Training Hub to see it.`,
+        message: `Your coach assigned a new programme: "${title}". It is under Train.`,
         link: '/client/training',
       },
     });

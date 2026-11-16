@@ -1,7 +1,10 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
+import { isCoach } from '@/lib/printAuth';
 
 export async function GET() {
+  const coach = await isCoach();
+  if (!coach) return NextResponse.json({ error: 'Coach access only' }, { status: 403 });
   try {
     const testimonials = await prisma.testimonial.findMany({
       orderBy: { createdAt: 'desc' },
@@ -14,6 +17,8 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
+  const coach = await isCoach();
+  if (!coach) return NextResponse.json({ error: 'Coach access only' }, { status: 403 });
   try {
     const body = await request.json();
     const { name, age, location, goalAchieved, startingWeightKg, endingWeightKg, durationWeeks, quote, beforePhotoUrl, afterPhotoUrl, consentGiven } = body;

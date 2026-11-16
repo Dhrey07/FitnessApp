@@ -1,49 +1,36 @@
-'use client';
-
-import React, { useEffect, useState, use } from 'react';
+import type { Metadata } from 'next';
 import Link from 'next/link';
-import { ArrowLeft } from 'lucide-react';
+import { notFound } from 'next/navigation';
+import { ChevronLeft, Download } from 'lucide-react';
 import { AdminAppShell } from '@/components/admin/AdminAppShell';
-import { DownloadPdfButton } from '@/components/brand/DownloadPdfButton';
-import { ProgressReportForm, toValues, type ReportValues } from '@/components/reports/ProgressReportForm';
+import { Menu } from '@/components/ui';
+import { toValues } from '@/lib/reportValues';
+import { prisma } from '@/lib/db';
+import { requireCoach } from '@/lib/coach/data';
+import { ReportEditor } from '../_components/ReportEditor';
 
-export default function EditReportPage({ params }: { params: Promise<{ id: string; reportId: string }> }) {
-  const { id, reportId } = use(params);
-  const [report, setReport] = useState<any>(null);
+export const metadata: Metadata = { title: 'Progress report' };
+export const dynamic = 'force-dynamic';
 
-  const load = async () => {
-    const r = await fetch(`/api/admin/progress-reports/${reportId}`);
-    const data = await r.json();
-    setReport(data.report || null);
-  };
-  useEffect(() => { load(); }, [reportId]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  const patch = async (body: any) => {
-    const res = await fetch(`/api/admin/progress-reports/${reportId}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || 'Could not save');
-    await load();
-  };
-
-  const name = report?.user ? `${report.user.firstName} ${report.user.lastName}` : '';
+export default async function EditReportPage({ params }: { params: Promise<{ id: string; reportId: string }> }) {
+  await requireCoach();
+  const { id, reportId } = await params;
+  const report = await prisma.progressReport.findUnique({ where: { id: reportId }, include: { user: { select: { firstName: true, lastName: true } } } });
+  if (!report || report.userId !== id) notFound();
+  const name = `${report.user.firstName} ${report.user.lastName}`;
 
   return (
-    <AdminAppShell title={name ? `Progress report: ${name}` : 'Progress report'} subtitle="Edit, publish, or download the branded PDF.">
-      <div className="flex items-center justify-between gap-3">
-        <Link href={`/admin/clients/${id}/reports`} className="text-xs text-brand hover:underline inline-flex items-center gap-1.5 font-semibold"><ArrowLeft size={14} /> All reports for this client</Link>
-        <DownloadPdfButton href={`/print/progress-report/${reportId}`} />
-      </div>
-      {report ? (
-        <ProgressReportForm
-          key={report.updatedAt}
-          initial={toValues(report)}
-          publishedAt={report.publishedAt}
-          onSave={(values: ReportValues, publish) => patch({ ...values, publish })}
-          onUnpublish={() => patch({ publish: false })}
-        />
-      ) : (
-        <div className="surface p-6 text-sm text-ink-muted">Loading…</div>
-      )}
+    <AdminAppShell
+      title={`Report · ${report.user.firstName}`}
+      subtitle="Edit in place. Publishing notifies the client."
+      back={
+        <Link href={`/admin/clients/${id}`} aria-label={`Back to ${report.user.firstName}`} className="focus-ring h-11 w-11 rounded-full flex items-center justify-center text-ink-secondary">
+          <ChevronLeft size={22} />
+        </Link>
+      }
+      action={<Menu items={[{ label: 'Download PDF', icon: <Download size={16} />, href: `/print/progress-report/${reportId}?autoprint=1` }]} label="Report options" />}
+    >
+      <ReportEditor clientId={id} clientName={name} reportId={reportId} initial={toValues(report)} publishedAt={report.publishedAt ? report.publishedAt.toISOString() : null} />
     </AdminAppShell>
   );
 }

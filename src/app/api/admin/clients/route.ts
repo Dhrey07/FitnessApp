@@ -1,7 +1,10 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
+import { isCoach } from '@/lib/printAuth';
 
 export async function GET(request: Request) {
+  const coach = await isCoach();
+  if (!coach) return NextResponse.json({ error: 'Coach access only' }, { status: 403 });
   const { searchParams } = new URL(request.url);
   const search = searchParams.get('search') || '';
   const tier = searchParams.get('tier') || '';

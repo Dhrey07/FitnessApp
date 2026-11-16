@@ -1,7 +1,10 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
+import { isCoach } from '@/lib/printAuth';
 
 export async function GET() {
+  const coach = await isCoach();
+  if (!coach) return NextResponse.json({ error: 'Coach access only' }, { status: 403 });
   try {
     const totalClients = await prisma.user.count({ where: { role: 'CLIENT' } });
 

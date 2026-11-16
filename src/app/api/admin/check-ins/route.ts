@@ -1,7 +1,10 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
+import { isCoach } from '@/lib/printAuth';
 
 export async function GET() {
+  const coach = await isCoach();
+  if (!coach) return NextResponse.json({ error: 'Coach access only' }, { status: 403 });
   try {
     const checkIns = await prisma.weeklyCheckIn.findMany({
       include: {
@@ -26,6 +29,8 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
+  const coach = await isCoach();
+  if (!coach) return NextResponse.json({ error: 'Coach access only' }, { status: 403 });
   try {
     const body = await request.json();
     const { checkInId, coachFeedback, adjustedCalorieTarget, adjustedNotes } = body;
@@ -33,12 +38,15 @@ export async function POST(request: Request) {
     if (!checkInId) {
       return NextResponse.json({ error: 'Check-in ID is required' }, { status: 400 });
     }
+    if (!String(coachFeedback ?? '').trim()) {
+      return NextResponse.json({ error: 'Write some feedback before sending.' }, { status: 400 });
+    }
 
     const updatedCheckIn = await prisma.weeklyCheckIn.update({
       where: { id: checkInId },
       data: {
         status: 'REVIEWED',
-        coachFeedback: coachFeedback || 'Great work this week! Targets updated.',
+        coachFeedback: coachFeedback || null,
         reviewedAt: new Date(),
       },
       include: {

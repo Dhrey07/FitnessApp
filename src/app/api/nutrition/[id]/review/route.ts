@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
+import { isCoach } from '@/lib/printAuth';
 
 export async function POST(
   request: Request,
@@ -8,10 +9,18 @@ export async function POST(
   try {
     const { id: submissionId } = await params;
     const body = await request.json();
-    const { coachId, approved, finalCalories, finalProtein, finalCarbs, finalFat, coachFeedback, actionTaken } = body;
+    const { approved, finalCalories, finalProtein, finalCarbs, finalFat, coachFeedback, actionTaken } = body;
+    const coach = await isCoach();
+    if (!coach) return NextResponse.json({ error: 'Coach access only' }, { status: 403 });
+    const coachId = coach.id;
 
-    if (!submissionId || !coachId) {
-      return NextResponse.json({ error: 'Missing submissionId or coachId' }, { status: 400 });
+    if (!submissionId) {
+      return NextResponse.json({ error: 'Missing submissionId' }, { status: 400 });
+    }
+    for (const v of [finalCalories, finalProtein, finalCarbs, finalFat]) {
+      if (!Number.isFinite(Number(v)) || Number(v) < 0) {
+        return NextResponse.json({ error: 'Calories and macros must be numbers.' }, { status: 400 });
+      }
     }
 
     const submission = await prisma.foodSubmission.findUnique({
@@ -62,7 +71,7 @@ export async function POST(
       data: {
         userId: submission.userId,
         title: 'Meal review complete',
-        message: `Your human coach has reviewed your ${submission.mealType.toLowerCase()} submission!`,
+        message: `Your coach checked your ${submission.mealType.toLowerCase()}.`,
         link: '/client/nutrition',
       },
     });

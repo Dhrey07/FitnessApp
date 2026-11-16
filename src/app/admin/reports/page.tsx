@@ -1,56 +1,59 @@
-'use client';
-
-import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
-import { FileText, ArrowRight } from 'lucide-react';
+import type { Metadata } from 'next';
+import { Download } from 'lucide-react';
 import { AdminAppShell } from '@/components/admin/AdminAppShell';
-import { DownloadPdfButton } from '@/components/brand/DownloadPdfButton';
+import { Avatar, EmptyState, ListRow, ListRows, Menu, Pill, Section } from '@/components/ui';
+import { prisma } from '@/lib/db';
+import { requireCoach } from '@/lib/coach/data';
 
-export default function AdminReportsPage() {
-  const [reports, setReports] = useState<any[]>([]);
-  const [clients, setClients] = useState<any[]>([]);
+export const metadata: Metadata = { title: 'Reports' };
+export const dynamic = 'force-dynamic';
 
-  useEffect(() => {
-    (async () => {
-      const [r, c] = await Promise.all([fetch('/api/admin/progress-reports'), fetch('/api/admin/clients?search=')]);
-      setReports((await r.json()).reports || []);
-      setClients((await c.json()).clients || []);
-    })();
-  }, []);
+const fmt = (d: Date) => d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
 
-  const fmt = (d: string) => new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+export default async function ReportsPage() {
+  await requireCoach();
+  const [reports, clients] = await Promise.all([
+    prisma.progressReport.findMany({ orderBy: { periodEnd: 'desc' }, include: { user: { select: { id: true, firstName: true, lastName: true } } } }),
+    prisma.user.findMany({ where: { role: 'CLIENT' }, orderBy: { firstName: 'asc' }, select: { id: true, firstName: true, lastName: true } }),
+  ]);
+  const drafts = reports.filter((r) => !r.publishedAt);
+  const published = reports.filter((r) => r.publishedAt);
+
+  const row = (r: (typeof reports)[number]) => (
+    <ListRow
+      key={r.id}
+      href={`/admin/clients/${r.userId}/reports/${r.id}`}
+      leading={<Avatar name={`${r.user.firstName} ${r.user.lastName}`} size="sm" />}
+      title={`${r.user.firstName} ${r.user.lastName}`}
+      subtitle={`${fmt(r.periodStart)} to ${fmt(r.periodEnd)} · ${r.startingWeightKg} to ${r.currentWeightKg} kg · training ${r.trainingConsistency}%`}
+      trailing={r.publishedAt ? <Pill tone="approved">Published</Pill> : <Pill tone="pending">Draft</Pill>}
+    />
+  );
 
   return (
-    <AdminAppShell title="Progress reports" subtitle="Branded reports with the period's numbers, your assessment and the next adjustments.">
-      <div className="surface p-5 flex flex-wrap items-center gap-3">
-        <span className="text-sm text-ink-secondary">Start a report for</span>
-        {clients.map((c) => (
-          <Link key={c.id} href={`/admin/clients/${c.id}/reports/new`} className="btn-secondary text-xs py-1.5 px-3">{c.firstName} {c.lastName}</Link>
-        ))}
-      </div>
-
-      {reports.length === 0 && <div className="surface p-6 text-sm text-ink-muted">No reports yet.</div>}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {reports.map((r) => (
-          <article key={r.id} className="surface p-5 space-y-3">
-            <div className="flex items-center justify-between gap-3">
-              <div className="flex items-center gap-2.5 min-w-0">
-                <span className="w-9 h-9 rounded-xl bg-brand-soft text-brand flex items-center justify-center shrink-0"><FileText size={16} /></span>
-                <div className="min-w-0">
-                  <p className="font-semibold text-ink truncate">{r.user?.firstName} {r.user?.lastName}</p>
-                  <p className="text-xs text-ink-muted">{fmt(r.periodStart)} to {fmt(r.periodEnd)}</p>
-                </div>
-              </div>
-              <span className={`badge ${r.publishedAt ? 'badge-approved' : 'badge-pending'}`}>{r.publishedAt ? 'Published' : 'Draft'}</span>
-            </div>
-            <p className="text-xs text-ink-secondary">{r.startingWeightKg} kg to {r.currentWeightKg} kg · waist {r.waistCm} cm · training {r.trainingConsistency}% · nutrition {r.nutritionAdherence}%</p>
-            <div className="flex items-center gap-2">
-              <Link href={`/admin/clients/${r.userId}/reports/${r.id}`} className="btn-secondary text-xs py-1.5 px-3">Open <ArrowRight size={12} /></Link>
-              <DownloadPdfButton href={`/print/progress-report/${r.id}`} />
-            </div>
-          </article>
-        ))}
-      </div>
+    <AdminAppShell
+      title="Reports"
+      subtitle="Monthly progress reports with the numbers, your assessment and the next adjustments."
+      action={
+        <Menu
+          label="Start a report"
+          items={clients.map((c) => ({ label: `New report for ${c.firstName} ${c.lastName}`, href: `/admin/clients/${c.id}/reports/new` }))}
+          trigger={<button type="button" className="focus-ring h-10 px-4 rounded-full bg-brand-strong text-brand-on-strong text-sm font-semibold">New report</button>}
+        />
+      }
+    >
+      {reports.length === 0 && <EmptyState message="No reports yet. Start one from a client, or from a reviewed check-in." />}
+      {drafts.length > 0 && (
+        <Section title={`Drafts (${drafts.length})`} first>
+          <ListRows>{drafts.map(row)}</ListRows>
+        </Section>
+      )}
+      {published.length > 0 && (
+        <Section title="Published" first={drafts.length === 0}>
+          <ListRows>{published.map(row)}</ListRows>
+        </Section>
+      )}
+      <p className="t-caption flex items-center gap-1.5"><Download size={12} aria-hidden /> Each report has a branded PDF in its menu.</p>
     </AdminAppShell>
   );
 }

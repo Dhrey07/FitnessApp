@@ -20,7 +20,7 @@ export function Tab({ value, children, className }: { value: string; children: R
     <RadixTabs.Trigger
       value={value}
       className={cn(
-        'focus-ring relative h-11 whitespace-nowrap text-sm font-medium text-ink-secondary transition-colors duration-[var(--dur-1)]',
+        'focus-ring relative shrink-0 h-11 whitespace-nowrap text-sm font-medium text-ink-secondary transition-colors duration-[var(--dur-1)]',
         'data-[state=active]:text-ink after:absolute after:inset-x-0 after:-bottom-px after:h-0.5 after:bg-brand after:opacity-0 data-[state=active]:after:opacity-100 after:transition-opacity',
         className
       )}

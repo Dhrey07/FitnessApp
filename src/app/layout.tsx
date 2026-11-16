@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from 'next';
+import Script from 'next/script';
 import { Bricolage_Grotesque, Inter_Tight } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from '@/components/theme/ThemeProvider';
@@ -77,18 +78,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       suppressHydrationWarning
       className={`light scroll-smooth ${display.variable} ${body.variable}`}
     >
-      <head>
-        {/* Apply the saved theme before first paint so dark mode never flashes light. Mirrors ThemeProvider. */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem('ericonet_theme')||'light';var d=t==='dark'||(t==='system'&&window.matchMedia('(prefers-color-scheme: dark)').matches);var c=document.documentElement.classList;c.toggle('dark',d);c.toggle('light',!d);}catch(e){}})();`,
-          }}
-        />
-      </head>
       <body
         suppressHydrationWarning
         className="font-sans antialiased min-h-screen selection:bg-[var(--brand-soft)] selection:text-[var(--text-heading)] transition-colors duration-200"
       >
+        {/* Apply the saved theme before hydration so dark mode never flashes light. Mirrors ThemeProvider. */}
+        <Script src="/theme-init.js" strategy="beforeInteractive" />
         <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>

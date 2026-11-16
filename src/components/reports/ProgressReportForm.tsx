@@ -1,127 +1,145 @@
 'use client';
 
 import React, { useState } from 'react';
-import { CheckCircle2, AlertCircle } from 'lucide-react';
+import { Logo } from '@/components/brand/Logo';
+import { Button, Pill, toast } from '@/components/ui';
+import { BRAND } from '@/lib/brand';
+import { cn } from '@/lib/cn';
 
-export type ReportValues = {
-  periodStart: string; periodEnd: string;
-  startingWeightKg: string; currentWeightKg: string; waistCm: string; averageSteps: string;
-  trainingConsistency: string; nutritionAdherence: string;
-  hunger: string; energy: string; sleep: string;
-  strengthPerformance: string; challenges: string; wins: string;
-  coachAssessment: string; nextAdjustments: string;
-};
+import { type ReportValues } from '@/lib/reportValues';
+export { emptyReport, toValues, type ReportValues } from '@/lib/reportValues';
 
-export const emptyReport: ReportValues = {
-  periodStart: '', periodEnd: '', startingWeightKg: '', currentWeightKg: '', waistCm: '', averageSteps: '',
-  trainingConsistency: '', nutritionAdherence: '', hunger: '', energy: '', sleep: '',
-  strengthPerformance: '', challenges: '', wins: '', coachAssessment: '', nextAdjustments: '',
-};
+/* Inline document fields. Defined at module level so inputs keep focus while typing. */
 
-export function toValues(src: any): ReportValues {
-  const v = { ...emptyReport };
-  (Object.keys(v) as (keyof ReportValues)[]).forEach((k) => {
-    const x = src?.[k];
-    if (x == null) return;
-    v[k] = k === 'periodStart' || k === 'periodEnd' ? String(x).slice(0, 10) : String(x);
-  });
-  return v;
+const inline = 'w-full bg-transparent border-0 border-b border-dashed border-[#D9D6CE] rounded-none px-0 py-1 text-sm text-[#161A18] tnum outline-none focus:border-solid focus:border-[#0B3D2E] placeholder:text-[#9AA19D]';
+
+function Row({ label, children, hint }: { label: string; children: React.ReactNode; hint?: React.ReactNode }) {
+  return (
+    <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)] gap-4 items-baseline py-2.5 border-b border-[#EFEDE7] last:border-b-0">
+      <span className="text-xs text-[#6B7370]">{label}</span>
+      <span className="min-w-0">
+        {children}
+        {hint && <span className="block text-xs text-[#6B7370] mt-0.5">{hint}</span>}
+      </span>
+    </div>
+  );
+}
+
+function NumInput({ value, onChange, unit, label, step = 'any' }: { value: string; onChange: (v: string) => void; unit?: string; label: string; step?: string }) {
+  return (
+    <span className="flex items-baseline gap-1.5">
+      <input aria-label={label} value={value} onChange={(e) => onChange(e.target.value)} inputMode="decimal" step={step} className={cn(inline, 'max-w-[120px]')} />
+      {unit && <span className="text-xs text-[#6B7370]">{unit}</span>}
+    </span>
+  );
+}
+
+function Prose({ label, value, onChange, placeholder, rows = 4, required }: { label: string; value: string; onChange: (v: string) => void; placeholder?: string; rows?: number; required?: boolean }) {
+  return (
+    <div className="py-3 border-b border-[#EFEDE7] last:border-b-0">
+      <label className="text-xs text-[#6B7370] flex items-center gap-2">
+        {label}
+        {required && !value.trim() && <span className="text-[#8F5E14]">needed to publish</span>}
+      </label>
+      <textarea aria-label={label} rows={rows} value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} className={cn(inline, 'mt-1 resize-y leading-relaxed border-b-0 border border-dashed rounded-[6px] px-3 py-2')} />
+    </div>
+  );
 }
 
 interface Props {
   initial: ReportValues;
+  clientName: string;
   publishedAt?: string | null;
   onSave: (values: ReportValues, publish: boolean) => Promise<void>;
   onUnpublish?: () => Promise<void>;
 }
 
-/** The brief's progress report fields (section 14) in order, shared by "new" and "edit". */
-export function ProgressReportForm({ initial, publishedAt, onSave, onUnpublish }: Props) {
+/**
+ * The progress report as the client will see it: a paper document whose
+ * fields are edited in place, in the brief's order.
+ */
+export function ProgressReportForm({ initial, clientName, publishedAt, onSave, onUnpublish }: Props) {
   const [v, setV] = useState<ReportValues>(initial);
   const [busy, setBusy] = useState<'' | 'draft' | 'publish' | 'unpublish'>('');
-  const [msg, setMsg] = useState<{ kind: 'ok' | 'err'; text: string } | null>(null);
-  const set = (k: keyof ReportValues) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setV({ ...v, [k]: e.target.value });
+  const set = (k: keyof ReportValues) => (val: string) => setV((x) => ({ ...x, [k]: val }));
 
   const run = async (kind: 'draft' | 'publish' | 'unpublish') => {
-    setBusy(kind); setMsg(null);
+    setBusy(kind);
     try {
       if (kind === 'unpublish') await onUnpublish?.();
       else await onSave(v, kind === 'publish');
-      setMsg({ kind: 'ok', text: kind === 'publish' ? 'Published. The client has been notified.' : kind === 'unpublish' ? 'Report returned to draft.' : 'Draft saved.' });
-    } catch (e: any) {
-      setMsg({ kind: 'err', text: e.message || 'Could not save' });
+      toast(kind === 'publish' ? `Published. ${clientName.split(' ')[0]} has been notified.` : kind === 'unpublish' ? 'Back to draft' : 'Draft saved');
+    } catch (e) {
+      toast.error('Not saved', e instanceof Error ? e.message : undefined);
     } finally {
       setBusy('');
     }
   };
 
   const delta = v.startingWeightKg && v.currentWeightKg ? Math.round((Number(v.currentWeightKg) - Number(v.startingWeightKg)) * 10) / 10 : null;
-
-  const Num = ({ k, label, step = '0.1', hint }: { k: keyof ReportValues; label: string; step?: string; hint?: string }) => (
-    <label className="block">
-      <span className="field-label">{label}</span>
-      <input type="number" step={step} className="field-input" value={v[k]} onChange={set(k)} />
-      {hint && <span className="text-xs text-ink-muted mt-1 block">{hint}</span>}
-    </label>
-  );
-  const Text = ({ k, label, rows = 3, placeholder }: { k: keyof ReportValues; label: string; rows?: number; placeholder?: string }) => (
-    <label className="block">
-      <span className="field-label">{label}</span>
-      <textarea rows={rows} className="field-input" value={v[k]} onChange={set(k)} placeholder={placeholder} />
-    </label>
-  );
+  const canPublish = v.coachAssessment.trim() && v.nextAdjustments.trim();
 
   return (
     <div className="space-y-6">
-      {msg && (
-        <div className={`p-4 rounded-xl text-xs flex items-center gap-2 border ${msg.kind === 'ok' ? 'bg-status-approved/15 border-status-approved/40 text-status-approved' : 'bg-status-rejected/15 border-status-rejected/40 text-status-rejected'}`}>
-          {msg.kind === 'ok' ? <CheckCircle2 size={16} /> : <AlertCircle size={16} />} {msg.text}
-        </div>
-      )}
+      <div className="flex items-center gap-2">
+        {publishedAt ? <Pill tone="approved">Published</Pill> : <Pill tone="pending">Draft</Pill>}
+        <span className="t-caption">{publishedAt ? `Visible to ${clientName.split(' ')[0]} since ${new Date(publishedAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}` : 'Only you can see this until it is published.'}</span>
+      </div>
 
-      <section className="surface p-6 space-y-4">
-        <div className="flex items-center justify-between">
-          <h3 className="section-title text-sm">Period and measurements</h3>
-          <span className={`badge ${publishedAt ? 'badge-approved' : 'badge-pending'}`}>{publishedAt ? 'Published' : 'Draft'}</span>
-        </div>
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-          <label className="block"><span className="field-label">Period start</span><input type="date" className="field-input" value={v.periodStart} onChange={set('periodStart')} /></label>
-          <label className="block"><span className="field-label">Period end</span><input type="date" className="field-input" value={v.periodEnd} onChange={set('periodEnd')} /></label>
-          <Num k="startingWeightKg" label="Starting weight (kg)" />
-          <Num k="currentWeightKg" label="Current weight (kg)" hint={delta != null ? `${delta > 0 ? '+' : ''}${delta} kg over the period` : undefined} />
-          <Num k="waistCm" label="Waist (cm)" step="0.5" />
-          <Num k="averageSteps" label="Average daily steps" step="100" />
-          <Num k="trainingConsistency" label="Training consistency (%)" step="1" />
-          <Num k="nutritionAdherence" label="Nutrition adherence (%)" step="1" />
-        </div>
-      </section>
+      <article className="bg-white text-[#161A18] rounded-[var(--radius-md)] elev-raised overflow-hidden">
+        <header className="flex items-start justify-between gap-4 px-6 pt-6 pb-4">
+          <div className="min-w-0">
+            <Logo variant="horizontal" tone="green" size={24} />
+            <h2 className="mt-4 font-display font-semibold text-xl leading-tight tracking-[-0.01em] text-[#161A18]">Progress report</h2>
+            <p className="text-sm text-[#474D4A] mt-1">{clientName}</p>
+          </div>
+          <div className="text-right text-xs text-[#6B7370] space-y-1 shrink-0">
+            <label className="flex items-center gap-2 justify-end">From <input type="date" aria-label="Period start" value={v.periodStart} onChange={(e) => set('periodStart')(e.target.value)} className={cn(inline, 'w-[140px] text-right')} /></label>
+            <label className="flex items-center gap-2 justify-end">To <input type="date" aria-label="Period end" value={v.periodEnd} onChange={(e) => set('periodEnd')(e.target.value)} className={cn(inline, 'w-[140px] text-right')} /></label>
+          </div>
+        </header>
+        <span className="accent-rule ml-6" aria-hidden />
 
-      <section className="surface p-6 space-y-4">
-        <h3 className="section-title text-sm">How the period felt</h3>
-        <div className="grid grid-cols-3 gap-3">
-          <Num k="hunger" label="Hunger (1-5)" step="0.5" />
-          <Num k="energy" label="Energy (1-5)" step="0.5" />
-          <Num k="sleep" label="Sleep (1-5)" step="0.5" />
+        <div className="px-6 py-4 grid gap-x-10 md:grid-cols-2">
+          <div>
+            <Row label="Starting weight"><NumInput label="Starting weight" value={v.startingWeightKg} onChange={set('startingWeightKg')} unit="kg" /></Row>
+            <Row label="Current weight" hint={delta != null ? `${delta > 0 ? 'up' : 'down'} ${Math.abs(delta)} kg over the period` : undefined}><NumInput label="Current weight" value={v.currentWeightKg} onChange={set('currentWeightKg')} unit="kg" /></Row>
+            <Row label="Waist"><NumInput label="Waist" value={v.waistCm} onChange={set('waistCm')} unit="cm" /></Row>
+            <Row label="Average daily steps"><NumInput label="Average daily steps" value={v.averageSteps} onChange={set('averageSteps')} /></Row>
+          </div>
+          <div>
+            <Row label="Training consistency"><NumInput label="Training consistency" value={v.trainingConsistency} onChange={set('trainingConsistency')} unit="%" /></Row>
+            <Row label="Nutrition adherence"><NumInput label="Nutrition adherence" value={v.nutritionAdherence} onChange={set('nutritionAdherence')} unit="%" /></Row>
+            <Row label="Hunger, energy, sleep">
+              <span className="flex items-baseline gap-3">
+                <NumInput label="Hunger, 1 to 5" value={v.hunger} onChange={set('hunger')} />
+                <NumInput label="Energy, 1 to 5" value={v.energy} onChange={set('energy')} />
+                <NumInput label="Sleep, 1 to 5" value={v.sleep} onChange={set('sleep')} />
+              </span>
+            </Row>
+          </div>
         </div>
-        <Text k="strengthPerformance" label="Strength / performance" rows={2} placeholder="Main lifts, reps, how training felt." />
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
-          <Text k="challenges" label="Challenges" />
-          <Text k="wins" label="Wins" />
+
+        <div className="px-6 pb-4">
+          <Prose label="Strength and performance" value={v.strengthPerformance} onChange={set('strengthPerformance')} placeholder="Main lifts, reps, how training felt." rows={2} />
+          <div className="grid md:grid-cols-2 gap-x-10">
+            <Prose label="Wins" value={v.wins} onChange={set('wins')} rows={3} />
+            <Prose label="Challenges" value={v.challenges} onChange={set('challenges')} rows={3} />
+          </div>
+          <Prose label="Coach assessment" value={v.coachAssessment} onChange={set('coachAssessment')} placeholder="What the numbers say, in plain words." rows={5} required />
+          <Prose label="Next adjustments" value={v.nextAdjustments} onChange={set('nextAdjustments')} placeholder="Calories, macros, steps and training changes, and when you will review again." rows={5} required />
         </div>
-      </section>
 
-      <section className="surface p-6 space-y-4">
-        <h3 className="section-title text-sm">Coach assessment and next adjustments</h3>
-        <Text k="coachAssessment" label="Coach assessment" rows={5} placeholder="What the numbers say, in plain words. Required to publish." />
-        <Text k="nextAdjustments" label="Next adjustments" rows={5} placeholder="Calories, macros, steps, training changes, and when you will review again. Required to publish." />
-      </section>
+        <footer className="px-6 py-3 border-t border-[#E6E4DE] text-xs text-[#6B7370]">Prepared by {BRAND.coachName} · {BRAND.legalName}</footer>
+      </article>
 
-      <div className="flex flex-wrap gap-3">
-        <button type="button" onClick={() => run('draft')} disabled={!!busy} className="btn-secondary text-sm">{busy === 'draft' ? 'Saving…' : 'Save draft'}</button>
-        <button type="button" onClick={() => run('publish')} disabled={!!busy} className="btn-brand text-sm">{busy === 'publish' ? 'Publishing…' : publishedAt ? 'Save and keep published' : 'Publish to client'}</button>
-        {publishedAt && onUnpublish && (
-          <button type="button" onClick={() => run('unpublish')} disabled={!!busy} className="btn-secondary text-sm text-status-rejected">{busy === 'unpublish' ? '…' : 'Return to draft'}</button>
-        )}
+      <div className="sticky z-20 -mx-4 md:-mx-10 px-4 md:px-10 py-3 bg-[var(--bg-header)] backdrop-blur-md hairline flex flex-wrap items-center gap-3 bottom-[calc(var(--tabbar-height)+env(safe-area-inset-bottom,0px))] md:bottom-0">
+        <Button variant="secondary" loading={busy === 'draft'} disabled={Boolean(busy)} onClick={() => run('draft')}>Save draft</Button>
+        {publishedAt && onUnpublish && <Button variant="ghost" loading={busy === 'unpublish'} disabled={Boolean(busy)} onClick={() => run('unpublish')}>Back to draft</Button>}
+        <span className="flex-1" />
+        <Button loading={busy === 'publish'} disabled={Boolean(busy) || !canPublish} onClick={() => run('publish')}>
+          {publishedAt ? 'Save changes' : `Publish to ${clientName.split(' ')[0]}`}
+        </Button>
       </div>
     </div>
   );
