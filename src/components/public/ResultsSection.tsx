@@ -1,7 +1,7 @@
 import React from 'react';
-import { CheckCircle2 } from 'lucide-react';
 import { prisma } from '@/lib/db';
-import { PhotoPlaceholder } from '@/components/brand/PhotoPlaceholder';
+import { Photo } from '@/components/ui';
+import { resolvePhoto, type PhotoSlot } from '@/lib/photos';
 
 interface Story {
   id: string;
@@ -20,66 +20,70 @@ interface Story {
 
 async function loadStories(): Promise<Story[]> {
   try {
-    return await prisma.testimonial.findMany({
-      where: { featured: true },
-      orderBy: { createdAt: 'desc' },
-      take: 3,
-    });
+    return await prisma.testimonial.findMany({ where: { featured: true }, orderBy: { createdAt: 'desc' }, take: 3 });
   } catch {
     return [];
   }
 }
 
-function firstNameOnly(name: string) {
-  return name.split(' ')[0];
-}
+const firstName = (n: string) => n.split(' ')[0];
+const city = (l: string | null) => (l ? l.split(',')[0].trim() : null);
 
+/**
+ * Three client stories. Mobile: horizontal snap scroll, cards at 85vw.
+ * Desktop: three up. Photo pairs only with written consent; otherwise the
+ * art-directed placeholder. Consent is stated once in the intro.
+ */
 export async function ResultsSection() {
   const stories = await loadStories();
   if (stories.length === 0) return null;
 
   return (
-    <section id="results" className="py-20 sm:py-24 bg-paper border-b border-line">
-      <div className="max-w-6xl mx-auto px-4 sm:px-8 space-y-12">
-        <div className="max-w-2xl space-y-3">
-          <p className="label-xs text-brand">Client results</p>
-          <h2 className="font-display text-3xl sm:text-4xl font-extrabold tracking-tight text-[var(--text-heading)]">
-            Real people, measured change.
-          </h2>
-          <p className="text-ink-secondary leading-relaxed">
-            Results vary with starting point, consistency and time. Photos are shown only with written client consent.
-          </p>
+    <section id="results" className="pub-section bg-surface">
+      <div className="pub-container space-y-10 md:space-y-14">
+        <div className="md:flex md:items-end md:justify-between gap-8">
+          <div className="pub-reading">
+            <p className="t-overline">Results</p>
+            <h2 className="t-display mt-3">Real people, measured change.</h2>
+          </div>
+          <p className="t-body-sm max-w-[36ch] mt-4 md:mt-0">Results vary with starting point, consistency and time. Photographs appear only with written consent.</p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {stories.map((s) => {
+
+        <div className="flex md:grid md:grid-cols-3 gap-5 md:gap-8 overflow-x-auto md:overflow-visible snap-x snap-mandatory -mx-4 px-4 md:mx-0 md:px-0 scrollbar-hidden">
+          {stories.map((s, i) => {
             const delta = Math.round((s.endingWeightKg - s.startingWeightKg) * 10) / 10;
             const showPhotos = s.verifiedClient && s.consentGiven && !!s.beforePhotoUrl && !!s.afterPhotoUrl;
+            const n = Math.min(i + 1, 3);
+            const before = resolvePhoto(`result-${n}-before` as PhotoSlot);
+            const after = resolvePhoto(`result-${n}-after` as PhotoSlot);
             return (
-              <article key={s.id} className="surface p-6 flex flex-col gap-4">
-                {showPhotos ? (
-                  <div className="grid grid-cols-2 gap-2">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={s.beforePhotoUrl!} alt={`${firstNameOnly(s.name)} before`} className="aspect-[4/5] w-full object-cover rounded-xl" />
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={s.afterPhotoUrl!} alt={`${firstNameOnly(s.name)} after`} className="aspect-[4/5] w-full object-cover rounded-xl" />
-                  </div>
-                ) : (
-                  <PhotoPlaceholder aspect="aspect-[16/9]" />
-                )}
-                <div className="space-y-1">
-                  <p className="font-display font-bold text-ink">{s.goalAchieved}</p>
-                  <p className="text-xs text-ink-muted">
-                    {firstNameOnly(s.name)}{s.location ? `, ${s.location}` : ''} · {s.durationWeeks} weeks · {delta > 0 ? '+' : ''}{delta} kg
+              <article key={s.id} className="snap-start shrink-0 w-[85vw] md:w-auto space-y-5">
+                <div className="grid grid-cols-2 gap-2">
+                  {showPhotos ? (
+                    <>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={s.beforePhotoUrl!} alt={`${firstName(s.name)} at the start`} className="aspect-[4/5] w-full object-cover rounded-[var(--radius-md)]" />
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={s.afterPhotoUrl!} alt={`${firstName(s.name)} after ${s.durationWeeks} weeks`} className="aspect-[4/5] w-full object-cover rounded-[var(--radius-md)]" />
+                    </>
+                  ) : (
+                    <>
+                      <Photo photo={before} alt="" ratio="4/5" radius="md" sizes="(min-width: 768px) 20vw, 42vw" />
+                      <Photo photo={after} alt="" ratio="4/5" radius="md" sizes="(min-width: 768px) 20vw, 42vw" />
+                    </>
+                  )}
+                </div>
+                <div>
+                  <p className="flex items-baseline gap-1.5">
+                    <span className="t-stat-hero text-[44px] md:text-[52px]">{delta > 0 ? '+' : '−'}{Math.abs(delta)}</span>
+                    <span className="text-ink-muted font-medium text-base">kg</span>
+                  </p>
+                  <p className="t-ui mt-2">{s.goalAchieved}</p>
+                  <p className="t-caption mt-1">
+                    {firstName(s.name)}{city(s.location) ? `, ${city(s.location)}` : ''} · {s.durationWeeks} weeks
                   </p>
                 </div>
-                <blockquote className="text-sm text-ink-secondary leading-relaxed border-l-2 border-[var(--accent)] pl-3">
-                  “{s.quote.length > 180 ? s.quote.slice(0, 177).trimEnd() + '…' : s.quote}”
-                </blockquote>
-                {s.verifiedClient && (
-                  <p className="text-xs text-brand font-semibold flex items-center gap-1.5 mt-auto">
-                    <CheckCircle2 size={14} /> Verified client
-                  </p>
-                )}
+                <blockquote className="t-body-sm line-clamp-2 max-w-[40ch]">“{s.quote}”</blockquote>
               </article>
             );
           })}

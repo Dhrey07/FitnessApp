@@ -1,12 +1,11 @@
 import React from 'react';
 import { PublicHeader } from '@/components/public/PublicHeader';
 import { HeroSection } from '@/components/public/HeroSection';
-import { ServicesSection } from '@/components/public/ServicesSection';
+import { ResultsSection } from '@/components/public/ResultsSection';
 import { HowItWorksSection } from '@/components/public/HowItWorksSection';
 import { NutritionSection } from '@/components/public/NutritionSection';
 import { TrainingSection } from '@/components/public/TrainingSection';
-import { ProgressSection } from '@/components/public/ProgressSection';
-import { ResultsSection } from '@/components/public/ResultsSection';
+import { CoachSection } from '@/components/public/CoachSection';
 import { PricingSection } from '@/components/public/PricingSection';
 import { FaqSection } from '@/components/public/FaqSection';
 import { FinalCtaSection } from '@/components/public/FinalCtaSection';
@@ -21,12 +20,11 @@ export default function HomePage() {
       <PublicHeader />
       <main className="flex-1">
         <HeroSection />
-        <ServicesSection />
+        <ResultsSection />
         <HowItWorksSection />
         <NutritionSection />
         <TrainingSection />
-        <ProgressSection />
-        <ResultsSection />
+        <CoachSection />
         <PricingSection />
         <FaqSection />
         <FinalCtaSection />

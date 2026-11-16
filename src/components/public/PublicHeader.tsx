@@ -1,10 +1,12 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { ArrowRight, Menu, X } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { ThemeToggle } from '@/components/theme/ThemeToggle';
 import { Logo } from '@/components/brand/Logo';
+import { Button } from '@/components/ui';
+import { cn } from '@/lib/cn';
 
 const NAV = [
   { href: '#coaching', label: 'Coaching' },
@@ -14,67 +16,112 @@ const NAV = [
   { href: '#plans', label: 'Plans' },
 ];
 
+/**
+ * Transparent over the hero, off-white with a hairline after 40px of
+ * scroll. On mobile the hero photograph runs under the bar, so the logo and
+ * menu button are off-white until the page scrolls.
+ */
 export function PublicHeader() {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  useEffect(() => {
+    document.documentElement.style.overflow = open ? 'hidden' : '';
+    return () => {
+      document.documentElement.style.overflow = '';
+    };
+  }, [open]);
+
+  const onPhoto = !scrolled && !open;
 
   return (
-    <header className="sticky top-0 z-50 glass-panel px-4 sm:px-6 lg:px-8 py-3">
-      <div className="max-w-6xl mx-auto flex items-center justify-between gap-3">
-        <Logo variant="horizontal" size={36} responsive />
+    <>
+      <header
+        className={cn(
+          'fixed inset-x-0 top-0 z-50 transition-[background-color,box-shadow] duration-[var(--dur-2)]',
+          scrolled ? 'bg-[var(--bg-header)] backdrop-blur-md shadow-[0_1px_0_var(--border-subtle)]' : 'bg-transparent'
+        )}
+      >
+        <div className="pub-container h-16 md:h-20 flex items-center justify-between gap-4">
+          {/* Mobile: white logo over the photo until scrolled */}
+          <span className={cn('md:hidden', onPhoto ? 'block' : 'hidden')}>
+            <Logo variant="horizontal" tone="white" size={30} />
+          </span>
+          <span className={cn('md:hidden', onPhoto ? 'hidden' : 'block')}>
+            <Logo variant="horizontal" size={30} />
+          </span>
+          <span className="hidden md:block">
+            <Logo variant="horizontal" size={32} />
+          </span>
 
-        <nav className="hidden lg:flex items-center gap-7 text-sm font-semibold text-ink-secondary">
-          {NAV.map((n) => (
-            <a key={n.href} href={n.href} className="hover:text-brand transition-colors">
-              {n.label}
-            </a>
-          ))}
-        </nav>
+          <nav className="hidden lg:flex items-center gap-8" aria-label="Site">
+            {NAV.map((n) => (
+              <a key={n.href} href={n.href} className="text-sm font-medium text-ink-secondary hover:text-ink transition-colors duration-[var(--dur-1)]">
+                {n.label}
+              </a>
+            ))}
+          </nav>
 
-        <div className="hidden sm:flex items-center gap-3">
-          <ThemeToggle variant="icon" />
-          <Link href="/login" className="text-sm font-semibold text-ink-muted hover:text-ink px-3 py-2 transition-colors">
-            Sign in
-          </Link>
-          <Link href="/onboarding" className="btn-brand text-sm">
-            Start your assessment <ArrowRight size={14} />
-          </Link>
-        </div>
+          <div className="hidden md:flex items-center gap-2">
+            <ThemeToggle variant="icon" />
+            <Button href="/login" variant="ghost" size="sm">Sign in</Button>
+            <Button href="/onboarding" size="sm">Start your assessment</Button>
+          </div>
 
-        <div className="flex items-center gap-2 lg:hidden">
-          <span className="sm:hidden"><ThemeToggle variant="icon" /></span>
           <button
-            onClick={() => setOpen(!open)}
-            className="p-2 rounded-xl surface text-ink-muted hover:text-ink"
-            aria-label="Toggle navigation menu"
+            type="button"
+            onClick={() => setOpen(true)}
+            aria-label="Open menu"
             aria-expanded={open}
+            className={cn('md:hidden focus-ring h-11 w-11 -mr-2 rounded-full flex items-center justify-center transition-colors', onPhoto ? 'text-[var(--brand-offwhite)]' : 'text-ink')}
           >
-            {open ? <X size={20} /> : <Menu size={20} />}
+            <Menu size={24} />
           </button>
         </div>
-      </div>
+      </header>
 
-      {open && (
-        <div className="lg:hidden max-w-6xl mx-auto mt-3 pt-3 border-t border-line space-y-1 text-sm font-semibold animate-fade-in">
-          {NAV.map((n) => (
+      {/* Full-screen mobile menu */}
+      <div
+        className={cn('md:hidden fixed inset-0 z-[60] bg-paper flex flex-col transition-opacity duration-[var(--dur-2)]', open ? 'opacity-100' : 'opacity-0 pointer-events-none')}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Menu"
+        aria-hidden={!open}
+      >
+        <div className="pub-container h-16 flex items-center justify-between">
+          <Logo variant="horizontal" size={30} />
+          <button type="button" onClick={() => setOpen(false)} aria-label="Close menu" className="focus-ring h-11 w-11 -mr-2 rounded-full flex items-center justify-center text-ink">
+            <X size={24} />
+          </button>
+        </div>
+        <nav className="pub-container flex-1 flex flex-col justify-center gap-2" aria-label="Site">
+          {NAV.map((n, i) => (
             <a
               key={n.href}
               href={n.href}
               onClick={() => setOpen(false)}
-              className="block px-3 py-2.5 rounded-lg text-ink-secondary hover:bg-brand-soft hover:text-ink"
+              className={cn('t-h1 text-[32px] py-2 text-ink motion-enter', open && 'motion-enter')}
+              style={{ animationDelay: `${i * 40}ms` }}
             >
               {n.label}
             </a>
           ))}
-          <div className="pt-3 border-t border-line flex flex-col gap-2">
-            <Link href="/login" onClick={() => setOpen(false)} className="btn-secondary text-sm w-full justify-center py-2.5">
-              Sign in
-            </Link>
-            <Link href="/onboarding" onClick={() => setOpen(false)} className="btn-brand text-sm w-full justify-center py-2.5">
-              Start your assessment
-            </Link>
+          <div className="flex items-center justify-between pt-6">
+            <Link href="/login" onClick={() => setOpen(false)} className="t-ui text-ink-secondary">Sign in</Link>
+            <ThemeToggle variant="buttons" />
           </div>
+        </nav>
+        <div className="pub-container pb-6 safe-pb">
+          <Button href="/onboarding" size="lg" full onClick={() => setOpen(false)}>Start your assessment</Button>
         </div>
-      )}
-    </header>
+      </div>
+    </>
   );
 }

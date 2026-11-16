@@ -212,7 +212,7 @@ Each blueprint gives the layout at 375 and 1280 and names the **signature moment
 Section order and rules:
 
 1. **Nav.** Transparent over the hero, becomes off-white with a hairline after 40px. Mobile menu is a full-screen sheet with 32px links and the primary action pinned at the bottom.
-2. **Hero.** Photo 4:5 on mobile with the headline set over the lower half in off-white. Desktop: headline in the left 40%, photo right 60%, the headline's last line overlapping the photo by 48px. One sentence, one primary button, one text link. No bullets, no checklist.
+2. **Hero.** Photo 4:5 on mobile with the headline set over the lower half in off-white. Desktop: headline and photo share the row with bottoms aligned. (Revised in UI Phase 2: overlapping a charcoal headline onto a dark photo broke contrast, so the headline sits beside the photo.) One sentence, one primary button, one text link. No bullets, no checklist.
 3. **Numbers strip.** Three facts typeset as stats, hairlines between. No cards.
 4. **Results.** Three stories. Mobile: horizontal snap scroll, each card 85vw. Desktop: 3-up. Photo pair (consent) or art-directed placeholder, hero stat result, name and city, weeks, two-line quote. No "verified" badges; consent is stated once in the section intro.
 5. **How coaching works.** One horizontal rail on desktop with four nodes and 12-word descriptions, a vertical rail on mobile. Beside it, the coach's weekly feedback as a `Document`.

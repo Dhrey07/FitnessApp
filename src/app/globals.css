@@ -673,3 +673,17 @@ textarea.field-input {
   @keyframes v2-fade { from { opacity: 0; } to { opacity: 1; } }
   *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
 }
+
+/* Public site rhythm (docs/ericonet-ui-rebuild-prompt.md §2.2) */
+@layer components {
+  .pub-container { width: 100%; max-width: 1280px; margin-inline: auto; padding-inline: 16px; }
+  @media (min-width: 768px) { .pub-container { padding-inline: 24px; } }
+  .pub-section { padding-block: 80px; }
+  @media (min-width: 1024px) { .pub-section { padding-block: 128px; } }
+  .pub-reading { max-width: 680px; }
+  /* FAQ accordion marker */
+  details.faq > summary::-webkit-details-marker { display: none; }
+  details.faq > summary { list-style: none; }
+  details.faq[open] .faq-plus { transform: rotate(45deg); }
+  .faq-plus { transition: transform var(--dur-2) var(--ease-enter); }
+}

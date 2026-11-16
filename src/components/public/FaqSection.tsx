@@ -1,4 +1,5 @@
 import React from 'react';
+import { Plus } from 'lucide-react';
 import { BRAND } from '@/lib/brand';
 
 const FAQ = [
@@ -28,26 +29,27 @@ const FAQ = [
   },
 ];
 
+/** Accordion in reading width. Native details, no cards. */
 export function FaqSection() {
   return (
-    <section id="faq" className="py-20 sm:py-24 bg-paper border-b border-line">
-      <div className="max-w-3xl mx-auto px-4 sm:px-8 space-y-10">
-        <div className="space-y-3">
-          <p className="label-xs text-brand">Questions</p>
-          <h2 className="font-display text-3xl sm:text-4xl font-extrabold tracking-tight text-[var(--text-heading)]">
-            Common questions.
-          </h2>
-        </div>
-        <div className="divide-y divide-[var(--border-subtle)] border-y border-line">
-          {FAQ.map((f) => (
-            <details key={f.q} className="group py-4">
-              <summary className="flex items-center justify-between cursor-pointer list-none font-semibold text-ink text-base">
-                {f.q}
-                <span className="ml-4 text-ink-muted group-open:rotate-45 transition-transform text-xl leading-none" aria-hidden="true">+</span>
-              </summary>
-              <p className="text-sm text-ink-secondary leading-relaxed mt-3 max-w-2xl">{f.a}</p>
-            </details>
-          ))}
+    <section id="faq" className="pub-section bg-paper">
+      <div className="pub-container">
+        <div className="pub-reading mx-auto md:mx-0 space-y-10">
+          <div>
+            <p className="t-overline">Questions</p>
+            <h2 className="t-display mt-3">Common questions.</h2>
+          </div>
+          <div className="hairline">
+            {FAQ.map((f) => (
+              <details key={f.q} className="faq group hairline-b">
+                <summary className="focus-ring flex items-center justify-between gap-6 cursor-pointer py-5 t-ui text-base">
+                  {f.q}
+                  <Plus size={18} className="faq-plus shrink-0 text-ink-muted" aria-hidden />
+                </summary>
+                <p className="t-body-sm pb-5 max-w-[60ch]">{f.a}</p>
+              </details>
+            ))}
+          </div>
         </div>
       </div>
     </section>

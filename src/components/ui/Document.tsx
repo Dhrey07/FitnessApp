@@ -28,7 +28,7 @@ export function Document({
       <header className="flex items-start justify-between gap-4 px-6 pt-6 pb-4">
         <div className="min-w-0">
           <Logo variant="horizontal" tone="green" size={24} />
-          <h3 className="mt-4 font-display font-semibold text-xl leading-tight tracking-[-0.01em]">{title}</h3>
+          <h3 className="mt-4 font-display font-semibold text-xl leading-tight tracking-[-0.01em] text-[#161A18]">{title}</h3>
           {subtitle && <p className="text-sm text-[#474D4A] mt-1">{subtitle}</p>}
         </div>
         {meta && <div className="text-right text-xs text-[#6B7370] shrink-0 leading-relaxed">{meta}</div>}

@@ -2,61 +2,59 @@ import React from 'react';
 import Link from 'next/link';
 import { Logo } from '@/components/brand/Logo';
 import { BRAND } from '@/lib/brand';
+import { whatsappLink } from '@/lib/whatsapp';
 
 export function PublicFooter() {
   const year = new Date().getFullYear();
+  const ig = BRAND.contact.instagram.replace(/^@/, '');
   const contact = [
-    BRAND.contact.email && { label: 'Email', value: BRAND.contact.email, href: `mailto:${BRAND.contact.email}` },
-    BRAND.contact.whatsapp && { label: 'WhatsApp', value: BRAND.contact.whatsapp, href: `https://wa.me/${BRAND.contact.whatsapp.replace(/\D/g, '')}` },
-    BRAND.contact.instagram && { label: 'Instagram', value: `@${BRAND.contact.instagram.replace(/^@/, '')}`, href: `https://instagram.com/${BRAND.contact.instagram.replace(/^@/, '')}` },
-  ].filter(Boolean) as { label: string; value: string; href: string }[];
+    BRAND.contact.email && { label: BRAND.contact.email, href: `mailto:${BRAND.contact.email}` },
+    BRAND.contact.whatsapp && { label: 'WhatsApp', href: whatsappLink(BRAND.contact.whatsapp) ?? '' },
+    ig && { label: `@${ig}`, href: `https://instagram.com/${ig}` },
+  ].filter((c): c is { label: string; href: string } => Boolean(c && c.href));
 
   return (
-    <footer className="bg-[var(--brand-charcoal)] text-[var(--brand-offwhite)] py-14 px-4 sm:px-8">
-      <div className="max-w-6xl mx-auto space-y-10">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
-          <div className="space-y-4 md:col-span-2 max-w-sm">
-            <Logo variant="horizontal" tone="white" size={36} showTagline />
-            <p className="text-sm leading-relaxed opacity-80">{BRAND.positioning}</p>
+    <footer className="bg-[var(--brand-charcoal)] text-[var(--brand-offwhite)]">
+      <div className="pub-container py-14 md:py-20 space-y-12">
+        <div className="grid gap-10 md:grid-cols-12">
+          <div className="md:col-span-5 space-y-4">
+            <Logo variant="horizontal" tone="white" size={32} showTagline />
+            <p className="text-sm leading-relaxed text-[rgba(246,244,239,0.7)] max-w-[40ch]">{BRAND.positioning}</p>
           </div>
-
-          <div className="space-y-3 text-sm">
-            <p className="label-xs text-[var(--brand-champagne)]">Explore</p>
-            <ul className="space-y-2 opacity-85">
-              <li><a href="#coaching" className="hover:opacity-100 hover:underline">How coaching works</a></li>
-              <li><a href="#nutrition" className="hover:opacity-100 hover:underline">Nutrition</a></li>
-              <li><a href="#training" className="hover:opacity-100 hover:underline">Training</a></li>
-              <li><a href="#results" className="hover:opacity-100 hover:underline">Client results</a></li>
-              <li><a href="#plans" className="hover:opacity-100 hover:underline">Plans</a></li>
-              <li><a href="#faq" className="hover:opacity-100 hover:underline">Questions</a></li>
+          <nav className="md:col-span-3 text-sm" aria-label="Footer">
+            <ul className="space-y-2.5 text-[rgba(246,244,239,0.8)]">
+              {[
+                ['#coaching', 'How coaching works'],
+                ['#nutrition', 'Nutrition'],
+                ['#training', 'Training'],
+                ['#results', 'Results'],
+                ['#coach', 'Your coach'],
+                ['#plans', 'Plans'],
+                ['#faq', 'Questions'],
+              ].map(([href, label]) => (
+                <li key={href}><a href={href} className="hover:text-[var(--brand-offwhite)] transition-colors">{label}</a></li>
+              ))}
             </ul>
-          </div>
-
-          <div className="space-y-3 text-sm">
-            <p className="label-xs text-[var(--brand-champagne)]">Account</p>
-            <ul className="space-y-2 opacity-85">
-              <li><Link href="/login" className="hover:opacity-100 hover:underline">Sign in</Link></li>
-              <li><Link href="/onboarding" className="hover:opacity-100 hover:underline">Start your assessment</Link></li>
-              <li><Link href="/login?role=coach" className="hover:opacity-100 hover:underline">Coach sign in</Link></li>
+          </nav>
+          <div className="md:col-span-4 text-sm space-y-6">
+            <ul className="space-y-2.5 text-[rgba(246,244,239,0.8)]">
+              <li><Link href="/login" className="hover:text-[var(--brand-offwhite)] transition-colors">Sign in</Link></li>
+              <li><Link href="/onboarding" className="hover:text-[var(--brand-offwhite)] transition-colors">Start your assessment</Link></li>
             </ul>
             {contact.length > 0 && (
-              <>
-                <p className="label-xs text-[var(--brand-champagne)] pt-3">Contact</p>
-                <ul className="space-y-2 opacity-85">
-                  {contact.map((c) => (
-                    <li key={c.label}><a href={c.href} className="hover:opacity-100 hover:underline">{c.value}</a></li>
-                  ))}
-                </ul>
-              </>
+              <ul className="space-y-2.5 text-[rgba(246,244,239,0.8)]">
+                {contact.map((c) => (
+                  <li key={c.label}><a href={c.href} target={c.href.startsWith('http') ? '_blank' : undefined} rel="noopener noreferrer" className="hover:text-[var(--brand-offwhite)] transition-colors">{c.label}</a></li>
+                ))}
+              </ul>
             )}
           </div>
         </div>
-
-        <div className="pt-8 border-t border-white/10 space-y-3 text-xs opacity-70 leading-relaxed">
-          <p>
-            <strong>Medical and nutritional disclaimer.</strong> {BRAND.legalName} provides education, habit coaching and fitness coaching. Calorie targets, macronutrient targets and meal suggestions are estimates based on the Mifflin-St Jeor equation and are not medical advice, diagnosis or clinical dietary treatment. Speak to your doctor before starting a vigorous exercise programme or a calorie deficit, especially if you are pregnant, breastfeeding, or managing a medical condition.
+        <div className="pt-8 border-t border-[rgba(246,244,239,0.12)] space-y-3 text-xs text-[rgba(246,244,239,0.6)] leading-relaxed">
+          <p className="max-w-[90ch]">
+            {BRAND.legalName} provides education, habit coaching and fitness coaching. Calorie and macronutrient targets are estimates, not medical advice. Speak to your doctor before starting a vigorous exercise programme or a calorie deficit, especially if you are pregnant, breastfeeding or managing a medical condition.
           </p>
-          <p>© {year} {BRAND.legalName}. All rights reserved.</p>
+          <p>© {year} {BRAND.legalName}</p>
         </div>
       </div>
     </footer>
