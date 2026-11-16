@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
 import { SESSION_COOKIE_NAME } from '@/lib/auth';
+import { hashPassword, MIN_PASSWORD_LENGTH } from '@/lib/password';
 import { calculateNutritionProfile, FitnessGoal, ActivityLevel, Sex } from '@/lib/services/nutritionEngine';
 
 export async function POST(request: Request) {
@@ -34,6 +35,13 @@ export async function POST(request: Request) {
 
     if (!email || !firstName || !lastName) {
       return NextResponse.json({ error: 'Missing required account details' }, { status: 400 });
+    }
+
+    if (typeof password !== 'string' || password.length < MIN_PASSWORD_LENGTH) {
+      return NextResponse.json(
+        { error: `Password must be at least ${MIN_PASSWORD_LENGTH} characters` },
+        { status: 400 },
+      );
     }
 
     const cleanEmail = email.toLowerCase().trim();
@@ -71,7 +79,7 @@ export async function POST(request: Request) {
     const newUser = await prisma.user.create({
       data: {
         email: cleanEmail,
-        passwordHash: password || 'password123',
+        passwordHash: await hashPassword(password),
         firstName: firstName.trim(),
         lastName: lastName.trim(),
         role: 'CLIENT',
