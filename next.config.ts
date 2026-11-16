@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   async redirects() {
-    // Legacy "Fitness Police" / "Food Police" paths from before the ERICONET rebrand.
+    // Legacy paths from before the ERICONET rebrand; kept so old links still resolve.
     return [
       { source: "/client/food-police", destination: "/client/nutrition", permanent: true },
       { source: "/client/fitness-police", destination: "/client/training", permanent: true },

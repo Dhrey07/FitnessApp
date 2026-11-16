@@ -88,9 +88,9 @@ Short, plain sentences. Calm, knowledgeable, warm. Say what the client will do a
 
 ---
 
-## 6. Fitness Food Police sub-brand
+## 6. Retired names
 
-"Fitness Food Police" is a playful content and personality sub-brand for humorous, educational social media. It never replaces or competes with the corporate identity. Inside the product it appears at most as a single light-hearted touchpoint (for example a verdict badge on a logged meal), styled with the same palette and fonts. Product areas, navigation, pricing and documents use ERICONET naming only.
+"Fitness Police", "Food Police" and "Fitness Food Police" are retired and must not appear anywhere in the product, documents or social templates. Legacy URL redirects remain in `next.config.ts` so old links still resolve.
 
 ---
 

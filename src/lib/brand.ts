@@ -19,8 +19,6 @@ export const BRAND = {
     'Personalised fitness, nutrition and lifestyle coaching focused on sustainable physical transformation through structured nutrition, training, accountability and measurable progress.',
   /** Display name for the head coach in UI copy. Seed data may keep the real name. */
   coachName: 'Coach Eric',
-  /** Playful content sub-brand. Never used as the corporate identity. */
-  subBrand: { name: 'Fitness Food Police', tone: 'playful' as const },
   contact: {
     email: process.env.NEXT_PUBLIC_BRAND_EMAIL ?? '',
     whatsapp: process.env.NEXT_PUBLIC_BRAND_WHATSAPP ?? '',

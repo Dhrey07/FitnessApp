@@ -1,7 +1,7 @@
 export type PlanTier = 'FREE' | 'SILVER' | 'GOLD' | 'DIAMOND';
 
 export type FeatureKey =
-  | 'food_police'
+  | 'nutrition_log'
   | 'weekly_checkin'
   | 'personalised_nutrition'
   | 'personalised_training'
@@ -28,7 +28,7 @@ export const PLAN_DETAILS: Record<PlanTier, PlanDetails> = {
     priceNgn: 0,
     tagline: 'Free for every registered client',
     description: 'Log meals in plain language or with a photo, get an instant estimate, and have a coach check it.',
-    features: ['food_police'],
+    features: ['nutrition_log'],
     bulletPoints: [
       'Meal logging by photo or plain description',
       'Instant calorie and macro estimate',
@@ -43,7 +43,7 @@ export const PLAN_DETAILS: Record<PlanTier, PlanDetails> = {
     priceNgn: 15000,
     tagline: 'Structure and weekly accountability',
     description: 'Weekly check-ins reviewed by your coach, with written feedback and monthly adjustments.',
-    features: ['food_police', 'weekly_checkin'],
+    features: ['nutrition_log', 'weekly_checkin'],
     bulletPoints: [
       'Everything in Starter',
       'Weekly check-in reviewed by your coach',
@@ -60,7 +60,7 @@ export const PLAN_DETAILS: Record<PlanTier, PlanDetails> = {
     tagline: 'Personalised nutrition, training and WhatsApp support',
     description: 'A personalised meal plan and training programme, with direct WhatsApp accountability.',
     features: [
-      'food_police',
+      'nutrition_log',
       'weekly_checkin',
       'personalised_nutrition',
       'personalised_training',
@@ -82,7 +82,7 @@ export const PLAN_DETAILS: Record<PlanTier, PlanDetails> = {
     tagline: 'One-to-one coaching with calls and reports',
     description: 'Closest coach contact: calls, priority feedback, weekly adjustments and monthly progress reports.',
     features: [
-      'food_police',
+      'nutrition_log',
       'weekly_checkin',
       'personalised_nutrition',
       'personalised_training',

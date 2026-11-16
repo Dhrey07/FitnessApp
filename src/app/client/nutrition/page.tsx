@@ -16,7 +16,6 @@ import {
 } from 'lucide-react';
 import { PhotoPlaceholder } from '@/components/brand/PhotoPlaceholder';
 import { MealPlanView } from '@/components/nutrition/MealPlanView';
-import { BRAND } from '@/lib/brand';
 
 export default function NutritionClientPage() {
   const [user, setUser] = useState<any>(null);
@@ -125,10 +124,6 @@ export default function NutritionClientPage() {
             The nutrition log is free for every registered client. Every estimate is checked by your coach.
           </p>
         </div>
-        {/* The one playful sub-brand touchpoint in the product. Everything else uses ERICONET naming. */}
-        <span className="badge badge-trial hidden sm:inline-flex normal-case tracking-normal" title="Our light-hearted name for coach-checked meals">
-          {BRAND.subBrand.name}: every meal gets a verdict
-        </span>
       </div>
 
       <div className="flex gap-1.5 w-full" role="tablist" aria-label="Nutrition views">

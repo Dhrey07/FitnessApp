@@ -77,7 +77,7 @@ Re-running the seed resets all demo data. Record IDs change on every reseed.
 **Client**
 
 - `/client/dashboard` overview of the week
-- `/client/nutrition` Nutrition Log (free) and the coach's meal plan, with the Fitness Food Police review pill
+- `/client/nutrition` Nutrition Log (free) and the coach's meal plan
 - `/client/training` Training Hub with the current programme and session logging
 - `/client/check-in` weekly check-in form matching the brief's fields
 - `/client/progress` measurements, charts and published progress reports
@@ -123,7 +123,7 @@ Then apply it with `npx prisma migrate deploy`. Never delete existing columns; a
 
 ## Legacy routes
 
-The old Fitness Police and Food Police paths redirect permanently to their ERICONET equivalents. See the `redirects()` block in `next.config.ts`.
+Paths from before the rebrand redirect permanently to their ERICONET equivalents. See the `redirects()` block in `next.config.ts`.
 
 ## Accessibility
 
