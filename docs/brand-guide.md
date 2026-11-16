@@ -69,8 +69,10 @@ Two families only, both SIL Open Font Licence and self-hosted through `next/font
 
 | Role | Family | Weights | Notes |
 |---|---|---|---|
-| Display / headings | **Manrope** | 600, 700, 800 | Sentence case. Tight tracking (-0.02em). Uppercase only for the wordmark and small eyebrow labels. |
-| Body / UI | **Inter** | 400, 500, 600 | 14 px minimum for body, 12 px minimum for any UI label. Line height 1.6 body, 1.2 headings. |
+| Display / headings | **Bricolage Grotesque** | 500, 600, 700, 800 | Sentence case. Tight tracking (-0.02em to -0.035em at poster size). Uppercase only for the wordmark and one overline per public section. |
+| Body / UI | **Inter Tight** | 400, 500, 600 | 14 px minimum for body, 12 px minimum for any UI label. Line height 1.6 body, 1.2 headings. |
+
+**Decision record (UI Phase 1).** Four pairings were set side by side on the local `/dev/type` specimen at 375 px and 1280 px: Bricolage Grotesque + Inter Tight, Instrument Serif + Instrument Sans, Hanken Grotesk alone, and the previous Manrope + Inter. Instrument Serif was ruled out first: it has no tabular figures (digits "1111" and "0000" differ by 34 px at 40 px), so hero stats would jitter. Manrope + Inter is the default pairing of most generated apps and reads as such. Hanken is clean but anonymous. Bricolage Grotesque has genuine character at poster size (the single-storey a, the open g, the slightly condensed bowls), keeps tabular figures, and still sets quietly at 20 px for headings; Inter Tight gives body copy a narrower, more editorial measure than Inter without losing legibility at 14 px. Screenshots: `docs/screens/ui-phase-1/type-specimen-*.jpg`. Both faces are SIL OFL and load through `next/font` with size-adjusted fallbacks so there is no layout shift.
 
 Scale (desktop): page title 24 px / 800, section title 16 px / 700, card title 14 px / 600, body 14 px / 400, label 12 px / 700 uppercase with 0.08em tracking. Hero headlines may go to 48–60 px but never all-caps.
 

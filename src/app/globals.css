@@ -127,8 +127,10 @@ html.light,
 }
 
 @theme {
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  --font-display: var(--font-manrope), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  /* Faces are injected by next/font in src/app/layout.tsx. Decision and
+     rationale: docs/brand-guide.md, Typography. */
+  --font-sans: var(--font-body-src), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-display: var(--font-display-src), var(--font-body-src), ui-sans-serif, system-ui, sans-serif;
 }
 
 @layer base {
@@ -587,4 +589,87 @@ textarea.field-input {
     box-shadow: none;
   }
   a { text-decoration: none; color: inherit; }
+}
+
+/* ============================================================
+   UI v2 — tokens and primitives for the rebuilt interface.
+   Type roles, surfaces, elevation and motion. Legacy classes
+   above stay until every page has moved to src/components/ui.
+   ============================================================ */
+:root {
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 24px;
+  --dur-1: 150ms;
+  --dur-2: 200ms;
+  --dur-3: 250ms;
+  --ease-enter: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+  --shadow-raised: 0 1px 2px rgba(22, 26, 24, 0.06), 0 12px 32px -16px rgba(22, 26, 24, 0.16);
+  --shadow-overlay: 0 32px 64px -24px rgba(22, 26, 24, 0.32);
+  --surface-inset: color-mix(in srgb, var(--brand-green-100) 40%, transparent);
+  --tabbar-height: 64px;
+}
+:root:not(.light):not(.theme-light) {
+  --shadow-raised: 0 1px 2px rgba(0, 0, 0, 0.3), 0 12px 32px -16px rgba(0, 0, 0, 0.5);
+  --shadow-overlay: 0 32px 64px -24px rgba(0, 0, 0, 0.6);
+  --surface-inset: rgba(143, 205, 176, 0.08);
+}
+
+@layer components {
+  /* Type roles. Sizes follow docs/ericonet-ui-rebuild-prompt.md §2.1 */
+  .t-poster { font-family: var(--font-display); font-weight: 700; font-size: clamp(56px, 8vw, 112px); line-height: 0.92; letter-spacing: -0.035em; color: var(--text-heading); text-wrap: balance; }
+  .t-display { font-family: var(--font-display); font-weight: 700; font-size: clamp(40px, 5vw, 72px); line-height: 0.98; letter-spacing: -0.03em; color: var(--text-heading); text-wrap: balance; }
+  .t-h1 { font-family: var(--font-display); font-weight: 700; font-size: 32px; line-height: 1.05; letter-spacing: -0.02em; color: var(--text-heading); }
+  .t-h2 { font-family: var(--font-display); font-weight: 600; font-size: 26px; line-height: 1.1; letter-spacing: -0.02em; color: var(--text-heading); }
+  .t-h3 { font-family: var(--font-display); font-weight: 600; font-size: 20px; line-height: 1.2; letter-spacing: -0.01em; color: var(--text-heading); }
+  .t-stat-hero { font-family: var(--font-display); font-weight: 700; font-size: 52px; line-height: 1; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; color: var(--text-heading); }
+  .t-stat { font-family: var(--font-display); font-weight: 600; font-size: 24px; line-height: 1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; color: var(--text-heading); }
+  .t-body { font-size: 16px; line-height: 1.6; color: var(--text-primary); }
+  .t-body-sm { font-size: 14px; line-height: 1.5; color: var(--text-secondary); }
+  .t-ui { font-size: 14px; line-height: 1.4; font-weight: 500; color: var(--text-primary); }
+  .t-caption { font-size: 12px; line-height: 1.4; color: var(--text-muted); }
+  .t-overline { font-size: 12px; line-height: 1.4; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); }
+  @media (min-width: 768px) {
+    .t-h1 { font-size: 40px; }
+    .t-h2 { font-size: 30px; }
+    .t-h3 { font-size: 22px; }
+    .t-stat-hero { font-size: 64px; }
+    .t-stat { font-size: 28px; }
+  }
+  .tnum { font-variant-numeric: tabular-nums; }
+
+  /* Surfaces: page is the body. Panel is the only card. */
+  .surface-panel { background: var(--bg-surface); border-radius: var(--radius-md); }
+  .surface-inset { background: var(--surface-inset); border-radius: var(--radius-md); }
+  .surface-ink { background: var(--brand-green-900); color: var(--brand-offwhite); border-radius: var(--radius-md); }
+  .surface-ink h1, .surface-ink h2, .surface-ink h3, .surface-ink .t-display, .surface-ink .t-poster, .surface-ink .t-stat, .surface-ink .t-stat-hero { color: var(--brand-offwhite); }
+  .elev-raised { box-shadow: var(--shadow-raised); }
+  .elev-overlay { box-shadow: var(--shadow-overlay); }
+  .hairline { border-top: 1px solid var(--border-subtle); }
+  .hairline-b { border-bottom: 1px solid var(--border-subtle); }
+  .accent-rule { display: block; width: 64px; height: 1px; background: var(--accent); }
+
+  /* Monogram texture: one per section, one per app area. */
+  .monogram-texture { position: relative; overflow: hidden; }
+  .monogram-texture::after {
+    content: ''; position: absolute; right: -12%; bottom: -18%; width: min(60vw, 480px); aspect-ratio: 1;
+    background: url('/brand/e-monogram-white.svg') center / contain no-repeat; opacity: 0.04; pointer-events: none;
+  }
+
+  /* Focus ring shared by every interactive primitive */
+  .focus-ring:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+
+  /* Mobile safe areas and tab bar clearance */
+  .safe-pb { padding-bottom: env(safe-area-inset-bottom, 0px); }
+  .tabbar-clear { padding-bottom: calc(var(--tabbar-height) + env(safe-area-inset-bottom, 0px)); }
+}
+
+/* Motion */
+@keyframes v2-enter { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.motion-enter { animation: v2-enter var(--dur-3) var(--ease-enter) both; }
+@media (prefers-reduced-motion: reduce) {
+  .motion-enter { animation-name: v2-fade; }
+  @keyframes v2-fade { from { opacity: 0; } to { opacity: 1; } }
+  *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
 }

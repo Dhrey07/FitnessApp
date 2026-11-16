@@ -12,7 +12,7 @@ Brand rules live in [docs/brand-guide.md](docs/brand-guide.md). The rebrand plan
 - Tailwind CSS v4 with brand tokens defined in `src/app/globals.css`
 - Prisma 5 with SQLite (`prisma/dev.db`)
 - Cookie session auth (no external provider)
-- Manrope and Inter via `next/font`
+- Bricolage Grotesque and Inter Tight via `next/font`
 
 ## Getting started
 
