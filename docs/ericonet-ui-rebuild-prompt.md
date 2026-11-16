@@ -1,273 +1,415 @@
-# ERICONET — UI Rebuild Prompt (v2)
+# ERICONET — UI Rebuild Prompt (v3)
 
-> Paste this whole document as the brief for the rebuild. It assumes the rebranded codebase on `ericonet-rebrand` (brand tokens, Prisma schema, APIs, print routes) is the starting point. Nothing in the data layer changes. Everything the user sees does.
+> Paste this whole document as the brief. Starting point is the `ericonet-rebrand` branch: brand tokens, Prisma schema, APIs, print routes and the retired "Fitness Police" naming are all settled. Nothing in the data layer changes. Everything the user sees is rebuilt.
+>
+> This is a full rebuild in six phases: design system and shell, public site, auth and onboarding, client app, coach app, polish and QA.
 
 ---
 
-## 0. Why we are doing this
+## 0. The problem, measured
 
-The current UI is functionally complete and brand-correct, and it still reads as a template. A top product designer would not ship it. These are the measurable tells, taken from the code and the running app:
+The current UI is correct and complete, and it looks like a template a model generated. These tells come from the code and from screenshots of the running app at 375px and 1280px:
 
 | Tell | Evidence |
 | --- | --- |
-| Everything is the same white card | 107 `surface` boxes, 137 `rounded-xl/2xl`, every section is a grid of bordered rectangles |
-| Label soup | 104 uppercase 12px eyebrow labels ("FOCUS 01 • TRAINING", "WHAT SHOULD I DO TODAY?", "ACCOUNT ACCESS") |
-| Badge soup | 95 badges; most screens show four or more pills competing for attention |
-| No art direction | Zero photographs. 14 grey "photo pending" tiles, including on the public results section |
-| Same rhythm six times | Public site = eyebrow, H2, paragraph, 3-column icon cards, repeat. Hero is text-left / card-right like every SaaS template |
-| Decorative icons | Lucide icons in rounded squares used as ornaments on service cards, steps and stats |
-| Template voice | "Here is your personal fitness focus and daily blueprint for today", "SYSTEM STATUS Human-in-the-Loop Active", "Select an Assessment from the Queue" |
-| Demo-ware | Login page prints "Default: password123" and a list of demo accounts |
-| Mobile is desktop stacked | Five header controls crammed into 375px, long single-scroll forms with uppercase labels, tables that overflow, no sticky primary action, no sheets |
-| No motion, no states | Four keyframes defined, almost none used. Empty, loading and error states are afterthoughts |
-| Marketing and app share one type scale | Nothing on the public site is allowed to be big, and nothing in the app is allowed to be quiet |
+| Everything is a white card | 107 `surface` boxes, 137 `rounded-xl/2xl`. Sections are grids of bordered rectangles |
+| Label soup | 104 uppercase 12px eyebrows: "FOCUS 01 • TRAINING", "WHAT SHOULD I DO TODAY?", "ACCOUNT ACCESS" |
+| Badge soup | 95 badges. Most screens show four or more pills at once |
+| No art direction | Zero photographs. Fourteen grey "photo pending" tiles, including on the public results section |
+| Same rhythm six times | Public site = eyebrow, H2, paragraph, three icon cards, repeat. Hero is text-left / card-right |
+| Decorative icons | Lucide icons in rounded squares as ornaments on services, steps and stats |
+| Template voice | "Here is your personal fitness focus and daily blueprint for today", "SYSTEM STATUS Human-in-the-Loop Active" |
+| Demo-ware | Login prints "Default: password123" and a list of demo accounts |
+| Mobile is desktop stacked | Five header controls in 375px, long single-scroll forms with uppercase labels, overflowing tables, no sticky actions, no sheets |
+| The safest possible fonts | Manrope + Inter is the default pairing of a thousand generated apps |
+| No signature moments | Nothing on any screen is memorable. Nothing is big. Nothing is allowed to be beautiful |
 
-The goal is not "prettier cards". It is a product that looks like a serious coaching studio built by a senior design team: editorial on the public site, calm and data-forward inside the app, and genuinely designed for a phone first because that is where clients will live.
+The outcome we want is simple to state: a stranger opening the site on a phone should think "a serious studio with a real design team built this", and a client opening the app every day should feel it was designed for their thumb.
 
 ---
 
-## 1. Direction
+## 1. Direction: confident, editorial, Nigerian, precise
 
-**One sentence.** A premium, calm, Nigerian-rooted coaching studio: quiet confidence, real photography, numbers presented like a good lab report, and copy that sounds like a coach who has done this a thousand times.
+**One sentence.** ERICONET looks like a premium coaching studio's own product: editorial typography at poster scale, real photographs of real people and real food, numbers set like a lab report, deep green used like a signature rather than a wash, and copy that sounds like a coach who has done this a thousand times.
 
-**Reference qualities** (steal the qualities, not the look):
+This is **not** quiet wellness minimalism. Calm screens, yes. Timid screens, no. Every page gets one moment that is unmistakably designed.
 
-- Editorial restraint and typographic hierarchy of a premium wellness brand site. Big display type, generous whitespace, photography doing the emotional work.
-- The data presentation of the best health wearables: one hero number per screen, trends with context, no gauges, no decorative charts.
-- The product polish of a top-tier SaaS: consistent 4/8 spacing, crisp focus states, instant feedback, zero layout shift, keyboard and touch both first-class.
-- The warmth of a human coach: sentence case, short sentences, names used, food named as people actually eat it.
+### 1.1 Qualities to steal (not looks to copy)
 
-**Principles**
+- **Poster typography.** Headlines large enough to be the image when there is no image. Tight tracking, ragged right, deliberate line breaks.
+- **Photographic honesty.** Natural light, warm skin, Nigerian kitchens and gyms, jollof and yam and plantain photographed like food magazines do. No stock gym clichés.
+- **Lab-report numbers.** One hero number per screen, tabular figures, units set small, deltas with plain-language context. Trends as a single clean line.
+- **Native-app muscle memory.** Bottom tabs, sheets, large titles that collapse, swipe to complete, long-press steppers, sticky primary actions above the keyboard.
+- **A signature mark used with nerve.** The E monogram at 400px bleeding off a corner at 4% opacity, or as a 24px wordmark. Nothing in between.
 
-1. **Hierarchy before decoration.** Every screen has one primary thing. If two things compete, one of them loses size, colour or position.
-2. **Cards are earned.** A card exists only when content needs grouping or elevation. Lists use rows and dividers. Sections use whitespace. Target: fewer than 25% of the current card count.
-3. **Photography is the brand.** Deep green and off-white are the frame; people, food and movement are the picture.
-4. **Numbers are typeset, not badged.** Hero stats use display type with units set small. Trends use a sparkline or a line, never a pill.
-5. **Icons only when functional.** Navigation, actions, status. Never as section ornaments.
-6. **Mobile is the design, desktop is the adaptation.** Design every app screen at 375px first, then widen.
-7. **Motion explains.** Transitions show where things came from and went. 150 to 250ms, standard easing, reduced-motion respected.
-8. **Every state is designed.** Empty, loading, error, success, offline, and "coach has not responded yet" all have a face.
+### 1.2 Principles
+
+1. **One primary thing per screen.** If two elements compete, one loses size, colour or position.
+2. **Cards are earned.** A panel exists only to group or elevate. Lists use rows and hairlines, sections use whitespace. Target: under 25 panels across the whole client app.
+3. **Photography is the brand; green is the frame.** Deep green at most 10% of any screen, used for the primary action, the active state and one highlight panel.
+4. **Numbers are typeset, never badged.**
+5. **Icons only when functional:** navigation, actions, status. Never as section decoration.
+6. **Design at 375px, then widen.** Desktop is the adaptation.
+7. **Motion explains.** Things come from somewhere and go somewhere. 150 to 250ms, respect reduced motion.
+8. **Every state is designed:** empty, loading, error, success, offline, "coach has not replied yet".
+9. **One signature moment per screen,** listed in section 4. If a screen has none, it is not finished.
 
 ---
 
 ## 2. Design system v2
 
-Keep the nine brand tokens and the semantic variables in `globals.css`. Replace the component layer.
+Keep the nine palette tokens and the semantic variables in `globals.css`. Replace the component layer entirely.
 
-### 2.1 Typography
+### 2.1 Type
 
-Two families stay: **Manrope** for display and headings, **Inter** for body and UI. Use them properly.
+Two families, but choose them deliberately. **Manrope + Inter is no longer the default.** In Phase 1, build a type specimen page at `/dev/type` (local only) that sets the hero, a stat, body copy and a form in each candidate pairing, screenshot it at 375 and 1280, and commit the choice with a one-paragraph rationale in `docs/brand-guide.md`.
 
-| Role | Family / weight | Size (desktop → mobile) | Tracking / leading |
+Candidates (all on Google Fonts, all with tabular figures):
+
+| Display | Body | Character |
+| --- | --- | --- |
+| Bricolage Grotesque | Inter Tight | Warm, slightly quirky grotesque with real presence at 80px. Closest to "studio with a point of view" |
+| Instrument Serif (display only, headlines and hero stats) | Instrument Sans | Editorial. The serif gives the public site a magazine feel; the sans keeps the app crisp. Riskier, highest ceiling |
+| Hanken Grotesk | Hanken Grotesk | One family, superfamily range. Clean, modern, less distinctive |
+| Manrope | Inter | The current pairing. Allowed only if the specimen proves the others worse, with the reason written down |
+
+Scale, whichever family wins:
+
+| Role | Weight | Size desktop → mobile | Tracking / leading |
 | --- | --- | --- | --- |
-| Display | Manrope 700 | `clamp(44px, 6vw, 88px)` | -0.03em / 0.95 |
-| H1 | Manrope 700 | 40 → 32 | -0.02em / 1.05 |
-| H2 | Manrope 700 | 32 → 26 | -0.02em / 1.1 |
-| H3 | Manrope 600 | 22 → 20 | -0.01em / 1.2 |
-| Hero stat | Manrope 700, tabular nums | 56 → 44 | -0.03em / 1 |
-| Stat | Manrope 600, tabular nums | 28 → 24 | -0.02em / 1 |
-| Body | Inter 400 | 16 | 0 / 1.6 |
-| Body small | Inter 400 | 14 | 0 / 1.5 |
-| UI | Inter 500 | 14 | 0 / 1.4 |
-| Caption | Inter 400 | 12 | 0 / 1.4 |
-| Overline | Inter 600 | 12 | +0.08em uppercase, **one per section maximum** |
+| Poster | 700 | `clamp(56px, 8vw, 112px)` | -0.035em / 0.92 |
+| Display | 700 | `clamp(40px, 5vw, 72px)` | -0.03em / 0.98 |
+| H1 | 700 | 40 → 32 | -0.02em / 1.05 |
+| H2 | 600 | 30 → 26 | -0.02em / 1.1 |
+| H3 | 600 | 22 → 20 | -0.01em / 1.2 |
+| Hero stat | 700 tabular | 64 → 52 | -0.03em / 1 |
+| Stat | 600 tabular | 28 → 24 | -0.02em / 1 |
+| Body | 400 | 16 | 0 / 1.6 |
+| Body small | 400 | 14 | 0 / 1.5 |
+| UI | 500 | 14 | 0 / 1.4 |
+| Caption | 400 | 12 | 0 / 1.4 |
+| Overline | 600 | 12 | +0.08em uppercase. **One per public section, none inside the app shell** |
 
-Use `font-feature-settings: "tnum"` on every number. Use real units typeset small next to the number (`85` large, `kg` at 40% size, baseline aligned). Never put a number inside a badge.
+Rules: `font-feature-settings: "tnum"` on every number. Units typeset at 40% of the number, baseline aligned. Headline line breaks are set by hand with `<br className="hidden md:block" />` where the rag needs it. Never a number inside a badge.
 
-### 2.2 Spacing, layout, radius, elevation
+### 2.2 Space, layout, radius, elevation
 
-- 4px base. Allowed steps: 4, 8, 12, 16, 24, 32, 48, 64, 96, 128.
-- Containers: public 1200px, app content 960px, reading 680px.
-- Public section vertical rhythm: 96px desktop, 64px mobile. Sections alternate background: off-white, white, deep green (one per page), off-white.
-- Radius scale: 6 (inputs, pills), 12 (cards, sheets on desktop), 20 (sheets on mobile, hero media), full (avatars, buttons that are pills).
-- Elevation: `none` (default), `raised` (0 1px 2px rgba(22,26,24,.06), 0 8px 24px -12px rgba(22,26,24,.12)), `overlay` (0 24px 48px -16px rgba(22,26,24,.28)). No borders and shadow together on the same element.
-- Surfaces: `page` (off-white), `panel` (white, no border, raised only if floating), `inset` (green-100 at 40% for grouped fields), `ink` (charcoal or deep green panel for one highlight per screen).
+- 4px base. Steps: 4, 8, 12, 16, 24, 32, 48, 64, 96, 128, 160.
+- Containers: public 1280px with 24px gutters (16px mobile); app content 960px; reading 680px.
+- Public vertical rhythm: 128px desktop, 80px mobile between sections. Sections alternate: off-white, white, ink (one per page), off-white.
+- Radius: 6 (inputs, pills), 12 (panels, desktop dialogs), 24 (mobile sheets, hero media), full (avatars, pill buttons).
+- Elevation: `none` (default), `raised` (`0 1px 2px rgba(22,26,24,.06), 0 12px 32px -16px rgba(22,26,24,.16)`), `overlay` (`0 32px 64px -24px rgba(22,26,24,.32)`). Border or shadow, never both.
+- Surfaces: `page` (off-white), `panel` (white), `inset` (green-100 at 40%), `ink` (charcoal or deep green, one per screen).
 
-### 2.3 Colour usage
+### 2.3 Colour
 
-- Deep green ≤ 10% of any screen: primary buttons, active nav, one highlight panel, links.
-- Champagne ≤ 2%: tier highlight border, one rule under a section title, chart accent. Never text under 16px.
-- Status colours only on status. No coloured left borders on cards.
-- Dark theme stays, but it is a reading preference, not a second brand. Test every screen in both.
+- Deep green ≤ 10% of a screen. Champagne ≤ 2% and never text under 16px.
+- **Accent treatment, allowed and encouraged:** a 1px champagne rule under a section title (max 64px wide), a champagne target line on charts, a champagne hairline framing the highlighted pricing column, champagne page numbers on print. That is the complete list.
+- Status colours only on status. No coloured left borders.
+- Monogram texture: the E at 4% opacity, 320 to 480px, anchored off a corner, on at most one section per page and one screen per app area.
+- Dark theme stays as a reading preference. Test everything in both.
 
-### 2.4 Imagery system
+### 2.4 Imagery
 
-- Create `/public/photos/` with art-directed placeholders that look designed, not pending: deep-green panels with a subtle monogram texture at 6% and a one-line caption in champagne. Slots: hero (3:2 desktop, 4:5 mobile), coach portrait (4:5), nutrition plate (1:1), training (16:9), three result pairs (4:5 each). Real photographs replace them by file name later with no code change.
-- Treatment for real photos: slight warm grade, no filters, no stock gym clichés (no chalk clouds, no screaming). People, Nigerian food, real rooms.
-- Duotone green overlay is allowed on the hero only, at most 30% opacity, to hold text contrast.
-- Never an illustration pack, never 3D blobs, never gradient meshes.
+- Create `/public/photos/` with **art-directed placeholders that look finished:** deep-green panel, the monogram texture at 6%, a champagne caption in 12px describing the intended shot ("Coach Eric, morning session, Lekki"). Real photographs replace them by filename with no code change.
+- Slots: public hero (4:5 mobile, 16:9 desktop), coach portrait (4:5), plate (1:1), movement (16:9), three result pairs (4:5 each), login (4:5), onboarding review (16:9).
+- Grade for real photos: warm, natural, no heavy filters. Duotone green overlay only on the hero, ≤ 30%, only where headline contrast needs it.
+- Meal thumbnails in the Food timeline use the client's own photo at 64px with a 12px radius. No photo, no thumbnail: a flat inset square with the meal's first letter.
+- Never illustration packs, 3D renders, gradient meshes, emoji.
 
 ### 2.5 Data visualisation
 
-- One style: 2px line, deep green, soft green-100 area fill at 25%, champagne for the target line. Dots only on hover/touch. Axis text 12px stone. No grid cages; horizontal hairlines only.
-- Sparklines (48×16) inline next to stats.
-- Progress toward a target is a thin bar with the number typeset above it, never a radial gauge.
-- Charts never animate on first paint beyond a 300ms fade.
+- One style: 2px deep green line, green-100 area at 25%, champagne dashed target line, horizontal hairlines only, 12px stone axis text, dots on hover/touch only.
+- Sparklines 48×16 inline beside stats.
+- Progress to target: a 2px bar across the full content width with the number typeset above. No rings, gauges, donuts or radials anywhere.
+- First paint: 300ms fade. No draw-on animation.
 
 ### 2.6 Motion
 
-- Durations: 150ms (hover, toggles), 200ms (sheets, menus), 250ms (page sections, list reorders).
-- Easing: `cubic-bezier(.2,.8,.2,1)` enter, `cubic-bezier(.4,0,1,1)` exit.
-- Page transitions in the app: content fades up 8px. Sheets slide from bottom on mobile, scale from 98% on desktop.
-- Lists animate height on add/remove. Numbers tween when they change (check-in saved, calories adjusted).
-- `prefers-reduced-motion`: all of the above becomes opacity only.
-- Allowed libraries: `motion` (Framer Motion successor), `vaul` for sheets, Radix primitives for menus, dialogs and tabs, `sonner` for toasts. Nothing else.
+- 150ms hover and toggles, 200ms sheets and menus, 250ms section and list transitions.
+- Easing enter `cubic-bezier(.2,.8,.2,1)`, exit `cubic-bezier(.4,0,1,1)`.
+- Page content fades up 8px. Sheets slide from the bottom on mobile and scale from 98% on desktop. Lists animate height on add and remove. Numbers tween when they change.
+- Shared-element transition from a list row to its detail screen using the View Transitions API where supported, opacity fallback elsewhere.
+- `prefers-reduced-motion`: opacity only.
+- Libraries allowed: `motion`, `vaul`, `@radix-ui/react-dialog`, `@radix-ui/react-tabs`, `@radix-ui/react-dropdown-menu`, `sonner`. Nothing else without asking.
 
 ### 2.7 Voice
 
-- Sentence case everywhere except the one overline per section and button labels that are single words.
-- Short sentences. Name the client. Name the food. No "blueprint", "command center", "engine", "console", "dossier", "assessment queue", "signoff", "athlete".
-- Buttons say the outcome: "Save check-in", "Send to Chidi", "Start session", "Log lunch".
-- Empty states say what will appear and who causes it: "Your coach reviews check-ins on Sundays. Your first report will appear here after that."
+- Sentence case everywhere except the one public overline per section and single-word buttons.
+- Short sentences. Use the client's name. Name the food. Plain deltas: "down 0.6 kg since last Sunday".
+- Banned: blueprint, command center, console, engine, dossier, roster, athlete, signoff, human-in-the-loop, system status, assessment queue, verdict.
+- Buttons state the outcome: "Save check-in", "Send to Chidi", "Start session", "Log lunch".
+- Empty states say what will appear and who causes it.
 
 ---
 
 ## 3. Component library
 
-Build these once in `src/components/ui/` and use nothing else. Every component supports dark theme, keyboard, 44px touch targets, and has a loading and disabled state.
+Build once in `src/components/ui/`. Nothing else is used for UI. Every component: dark theme, keyboard, 44px targets, loading and disabled states, Storybook-style demo on `/dev/ui` (local only).
 
 | Component | Spec |
 | --- | --- |
-| `AppShell` | Desktop: 240px sidebar, content column, optional 320px context rail. Mobile: top bar with title and one action, bottom tab bar (5 max, safe-area aware, active indicator), everything else in a sheet |
-| `PageHeader` | Title, optional one-line description, primary action right (desktop) or sticky bottom (mobile). No eyebrow. |
-| `HeroStat` | Display number + small unit + delta with arrow and sentence context ("down 0.6 kg this week") + optional sparkline |
-| `StatRow` | Horizontal scroll on mobile, 3 to 4 up on desktop. Numbers typeset, labels 12px, no boxes |
-| `Section` | Title + optional action, children. Dividers between sections, not cards around them |
-| `ListRow` | Leading (avatar/icon), title, subtitle, trailing (value/chevron), 56px min height, swipe actions on mobile where relevant |
-| `Panel` | The only card. Props: `tone` (white/inset/ink), `raised`. Padding 20 mobile, 24 desktop |
-| `Segmented` | Tabs for 2 to 4 options, animated indicator |
-| `Sheet` | Bottom sheet on mobile, dialog on desktop. Drag handle, snap points, scroll lock |
-| `Field` | Label (sentence case, 14px), input, help, error. `inputmode` and `autocomplete` always set. Numeric fields get a unit suffix inside the input |
-| `Stepper` | Large +/− number control for sets, reps, kg; long-press accelerates |
-| `Scale` | 1 to 5 selector with word anchors ("Very low" … "Very high"), 44px targets |
-| `Slider` | For percentages only; value typeset above the thumb |
-| `Button` | primary (green), secondary (outline), ghost, destructive. Sizes 36/44/52. Loading spinner replaces label, width preserved |
-| `Pill` | Status only. One per row maximum |
-| `Avatar` | Initials on green-100, photo when available |
-| `Table` | Desktop only. On mobile the same data renders as `ListRow`s |
-| `Chart` | Line and bar wrappers over Recharts with the style in 2.5 |
-| `EmptyState` | Monogram at 10% opacity, one sentence, one action |
-| `Skeleton` | Matches final layout exactly to prevent shift |
-| `Toast` | Bottom centre mobile, bottom right desktop, 4s, undo where possible |
-| `Banner` | One tone (inset green). Used for trial state and coach notes only |
-| `Document` | The print look reused on screen for meal plans, programmes and reports: paper panel, serif-free, ruled rows |
+| `AppShell` | Desktop: 240px sidebar, content, optional 320px context rail. Mobile: large title that collapses to a 48px bar on scroll, one trailing action, bottom tab bar (5 max, safe-area aware, 2px active indicator), everything else in a sheet |
+| `LargeTitle` | iOS-style: 32px title in flow, collapses into the bar with a 200ms crossfade |
+| `HeroStat` | Hero number + small unit + delta sentence + optional 96×24 sparkline |
+| `StatRow` | Horizontal scroll with snap on mobile, 3 to 4 up on desktop. No boxes; hairline between items |
+| `Section` | Title + optional trailing action, children. Hairline above, not a card around |
+| `ListRow` | Leading avatar/thumbnail/none, title, subtitle, trailing value/pill/chevron. 56px min. Optional swipe actions on touch (complete, delete) with haptic tick via `navigator.vibrate(10)` where available |
+| `Panel` | The only card. `tone` white/inset/ink, `raised` boolean. Padding 20 mobile, 24 desktop |
+| `Segmented` | 2 to 4 options, sliding indicator, full width on mobile |
+| `Sheet` | Bottom sheet on mobile with drag handle and snap points (50%, 92%), centred dialog on desktop. Scroll lock, focus trap |
+| `Field` | 14px sentence-case label, input, help, error. `inputmode`, `autocomplete`, `enterkeyhint` always set. Unit suffix inside numeric fields |
+| `Stepper` | Large −/+ for kg, reps, sets. 52px targets. Long-press accelerates. Haptic tick |
+| `Scale` | 1 to 5 with word anchors at both ends and the selected word shown. 44px cells |
+| `Slider` | Percentages only, value typeset above the thumb |
+| `Button` | primary, secondary, ghost, destructive. Heights 40/48/56. Loading keeps width |
+| `Pill` | Status only. One per row |
+| `Avatar` | Initials on green-100, photo when present |
+| `Table` | Desktop only. Below 768 the same data renders as `ListRow`s |
+| `Chart` | Line and bar over Recharts in the 2.5 style |
+| `EmptyState` | Monogram at 10%, one sentence, one action |
+| `Skeleton` | Matches final layout exactly |
+| `Toast` | Bottom centre mobile, bottom right desktop, undo where possible |
+| `Banner` | Inset tone only. Trial state and coach notes |
+| `Document` | Paper panel with ruled rows, used for meal plans, programmes and reports on screen, identical to print |
+| `RestTimer` | Takes over the bottom bar: countdown typeset at stat size, full-width 2px bar draining, skip and +30s |
+| `Composer` | The meal-logging sheet: segmented Photo / Describe / Search, camera opens immediately on Photo |
 
-Delete `badge-*`, `surface`, `label-xs`, `section-title`, `field-label` from `globals.css` once no file references them.
-
----
-
-## 4. Page specifications
-
-### 4.1 Public site (`/`)
-
-Order and intent, with the mobile variant for each.
-
-1. **Nav.** Logo left, four links centre, "Sign in" ghost and "Start" primary right. Transparent over the hero, turns off-white with a hairline after 40px scroll. Mobile: logo and a menu button that opens a full-screen sheet with large links and the primary action pinned at the bottom.
-2. **Hero.** Full-bleed photograph (4:5 on mobile, 16:9 crop on desktop) with the display headline set over it in off-white on the left third, duotone at most 30%. One sentence, one primary button, one text link. Below the fold line, a thin strip with three facts typeset as numbers: "12 weeks", "1 coach", "Weekly check-ins". No checklist bullets.
-3. **Results.** Three client stories as large photo pairs (before/after with consent) in a horizontal scroll on mobile and a 3-up on desktop. Each has the headline result as a hero stat, name, city, weeks, and a two-line quote. Consent-gated stories without photos use the art-directed placeholder, not a grey box.
-4. **How coaching works.** A single horizontal timeline on desktop (four nodes with short text), a vertical rail on mobile. No icon squares. The coach's weekly feedback example sits beside it as a `Document` panel.
-5. **Nutrition.** Split: left a photograph of a real plate, right the `Document` preview of a meal plan day with totals. The copy is three short sentences, not a bullet list. One button.
-6. **Training.** Deep green ink section (the page's one dark panel). Programme day preview typeset in off-white, tempo/RPE explained in one line each. Photograph of movement on the right on desktop, above on mobile.
-7. **Coach.** Portrait (4:5), name, two-paragraph bio in reading width, three credentials as a plain list. This section does not exist today and is the single biggest trust gap.
-8. **Pricing.** Four plans as a comparison: on desktop a table with plan columns and feature rows, the Signature column highlighted with a champagne rule; on mobile a segmented control switching plan details, with "Starter is free" stated once. Prices in Naira, typeset.
-9. **FAQ.** Accordion, reading width, no cards.
-10. **Final CTA.** Headline, one button, WhatsApp link. Footer: logo, contact, Instagram, legal line. No "sub-brand" mention anywhere.
-
-Acceptance: no more than six `Panel`s on the whole page; no 3-column icon-card grid; at least four photographic slots; one overline per section at most.
-
-### 4.2 Auth and onboarding
-
-- **Login.** Desktop split: photograph left 45%, form right in a 400px column, no card. Mobile: logo, form, button pinned above the keyboard. Remove the demo account list and the default-password hint from production; keep them behind `NEXT_PUBLIC_SHOW_DEMO_ACCOUNTS=true` for local use only.
-- **Sign-up / onboarding.** Replace the long form with a stepper: Account → About you → Goal and timeline → Training setup → Food preferences → Review. One group of questions per step, progress bar at the top, back button, autosave to local storage, numeric fields with unit suffixes and `inputmode="decimal"`. The review step shows the computed targets as hero stats before the client commits. On mobile each step fits one screen without scrolling where possible.
-
-### 4.3 Client app
-
-Bottom tabs: Today, Food, Train, Progress, More. "Plans" moves under More.
-
-- **Today (`/client/dashboard`).** Greeting by first name, date. One `HeroStat` for the week's most relevant number (weight if a check-in is due soon, otherwise today's calories remaining). Then three `ListRow`s: today's session, today's meals logged versus target, check-in status. The coach's latest feedback as a quote in an inset panel. Nothing else. No "Focus 01/02/03".
-- **Food (`/client/nutrition`).** A day timeline (breakfast, lunch, dinner, snacks as rows with photo thumbnails and kcal), a floating "Log a meal" button that opens a sheet with text, photo and search in a segmented control. Coach review status as a single pill per meal. "My meal plan" as a `Document` reached from a secondary tab, with day switcher and totals.
-- **Train (`/client/training`).** Programme overview as `ListRow`s per day with completion ticks. Session view: exercise list; tapping one opens a full-screen logger with `Stepper`s for kg and reps per set, a rest timer that counts down in the sticky bottom bar, and progression guidance in one line. Designed for one-handed use. Download PDF stays in the overflow menu.
-- **Check-in (`/client/check-in`).** Four steps in a `Sheet`-like flow on mobile and a two-column form on desktop: Measurements, Consistency, How it felt (four `Scale`s with word anchors), Notes. Autosave draft, submit button pinned. After submit, a confirmation screen with the delta versus last week typeset.
-- **Progress (`/client/progress`).** Weight trend chart as the hero (range toggle 4/8/12 weeks), waist and steps as `StatRow`, check-in history as rows, published reports as `Document` cards with a "Download PDF" overflow.
-- **Resources.** Editorial list, reading-width article pages with a sticky contents rail on desktop.
-- **More.** Profile, plan and billing, notifications, theme, sign out.
-
-### 4.4 Coach app
-
-Desktop sidebar: Today, Clients, Check-ins, Nutrition, Programmes, Reports, Testimonials. Mobile uses the same bottom tab pattern with the four most used and a More sheet.
-
-- **Today (`/admin/dashboard`).** The queue first: check-ins awaiting review, meals awaiting review, clients with no log in three days. Each a `ListRow` with a one-tap action. Revenue and client counts as a quiet `StatRow` below, not four cards at the top. Remove "System status".
-- **Clients.** Desktop table (name, plan, last check-in, trend sparkline, action). Mobile list rows. Search and plan filter in the header.
-- **Client detail.** Sticky header with avatar, name, plan pill and the primary actions (Message, Create report). Tabs: Overview, Check-ins, Food, Programme, Meal plan, Reports. Overview shows the trend chart and targets as an editable inset panel.
-- **Check-in review.** Desktop split: list left, review right. Mobile: list, tapping opens a full-screen review with the numbers typeset in a `StatRow`, notes as quotes, then feedback textarea and calorie field, submit pinned.
-- **Builders (meal plan, programme).** Desktop: spreadsheet-like rows with inline editing, keyboard navigation between cells, duplicate day, drag to reorder. Mobile: read-first with per-row edit sheets; builders are not expected to be used heavily on a phone, but must not break.
-- **Reports.** List and editor keep the brief's field order; the editor becomes a `Document` with inline editable fields so what the coach sees is what the client will print.
-
-### 4.5 Print routes
-
-Unchanged structurally. Align type to the new scale and reuse the `Document` component so screen and paper match.
+Delete `badge-*`, `surface`, `label-xs`, `section-title`, `field-label` from `globals.css` once unreferenced.
 
 ---
 
-## 5. Mobile specification
+## 4. Screen blueprints
 
-- Breakpoints: 375 (design), 640, 768, 1024, 1280. Every page is screenshot-tested at 375 and 1280.
-- Safe areas: `viewport-fit=cover`, bottom tab bar and sticky actions pad with `env(safe-area-inset-bottom)`.
-- Touch targets 44×44 minimum; row heights 56.
-- Primary action of any form is sticky at the bottom and stays above the keyboard.
-- Inputs: correct `type`, `inputmode`, `autocomplete`, `enterkeyhint`. Numeric fields show units inside the field.
-- No horizontal page scroll anywhere. Tables become rows below 768.
-- Headers collapse to a title on scroll. Secondary actions live in an overflow menu or sheet.
-- Add a web app manifest, maskable icons and a theme colour so "Add to home screen" produces a proper app.
-- Lighthouse mobile: Performance ≥ 90, Accessibility ≥ 95, Best practices ≥ 95.
+Each blueprint gives the layout at 375 and 1280 and names the **signature moment**. ASCII is proportional, not pixel-exact.
+
+### 4.1 Public home
+
+**Signature moment.** The poster headline overlapping the hero photograph's edge, with the monogram bleeding off the top-right corner at 4%.
+
+```
+375px                                  1280px
+┌──────────────────────┐               ┌─────────────────────────────────────────────────────┐
+│ E            Sign in ≡│               │ E  Coaching Nutrition Training Results Plans   Sign in [Start]│
+├──────────────────────┤               ├─────────────────────────────────────────────────────┤
+│ ████ PHOTO 4:5 ██████│               │ Sustainable          ████████████████████████████████│
+│ ████████████████████ │               │ transformation,      ████████ PHOTO 16:9 ████████████│
+│ ██ Sustainable ██████│               │ built around         ████████████████████████████████│
+│ ██ transformation, ██│               │ your life.           ████████████████████████████████│
+│ ██ built around █████│               │                      ████████████████████████████████│
+│ ██ your life. ███████│               │ One sentence. [Start your assessment]  See how it works│
+│ ████████████████████ │               ├─────────────────────────────────────────────────────┤
+├──────────────────────┤               │ 12 weeks     ·     1 coach     ·     Weekly check-ins│
+│ One sentence.        │               ├─────────────────────────────────────────────────────┤
+│ [Start your assessment]│             │ RESULTS                                              │
+│ See how it works →   │               │ ┌────────┐ ┌────────┐ ┌────────┐                     │
+├──────────────────────┤               │ │ photo  │ │ photo  │ │ photo  │  −12.4 kg · 16 weeks │
+│ 12 weeks · 1 coach · │               │ │ pair   │ │ pair   │ │ pair   │  Chidi, Lagos        │
+│ Weekly check-ins     │               │ └────────┘ └────────┘ └────────┘  "two-line quote"    │
+└──────────────────────┘               └─────────────────────────────────────────────────────┘
+```
+
+Section order and rules:
+
+1. **Nav.** Transparent over the hero, becomes off-white with a hairline after 40px. Mobile menu is a full-screen sheet with 32px links and the primary action pinned at the bottom.
+2. **Hero.** Photo 4:5 on mobile with the headline set over the lower half in off-white. Desktop: headline in the left 40%, photo right 60%, the headline's last line overlapping the photo by 48px. One sentence, one primary button, one text link. No bullets, no checklist.
+3. **Numbers strip.** Three facts typeset as stats, hairlines between. No cards.
+4. **Results.** Three stories. Mobile: horizontal snap scroll, each card 85vw. Desktop: 3-up. Photo pair (consent) or art-directed placeholder, hero stat result, name and city, weeks, two-line quote. No "verified" badges; consent is stated once in the section intro.
+5. **How coaching works.** One horizontal rail on desktop with four nodes and 12-word descriptions, a vertical rail on mobile. Beside it, the coach's weekly feedback as a `Document`.
+6. **Nutrition.** Plate photo left, `Document` meal-plan day right. Three short sentences, one button.
+7. **Training.** The page's ink section. Programme day typeset in off-white, tempo and RPE each explained in one line, movement photo. Monogram texture here.
+8. **Coach.** Portrait 4:5, name, two paragraphs in reading width, three credentials as a plain list, a short line on where he trains clients. **This section does not exist today and is the biggest trust gap on the site.**
+9. **Pricing.** Desktop: comparison table, plans as columns, features as rows, Signature column framed by a champagne hairline. Mobile: segmented control switching plan detail, price in Naira typeset as a stat, "Starter is free" stated once.
+10. **FAQ.** Accordion in reading width.
+11. **Final CTA and footer.** Headline, one button, WhatsApp link. Footer: logo, contact, Instagram, legal line.
+
+Acceptance: at most six `Panel`s on the page, no three-column icon grid, at least five photographic slots, one overline per section.
+
+### 4.2 Login and onboarding
+
+**Signature moment.** Onboarding's review step: the client's computed targets appear as hero stats, tweened in, before they commit.
+
+- **Login.** Desktop: photo left 45%, form in a 400px column right, no card. Mobile: logo, large title "Sign in", two fields, button pinned above the keyboard. Demo accounts and the default-password hint render only when `NEXT_PUBLIC_SHOW_DEMO_ACCOUNTS=true`.
+- **Onboarding.** Stepper: Account → About you → Goal and timeline → Training setup → Food preferences → Review. Thin progress bar at the top, back button, autosave to local storage. Each step fits one 375px screen without scrolling where possible. Numeric fields have unit suffixes and `inputmode="decimal"`. Review shows calories, protein, target weight and programme end date as hero stats.
+
+### 4.3 Client · Today
+
+**Signature moment.** "Week 4 of 12" set at display size with a full-width 2px progress rule beneath it, the only thing above the fold besides the greeting.
+
+```
+375px                                  1280px (content 960, rail 320)
+┌──────────────────────┐               ┌──────────────────────────────┬──────────────┐
+│ Good morning, Chidi  │               │ Good morning, Chidi          │ Coach note   │
+│ Sunday 16 November   │               │ Sunday 16 November           │ "Great pacing│
+│                      │               │                              │  on your push│
+│ Week 4 of 12         │               │ Week 4 of 12                 │  workout…"   │
+│ ━━━━━━━━━━━━━━━━━━━━━│               │ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━│  Coach Eric  │
+│                      │               │                              │  2 days ago  │
+│ 85 kg  ↓0.6 this week│               │ 85 kg ↓0.6 this week  ⟋⟍⟋⟍   │              │
+│ ⟋⟍⟋⟍⟋⟍              │               │                              │ Check-in due │
+├──────────────────────┤               ├──────────────────────────────┤ Sunday       │
+│ ▶ Upper body push    │               │ ▶ Upper body push    4 ex · 45 min  [Start] │
+│   4 exercises · 45m ›│               ├──────────────────────────────┤              │
+├──────────────────────┤               │ ◐ 1,720 of 2,288 kcal  2 meals logged     › │
+│ ◐ 1,720 / 2,288 kcal ›│              ├──────────────────────────────┤              │
+├──────────────────────┤               │ ✓ Check-in due Sunday                [Start] │
+│ ✓ Check-in due Sunday›│              └──────────────────────────────┴──────────────┘
+├──────────────────────┤
+│ "Great pacing…"      │
+│  Coach Eric · 2d ago │
+├──────────────────────┤
+│ Home Food Train Prog…│
+└──────────────────────┘
+```
+
+Rules: no "Focus 01/02/03". No cards except the coach note (inset). Three `ListRow`s, each one tap to the thing itself.
+
+### 4.4 Client · Food
+
+**Signature moment.** The meal timeline is photo-first: each logged meal shows the client's own plate photo, and the composer opens the camera in one tap.
+
+- Mobile: large title "Food", day switcher (yesterday / today / tomorrow as a `Segmented`), `HeroStat` calories remaining with a 2px bar, then rows per meal with photo thumbnail, name, kcal, one status pill. Floating "Log a meal" button bottom right above the tab bar opens the `Composer` sheet.
+- Desktop: timeline left 60%, the day's macro summary and the coach's latest review in the right rail. Meal plan under a secondary tab as a `Document` with day switcher and totals.
+- States: no meals yet today → one sentence and the composer button. Pending coach review → pill "With coach". Reviewed → pill with the coach's adjustment.
+
+### 4.5 Client · Train and the session logger
+
+**Signature moment.** The set logger. Two large `Stepper`s (kg, reps), one "Done" that swipes the set away, and the `RestTimer` taking over the bottom bar with a draining full-width line.
+
+```
+375px session logger
+┌──────────────────────┐
+│ ‹ Upper body push  ⋯ │
+│ Incline bench press  │
+│ 4 × 8–10 · RPE 8 · 2-0-1│
+│                      │
+│ Set 2 of 4           │
+│  ┌────────┐ ┌───────┐│
+│  │ − 42.5 +│ │ − 9 + ││   kg / reps steppers, 52px targets
+│  └────────┘ └───────┘│
+│  Last week: 40 × 9   │
+│                      │
+│ Set 1  40 kg × 10  ✓ │   completed sets as rows, swipe to edit
+├──────────────────────┤
+│ Rest 1:12            │   RestTimer bar, drains left to right
+│ ━━━━━━━━━━━━━━━━━━   │
+│ [Done set]  +30s  Skip│
+└──────────────────────┘
+```
+
+- Programme overview: `ListRow`s per day with completion state; swipe left on a day to see its exercises on mobile; the whole day as a `Document` on desktop.
+- Progression guidance one line under the exercise name. Coach notes in an inset panel only when present.
+- Download PDF lives in the overflow menu.
+
+### 4.6 Client · Check-in
+
+**Signature moment.** The confirmation screen after submit: this week versus last typeset as deltas, with a sparkline of the last eight weeks, and the coach's response time stated.
+
+- Four steps in a full-screen flow on mobile (Measurements, Consistency, How it felt, Notes), two-column form on desktop. Progress bar at the top. Autosaved draft. Submit pinned. `Scale`s for hunger, energy, sleep and stress with word anchors, never bare 1 to 5 radios.
+
+### 4.7 Client · Progress
+
+**Signature moment.** The weight trend as a full-bleed hero chart with the champagne target line, range toggle 4 / 8 / 12 weeks.
+
+- Below: waist, steps and training consistency as a `StatRow`; check-in history as rows; published reports as `Document` cards with PDF in the overflow.
+
+### 4.8 Coach · Today
+
+**Signature moment.** The queue is the page. Three groups of rows: check-ins to review, meals to review, clients quiet for three days, each with a one-tap action. Revenue and client counts sit below as a quiet `StatRow`.
+
+```
+1280px
+┌──────────┬──────────────────────────────────────────────────────────┐
+│ Today    │ Sunday 16 November                                       │
+│ Clients  │                                                          │
+│ Check-ins│ Check-ins to review (3)                                  │
+│ Nutrition│ ● Chidi Okonkwo   85 kg ↓0.6  waist 88  adherence 85%  [Review]│
+│ Programmes│● Aminat Bello    62 kg ↑0.2  waist 70  adherence 92%  [Review]│
+│ Reports  │                                                          │
+│ Testimon.│ Meals to review (2)                                      │
+│          │ ▣ Tunde · Jollof rice, chicken · est. 640 kcal        [Open]│
+│          │                                                          │
+│          │ Quiet for 3+ days (1)                                    │
+│          │ ○ Zainab Dahiru · last log Thursday            [Message]│
+│          │ ─────────────────────────────────────────────────────── │
+│          │ 4 clients   ·   2 paid   ·   ₦65,000 this month          │
+└──────────┴──────────────────────────────────────────────────────────┘
+```
+
+Remove "System status". No KPI cards at the top.
+
+### 4.9 Coach · Clients and client detail
+
+- **Clients.** Desktop table: name, plan, last check-in, 8-week sparkline, action. Mobile: rows. Search and plan filter in the header.
+- **Client detail.** Sticky header: avatar, name, plan pill, Message and Create report. Tabs: Overview, Check-ins, Food, Programme, Meal plan, Reports. Overview: trend chart, targets as an editable inset panel, latest check-in summary.
+- **Check-in review.** Desktop split list / review. Mobile: list, tap opens a full-screen review with numbers as a `StatRow`, notes as quotes, feedback textarea, calorie field, submit pinned. The "Create progress report" action sits in the overflow.
+
+### 4.10 Coach · Builders and reports
+
+- Desktop: spreadsheet-like rows, inline editing, arrow-key navigation between cells, duplicate day, drag to reorder. Mobile: read-first, per-row edit sheets; must not break.
+- Report editor renders as a `Document` with inline editable fields so the coach edits what the client will print.
+
+### 4.11 Print
+
+Structure unchanged. Adopt the new type and reuse `Document` so screen and paper match.
 
 ---
 
-## 6. Remove "Fitness Police" entirely
+## 5. Mobile: native-app depth, not just responsive
 
-The sub-brand is retired. No playful alias remains.
-
-- `src/lib/brand.ts`: delete `subBrand`.
-- `src/app/client/nutrition/page.tsx`: delete the sub-brand pill and its copy.
-- `src/lib/services/entitlements.ts`: rename the `food_police` feature key to `nutrition_log` and update bullet copy.
-- `docs/brand-guide.md`, `README.md`: remove the sub-brand rule and mention.
-- `next.config.ts`: keep the legacy redirects (they protect old links) but relabel the comment as "legacy paths".
-- Database: the `FoodSubmission` model and `/api/nutrition/*` routes keep their names. No migration.
-- Grep acceptance: `grep -rniE "police" src docs README.md next.config.ts` returns only the redirect sources in `next.config.ts` and the retired-names note in `docs/brand-guide.md`.
+- **Design width 375.** Also screenshot 390 and 430. Breakpoints 640, 768, 1024, 1280.
+- **PWA.** Web app manifest, maskable icons, `theme-color` per theme, `display: standalone`, splash colours. "Add to home screen" must produce an app, not a bookmark.
+- **Offline logging.** Meal logs and set logs queue in IndexedDB when offline and sync on reconnect, with a small "Saved on this phone, will sync" line. Nothing else needs offline.
+- **Safe areas.** `viewport-fit=cover`; tab bar, sticky actions and sheets pad with `env(safe-area-inset-*)`.
+- **Large titles** that collapse on scroll. One trailing action in the bar. Everything else in a sheet or overflow.
+- **Gestures.** Swipe between programme days, swipe a set to complete, swipe a meal row to delete with undo toast, pull sheet to dismiss. Never swipe-only: every gesture has a visible button equivalent.
+- **Thumb zone.** Primary actions in the bottom 40% of the screen. Destructive actions never there.
+- **Keyboard.** Primary button stays above the keyboard. Correct `type`, `inputmode`, `autocomplete`, `enterkeyhint`. Numeric fields show units inside the field.
+- **Targets.** 44×44 minimum, 52 for steppers. Row heights 56.
+- **No horizontal page scroll.** Tables become rows below 768.
+- **Performance.** Route-level code splitting, images via `next/image` with explicit sizes, fonts preloaded with `display: swap` and matched fallbacks to kill layout shift. Lighthouse mobile: Performance ≥ 90, Accessibility ≥ 95, Best practices ≥ 95, CLS < 0.05.
 
 ---
 
-## 7. Anti-pattern checklist (the "AI-built" tells)
+## 6. Retired names
 
-Fail the review if any of these appear:
+"Fitness Police", "Food Police" and "Fitness Food Police" are already removed from the product, docs and feature keys. Legacy redirects remain in `next.config.ts`. Do not reintroduce them in any copy, component, filename or comment. Acceptance: `grep -rniE "police" src docs README.md next.config.ts` returns only the redirect sources and the retired-names line in `docs/brand-guide.md`.
+
+---
+
+## 7. Anti-pattern checklist
+
+Fail the phase review if any of these appear:
 
 - A grid of three or more equal cards each with an icon in a rounded square.
-- More than one uppercase overline per section, or any overline inside the app shell.
+- More than one uppercase overline per public section, or any overline inside the app shell.
 - A number inside a pill or badge.
 - A coloured left border on a card.
 - Text-left / card-right hero with a checklist under the buttons.
-- Any "photo pending" or grey placeholder visible on the public site.
+- Any "photo pending" grey tile visible anywhere; placeholders must be the art-directed kind.
 - Demo credentials visible outside local development.
-- Template phrases: blueprint, command center, console, engine, dossier, roster, athlete, signoff, human-in-the-loop, system status.
-- A screen with more than one primary button.
-- A page whose mobile layout is the desktop layout stacked.
-- A form with uppercase labels.
-- A chart with a visible grid cage, a gauge, or a donut.
+- Banned words from 2.7.
+- More than one primary button on a screen.
+- A mobile layout that is the desktop layout stacked.
+- Uppercase form labels.
+- A chart with a grid cage, a gauge, a ring or a donut.
 - Shadow and border on the same element.
-- Gradients, glassmorphism, 3D illustrations, emoji in UI.
+- Gradients, glassmorphism, 3D renders, emoji in UI, marquee tickers, typewriter effects.
+- A screen without its signature moment from section 4.
+- Manrope + Inter chosen without the specimen comparison written up.
 
 ---
 
 ## 8. Execution phases
 
-Each phase ends with: build and type check passing, screenshots at 375 and 1280 in light and dark for every touched page, the anti-pattern checklist run, and one commit `UI PHASE n: <summary>` on a branch off `ericonet-rebrand`.
+Each phase ends with: build and type check green; screenshots at 375 and 1280 in light and dark for every touched route, saved under `docs/screens/ui-phase-n/`; the anti-pattern checklist run and reported; one commit `UI PHASE n: <summary>` on a branch off `ericonet-rebrand`.
 
-1. **UI PHASE 1 — System and shell.** Component library in `src/components/ui/`, type scale, surfaces, motion utilities, `AppShell` for client and coach with bottom tabs, manifest and icons. Remove the sub-brand (section 6). Delete legacy component classes once unreferenced.
-2. **UI PHASE 2 — Public site.** All ten sections, imagery slots, coach section, pricing comparison, mobile nav sheet.
-3. **UI PHASE 3 — Auth and onboarding.** Login split layout, stepper onboarding, demo accounts env-gated.
-4. **UI PHASE 4 — Client app.** Today, Food, Train with session logger, Check-in stepper, Progress, Resources, More.
-5. **UI PHASE 5 — Coach app.** Today queue, clients, client detail tabs, check-in review, builders, reports editor.
-6. **UI PHASE 6 — Polish and QA.** Motion pass, states pass, Lighthouse, contrast re-run, 375px sweep of every route, dark theme sweep, print alignment.
+1. **UI PHASE 1 — Type, system, shell.** Type specimen and decision, `src/components/ui/` library with `/dev/ui` demo, surfaces, motion utilities, `AppShell` for client and coach with bottom tabs and large titles, PWA manifest and icons, art-directed photo placeholders. Delete legacy component classes once unreferenced.
+2. **UI PHASE 2 — Public site.** All eleven sections, coach section, pricing comparison, mobile nav sheet, numbers strip.
+3. **UI PHASE 3 — Auth and onboarding.** Login split layout, stepper onboarding with review-step hero stats, demo accounts env-gated.
+4. **UI PHASE 4 — Client app.** Today, Food with composer, Train with session logger and rest timer, Check-in flow with confirmation, Progress, Resources, More. Offline queue for meal and set logs.
+5. **UI PHASE 5 — Coach app.** Today queue, clients, client detail tabs, check-in review, builders, report editor as a document.
+6. **UI PHASE 6 — Polish and QA.** Motion pass, every state designed, View Transitions, Lighthouse, contrast re-run, 375/390/430 sweep, dark sweep, print alignment, screenshots archived.
 
 For each phase, report: files changed, screenshots, checklist results, and anything not completed with the reason.
 
@@ -275,8 +417,8 @@ For each phase, report: files changed, screenshots, checklist results, and anyth
 
 ## 9. Hard rules
 
-- Keep Next 16 app router, Tailwind v4, Prisma/SQLite, cookie auth, existing APIs and print routes. UI only.
-- Two fonts. Nine palette tokens. No gradients. Minimum 12px text, 14px body, 4.5:1 contrast in both themes.
-- Dependencies allowed to be added: `motion`, `vaul`, `@radix-ui/react-dialog`, `@radix-ui/react-tabs`, `@radix-ui/react-dropdown-menu`, `sonner`. Nothing else without asking.
-- Do not reintroduce any removed name.
-- Every new page works one-handed on a 375px phone and looks intentional on a 1440px monitor.
+- Keep Next 16 app router, Tailwind v4, Prisma/SQLite, cookie auth, existing APIs and print routes. This is UI only.
+- Two font families. Nine palette tokens. No gradients. Minimum 12px text, 14px body, 4.5:1 contrast in both themes.
+- Dependencies may be added only from the list in 2.6. Ask before anything else.
+- Every new screen works one-handed on a 375px phone and looks intentional on a 1440px monitor.
+- Every screen has a signature moment. If you cannot name it, keep designing.
