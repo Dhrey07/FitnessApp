@@ -1,12 +1,17 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
 import { SESSION_COOKIE_NAME } from '@/lib/auth';
+import { hashPassword, verifyPassword } from '@/lib/password';
+
+// Verified against when the email is unknown, so a miss costs the same scrypt
+// work as a wrong password and response timing doesn't reveal which accounts exist.
+let dummyHash: Promise<string> | undefined;
 
 export async function POST(request: Request) {
   try {
     const { email, password } = await request.json();
 
-    if (!email || !password) {
+    if (typeof email !== 'string' || typeof password !== 'string' || !email || !password) {
       return NextResponse.json({ error: 'Email and password are required' }, { status: 400 });
     }
 
@@ -21,8 +26,24 @@ export async function POST(request: Request) {
       },
     });
 
-    if (!user || user.passwordHash !== password) {
+    if (!user) {
+      dummyHash ??= hashPassword('not-a-real-password');
+      await verifyPassword(password, await dummyHash);
       return NextResponse.json({ error: 'Invalid email or password' }, { status: 401 });
+    }
+
+    const { valid, needsRehash } = await verifyPassword(password, user.passwordHash);
+    if (!valid) {
+      return NextResponse.json({ error: 'Invalid email or password' }, { status: 401 });
+    }
+
+    // Upgrades legacy plain-text rows (and hashes with outdated parameters) to the
+    // current scrypt format on the first successful sign-in. See verifyPassword().
+    if (needsRehash) {
+      await prisma.user.update({
+        where: { id: user.id },
+        data: { passwordHash: await hashPassword(password) },
+      });
     }
 
     const response = NextResponse.json({

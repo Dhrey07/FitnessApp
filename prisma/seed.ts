@@ -1,7 +1,11 @@
 import { PrismaClient } from '@prisma/client';
+import { hashPassword } from '../src/lib/password';
 import { NUTRITION_GUIDELINES } from './seed-data/nutritionGuidelines';
 
 const prisma = new PrismaClient();
+
+// Every demo account signs in with `password123`; each row gets its own salted hash.
+const DEMO_PASSWORD = 'password123';
 
 async function main() {
   console.log('🌱 Seeding database...');
@@ -32,7 +36,7 @@ async function main() {
   const coach = await prisma.user.create({
     data: {
       email: 'coach@ericonet.fit',
-      passwordHash: 'password123',
+      passwordHash: await hashPassword(DEMO_PASSWORD),
       role: 'COACH',
       firstName: 'Coach',
       lastName: 'Eric',
@@ -44,7 +48,7 @@ async function main() {
   const clientChidi = await prisma.user.create({
     data: {
       email: 'chidi@example.com',
-      passwordHash: 'password123',
+      passwordHash: await hashPassword(DEMO_PASSWORD),
       role: 'CLIENT',
       firstName: 'Chidi',
       lastName: 'Okonkwo',
@@ -98,7 +102,7 @@ async function main() {
   const clientAminat = await prisma.user.create({
     data: {
       email: 'aminat@example.com',
-      passwordHash: 'password123',
+      passwordHash: await hashPassword(DEMO_PASSWORD),
       role: 'CLIENT',
       firstName: 'Aminat',
       lastName: 'Bello',
@@ -152,7 +156,7 @@ async function main() {
   const clientTunde = await prisma.user.create({
     data: {
       email: 'tunde@example.com',
-      passwordHash: 'password123',
+      passwordHash: await hashPassword(DEMO_PASSWORD),
       role: 'CLIENT',
       firstName: 'Tunde',
       lastName: 'Johnson',
@@ -207,7 +211,7 @@ async function main() {
   const clientZainab = await prisma.user.create({
     data: {
       email: 'zainab@example.com',
-      passwordHash: 'password123',
+      passwordHash: await hashPassword(DEMO_PASSWORD),
       role: 'CLIENT',
       firstName: 'Zainab',
       lastName: 'Dahiru',
